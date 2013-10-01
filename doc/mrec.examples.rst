@@ -25,6 +25,9 @@ examples Package
     :undoc-members:
     :show-inheritance:
 
+
+.. _filename_conventions-label:
+
 :mod:`filename_conventions` Module
 ----------------------------------
 

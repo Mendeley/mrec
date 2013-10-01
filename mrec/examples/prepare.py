@@ -55,12 +55,12 @@ def main():
     parser.add_option('--outdir',dest='outdir',help='directory for output files')
     parser.add_option('--num_splits',dest='num_splits',type='int',default=5,help='number of train/test splits to create (default: %default)')
     parser.add_option('--min_items_per_user',dest='min_items_per_user',type='int',default=10,help='skip users with less than this number of ratings (default: %default)')
-    parser.add_option('--binarize',dest='binarize',action='store_true',default=False,help='binarize ratings (default: %default)')
-    parser.add_option('--normalize',dest='normalize',action='store_true',default=False,help='scale training ratings to unit norm (default: %default)')
+    parser.add_option('--binarize',dest='binarize',action='store_true',default=False,help='binarize ratings')
+    parser.add_option('--normalize',dest='normalize',action='store_true',help='scale training ratings to unit norm')
     parser.add_option('--rating_thresh',dest='rating_thresh',type='float',default=0,help='treat ratings below this as zero (default: %default)')
     parser.add_option('--test_size',dest='test_size',type='float',default=0.5,help='target number of test items for each user, if test_size >= 1 treat as an absolute number, otherwise treat as a fraction of the total items (default: %default)')
-    parser.add_option('--discard_zeros',dest='discard_zeros',action='store_true',default=False,help='discard zero training ratings after thresholding (default: %default, not recommended, incompatible with using training items to guarantee that recommendations are novel)')
-    parser.add_option('--sample_before_thresholding',dest='sample_before_thresholding',action='store_true',default=False,help='choose test items before thresholding ratings (default: %default, not recommended, test items below threshold will then be discarded)')
+    parser.add_option('--discard_zeros',dest='discard_zeros',action='store_true',help='discard zero training ratings after thresholding (not recommended, incompatible with using training items to guarantee that recommendations are novel)')
+    parser.add_option('--sample_before_thresholding',dest='sample_before_thresholding',action='store_true',help='choose test items before thresholding ratings (not recommended, test items below threshold will then be discarded)')
 
     (opts,args) = parser.parse_args()
     if not opts.dataset or not opts.outdir:

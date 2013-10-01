@@ -1,13 +1,11 @@
 """
-File naming conventions for test and similarity matrix files:
+File naming conventions:
 
 * training files must contain 'train' in their filename.
 * the corresponding test files must have the same filepaths,
   but with 'test' in place of 'train' in their filenames.
-* the similarity matrix generated for a training file
-  will be called 'sims.tsv' and will be output into a directory
-  based on the training filename.
-
+* models, similarity matrices and recommendations will be
+  written to filenames based on the training file.
 """
 
 import os

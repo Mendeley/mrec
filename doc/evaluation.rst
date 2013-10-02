@@ -34,8 +34,26 @@ and to evaluate them::
                             pythonpath (useful if you need to import uninstalled
                             modules to IPython engines on a cluster)
 
+Even though you're making predictions with a recommender that has already been trained,
+you need to specify the training file with the ``--train`` option so that the recommender
+is able to exclude items that each user has already seen from their recommendations.
+The corresponding test file used for evaluation is assumed to be in the same directory
+as the training file, and with a related filepath following the convention described
+in :ref:`filename_conventions-link`.
 
-You can compute the same evaluation metrics for recommendations that have already been saved to disk, whether
+You can choose one of two sets of metrics, the `main` metrics which include Precision@k
+for various small values of `k` and Mean Reciprocal Rank, or `hitrate` which simply computes
+the HitRate@10.  `hitrate` is only appropriate if your test set contains a single item for
+each user; it measures how often the single test item appears in the top 10 recommendations, 
+and is equivalent to Recall@10.
+
+The recommendations themselves will be written to file in the ``--outdir``, in tsv format
+`user`, `item`, `score`.  The `score` is not directly meaningful but higher is better for
+when comparing two recommended items for the same user.
+
+Evaluating existing recommendations
+-----------------------------------                            
+For convenience the ``mrec_evaluate`` script lets you compute the same evaluation metrics for recommendations that have already been saved to disk, whether
 with ``mrec_predict`` or some other external program::
 
     $ mrec_evaluate
@@ -60,5 +78,3 @@ with ``mrec_predict`` or some other external program::
                             description of model which generated the
                             recommendation
                             
-TODO: details of metrics
-TODO: filename conventions, input file formats

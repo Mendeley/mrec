@@ -4,7 +4,7 @@
 Training a recommender
 ======================
 
-Here's the full list of basic options for ``mrec_train``::
+Here are the basic options for ``mrec_train``::
 
     $ mrec_train
     Usage: mrec_train [options]
@@ -12,50 +12,57 @@ Here's the full list of basic options for ``mrec_train``::
     Options:
       -h, --help            show this help message and exit
       -n NUM_ENGINES, --num_engines=NUM_ENGINES
-                            number of IPython engines use
+                            number of IPython engines to use
       --input_format=INPUT_FORMAT
-                            format of training dataset(s): tsv | csv | mm (MatrixMarket) | fsm (fast_sparse_matrix)
+                            format of training dataset(s) tsv | csv | mm
+                            (matrixmarket) | fsm (fast_sparse_matrix)
       --train=TRAIN         glob specifying path(s) to training dataset(s)
-                            IMPORTANT: must be in quotes if it includes the * wildcard
+                            IMPORTANT: must be in quotes if it includes the *
+                            wildcard
       --outdir=OUTDIR       directory for output files
-      --overwrite           overwrite existing files in outdir (default: False)
-      --recommender=RECOMMENDER
-                            type of recommender: slim | knn | popularity
-      --write_simsfile      write similar items to a tsv file as well as saving model (default: False)
+      --overwrite           overwrite existing files in outdir
+      --model=MODEL         type of model to train: slim | knn | popularity
+                            (default: slim)
+      --max_sims=MAX_SIMS   max similar items to output for each training item
+                            (default: 100)
 
-The input file for training can hold the user-item matrix in a variety of formats.
+The ``--train`` input file for training can hold the user-item matrix in a variety of formats.
 You can specify more than one input file by passing a standard unix file glob
-containing the * wildcard, for example specifying ``--train ml100-k/u*.binary`` will
-train separate models for `ml-100k/u1.binary`, `ml-100k/u2.binary` and so on.  
+containing the * wildcard, for example specifying `--train ml100-k/u.train.*` will
+train separate models for `ml-100k/u.train.0`, `ml-100k/u.train.1` and so on.  
 This can be useful if you're doing cross-validation.
+
+``mrec_train`` currently support three types of recommender: `knn` learns a traditional k-nearest neighbours item similarity model; `slim` specifies a SLIM model which learns item similarities by solving a regression problem; and `popularity` is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.
 
 .. note::
 
     All input training files must have the same data format.  
 
 A separate recommender will be trained for each input file, and saved to disk in the
-specified output directory: if the input file is called ``ratings_1.tsv`` then the
-recommender will be saved in the file ``ratings_1.tsv.model``, and so on.  The saved model
-can be passed to the ``mrec_predict`` script, or used programmatically like
+specified output directory: if the input file is called `u.train.0` then the
+recommender will be saved in the file `u.train.0.model.npz`, and so on.  See :ref:`filename_conventions-link` for more information.
+
+The saved model
+can be passed to the ``mrec_predict`` script as described in :ref:`evaluation`, or used programmatically like
 this::
 
-    >>> model = load_recommender('ratings_1.tsv.model')
-    >>> sims = model.get_similar_items(item_id)
+    >>> model = load_recommender('u.train.0.model.npz')
+    >>> sims = model.get_similar_items(231)  # get items similar to 231
+    >>> recs = model.recommend_items(101,max_items=30)  # recommend top 30 items for user 101
+See :mod:`mrec.item_similarity.recommender` for more details.
 
 You can supply additional options to ``mrec_train`` specifying parameter settings for the particular type of recommender you are training.
 For a SLIM recommender you probably want to specify::
 
-      --model=MODEL         underlying model to use (default: SGDRegressor)
-      --l1_reg=L1_REG       l1 regularization constant (default: 0.01)
-      --l2_reg=L2_REG       l2 regularization constant (default: 0.01)
-      --max_sims=MAX_SIMS   max similar items to output for each training item
-                            (default: 100)
+      --learner=LEARNER     underlying learner for SLIM learner: sgd | elasticnet
+                            | fs_sgd (default: sgd)
+      --l1_reg=L1_REG       l1 regularization constant (default: 0.1)
+      --l2_reg=L2_REG       l2 regularization constant (default: 0.001)
 
 For a k-nearest neighbour recommender you just need to supply::
 
-      --max_sims=MAX_SIMS   max similar items to output for each training item
-                            (default: 100)
-      --metric=METRIC       distance metric for knn recommender: cosine | dot
+      --metric=METRIC       metric for knn recommender: cosine | dot (default:
+                        cosine)
 
 In this case ``max_sims`` is simply passed to the constructor
 of the ``KNNRecommender`` as the value of ``k``.
@@ -63,13 +70,12 @@ of the ``KNNRecommender`` as the value of ``k``.
 You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are::
 
-      --max_sims=MAX_SIMS   max similar items to output for each training item
-                            (default: 100)
-      --popularity=POPULARITY
-                            popularity measure to use: count | sum | avg
-                            (default: count)
+      --popularity_method=POPULARITY_METHOD
+                            how to compute popularity for baseline recommender:
+                            count | sum | avg | thresh (default: count)
       --popularity_thresh=POPULARITY_THRESH
-                            only consider ratings higher than this
+                            ignore scores below this when computing popularity for
+                            baseline recommender (default: 0)
                         
 The different measures mean let you base the popularity of an item on its total number of
 ratings of any value, or its total above some threshold; or on the sum or mean of its ratings.
@@ -85,10 +91,6 @@ There are also a couple of options relating to the IPython.parallel framework::
 The ``--add_module_paths`` option can be useful to specify the path to `mrec` itself
 if you didn't install it at start up time on all the machines in your cluster.
 
-
-TODO: filename conventions
-
-
 Parameter tuning for SLIM
 -------------------------
 Before training a SLIM recommender, you'll need to choose the regularization constants.
@@ -97,7 +99,10 @@ sample items over a range of values for each constant, and picks the best combin
 simple parameters.  The 'best' regularization constants are those that give similarity weights
 that are as sparse as possible, but not too sparse.  You run ``mrec_tune`` like this::
 
-    $ mrec_tune -d splits/u.data.train.0 --input_format tsv --l1_min 0.001 --l1_max 1.0 --l2_min 0.0001 --l2_max 1 --max_sims 200 --min_sims 1 --max_sparse 0.3 --min_sims 1
+    $ mrec_tune -d u.data.train.0 --input_format tsv \
+        --l1_min 0.001 --l1_max 1.0 \
+        --l2_min 0.0001 --l2_max 1 \
+        --max_sims 200 --min_sims 1 --max_sparse 0.3
 
 This says that we want to find the best constants that result in no more than 200 similar items for each item,
 provided no more than 30% of items have no similar items at all.  We'd like to explore combinations of regularization
@@ -109,3 +114,8 @@ The script will run for a few seconds and then report the best settings::
     proportion of items with fewer than 1 positive similarity weights = 0.25
     mean # negative similarity weights per item = 43.4
 
+.. note::
+
+    For this little dataset even the best constant values shown will mean that we won't learn
+    any similar items for quite a large proportion of the training items.  This isn't
+    usually a problem with production size datasets.

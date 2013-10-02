@@ -26,8 +26,6 @@ examples Package
     :show-inheritance:
 
 
-.. _filename_conventions-label:
-
 :mod:`filename_conventions` Module
 ----------------------------------
 

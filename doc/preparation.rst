@@ -5,7 +5,7 @@ Preparing training data
 =======================
 
 Run the ``mrec_prepare`` script to create train/test splits from a ratings dataset in TSV format.
-Each line should contain: user, item, score.  Any further fields in each line will be ignored::
+Each line should contain: `user`, `item`, `score`. `user` and `item` should be integer IDs starting from 1, and `score` is a rating or some other value describing how much the user likes or has interacted with the item.  Any further fields in each line will be ignored::
 
     $ mrec_prepare
     Usage: mrec_prepare [options]
@@ -64,7 +64,15 @@ with previous results that used a different split.  You can also specify an abso
 of ratings by setting ``--test_size`` to an integer of 1 or more.  This is also useful if you
 plan to measure :ref:`Hit Rate <evaluation>` in which case you should specify ``--test_size 1``.
 
+.. _filename_conventions-link:
+
 Filename conventions
 --------------------
-``mrec_prepare`` and the other `mrec` scripts rely on a set of filename conventions defined
-in the :ref:`filename_conventions <filename_conventions-label>` module.
+``mrec_prepare`` and the other `mrec` scripts use a set of filename conventions defined
+in the :mod:`mrec.examples.filename_conventions` module:
+
+- input dataset: `ratings.tsv`
+- training files created by ``mrec_prepare``: `ratings.tsv.train.0`, `ratings.tsv.train.1`, ...
+- test files created by ``mrec_prepare``: `ratings.tsv.test.0`, `ratings.tsv.test.1`, ...
+- models created by ``mrec_train``: `ratings.tsv.train.0.model.npz`, `ratings.tsv.train.1.model.npz`, ...
+- recommendations created by ``mrec_predict``: `ratings.tsv.train.0.recs.tsv`, `ratings.tsv.train.1.recs.tsv`, ...

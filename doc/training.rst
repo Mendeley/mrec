@@ -49,6 +49,7 @@ this::
     >>> model = load_recommender('u.train.0.model.npz')
     >>> sims = model.get_similar_items(231)  # get items similar to 231
     >>> recs = model.recommend_items(101,max_items=30)  # recommend top 30 items for user 101
+
 See :mod:`mrec.item_similarity.recommender` for more details.
 
 You can supply additional options to ``mrec_train`` specifying parameter settings for the particular type of recommender you are training.

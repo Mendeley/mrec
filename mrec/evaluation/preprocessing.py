@@ -12,12 +12,13 @@ class TSVParser(object):
         If True, set all non-zero scores to 1.
     """
 
-    def __init__(self,thresh=0,binarize=False):
+    def __init__(self,thresh=0,binarize=False,delimiter='\t'):
         self.thresh = thresh
         self.binarize = binarize
+        self.delimiter = delimiter
 
     def parse(self,line):
-        parts = line.strip().split()
+        parts = line.strip().split(self.delimiter)
         user,item,count = parts[:3]
         val = float(count)
         if val >= self.thresh:

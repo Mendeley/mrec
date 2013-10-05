@@ -52,6 +52,7 @@ def main():
 
     parser = OptionParser()
     parser.add_option('--dataset',dest='dataset',help='path to input dataset in tsv format')
+    parser.add_option('--delimiter',dest='delimiter',default='\t',help='input delimiter (default: tab)')
     parser.add_option('--outdir',dest='outdir',help='directory for output files')
     parser.add_option('--num_splits',dest='num_splits',type='int',default=5,help='number of train/test splits to create (default: %default)')
     parser.add_option('--min_items_per_user',dest='min_items_per_user',type='int',default=10,help='skip users with less than this number of ratings (default: %default)')
@@ -75,7 +76,7 @@ def main():
     subprocess.check_call(['mkdir','-p',opts.outdir])
     subprocess.check_call(['sort','-k1','-n',opts.dataset],stdout=open(infile,'w'))
 
-    parser = TSVParser(thresh=opts.rating_thresh,binarize=opts.binarize)
+    parser = TSVParser(thresh=opts.rating_thresh,binarize=opts.binarize,delimiter=opts.delimiter)
     splitter = SplitCreator(test_size=opts.test_size,normalize=opts.normalize,discard_zeros=opts.discard_zeros,
                             sample_before_thresholding=opts.sample_before_thresholding)
     processor = Processor(splitter,parser,opts.min_items_per_user)

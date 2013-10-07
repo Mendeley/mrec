@@ -13,7 +13,7 @@ def run(task):
 
     # initialise the model
     dataset = load_fast_sparse_matrix(input_format,trainfile)
-    model.init(dataset)
+    model._init(dataset)
     if hasattr(model,'similarity_matrix'):
         # clear out any existing similarity matrix
         model.similarity_matrix = None

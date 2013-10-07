@@ -60,15 +60,15 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
         train,users,test = get_split()
         for i,model in enumerate(models):
             retrain(model,train)
-            run_metrics = evaluation_func(model,users,test)
+            run_metrics = evaluation_func(model,train,users,test)
             for m,val in run_metrics.iteritems():
                 print m,val
                 metrics[i][m].append(val)
     return metrics
 
 def generate_metrics(get_known_items,compute_metrics):
-    def evaluation_func(model,users,test):
-        return evaluate(model,users,get_known_items(test),compute_metrics)
+    def evaluation_func(model,train,users,test):
+        return evaluate(model,train,users,get_known_items(test),compute_metrics)
     return evaluation_func
 
 def sort_metrics_by_name(names):
@@ -111,11 +111,11 @@ def print_report(models,metrics):
             stderr = std/len(vals)**0.5
             print '{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),mean,stderr)
 
-def evaluate(model,users,get_known_items,compute_metrics):
+def evaluate(model,train,users,get_known_items,compute_metrics):
     avg_metrics = defaultdict(float)
     count = 0
     for u in users:
-        recommended = [r for r,_ in model.recommend_items(u,max_items=20)]
+        recommended = [r for r,_ in model.recommend_items(train,u,max_items=20)]
         metrics = compute_metrics(recommended,get_known_items(u))
         if metrics:
             for m,val in metrics.iteritems():

@@ -3,7 +3,7 @@ class BaseRecommender(object):
     Minimal interface to be implemented by recommenders.
     """
 
-    def init(self,dataset):
+    def _init(self,dataset):
         self.dataset = dataset
         self.num_users,self.num_items = self.dataset.shape
 
@@ -26,12 +26,14 @@ class BaseRecommender(object):
         """
         pass
 
-    def recommend_items(self,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """
         Recommend new items for a user.
 
         Parameters
         ==========
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         u : int
             Index of user for which to make recommendations.
         max_items : int
@@ -47,12 +49,14 @@ class BaseRecommender(object):
         """
         pass
 
-    def batch_recommend_items(self,max_items=10,return_scores=True,show_progress=False):
+    def batch_recommend_items(self,dataset,max_items=10,return_scores=True,show_progress=False):
         """
         Recommend new items for all users in the training dataset.
 
         Parameters
         ==========
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         max_items : int
             Maximum number of recommended items to return.
         return_scores : bool
@@ -71,18 +75,20 @@ class BaseRecommender(object):
         for u in xrange(self.num_users):
             if show_progress and u%1000 == 0:
                print u,'..',
-            recs.append(self.recommend_items(u,max_items,return_scores))
+            recs.append(self.recommend_items(dataset,u,max_items,return_scores))
         if show_progress:
             print
         return recs
 
-    def range_recommend_items(self,user_start,user_end,max_items=10,return_scores=True):
+    def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
         """
         Recommend new items for a range of users in the training dataset.
         Assumes you've already called train() to learn the similarity matrix.
 
         Parameters
         ==========
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         user_start : int
             Index of first user in the range to recommend.
         user_end : int
@@ -101,5 +107,5 @@ class BaseRecommender(object):
         # default implementation, you may be able to optimize this for some recommenders.
         recs = []
         for u in xrange(user_start,user_end):
-            recs.append(self.recommend_items(u,max_items,return_scores))
+            recs.append(self.recommend_items(dataset,u,max_items,return_scores))
         return recs

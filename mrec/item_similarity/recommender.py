@@ -26,7 +26,7 @@ class ItemSimilarityRecommender(BaseRecommender):
             The matrix of user-item counts, row i holds the counts for
             the i-th user.
         """
-        self.init(dataset)
+        self._init(dataset)
         # build up a sparse similarity matrix
         data = []
         row = []
@@ -102,13 +102,15 @@ class ItemSimilarityRecommender(BaseRecommender):
             sims = [(i,w[i]) for i in w.argsort()[-1:-max_similar_items-1:-1] if w[i] > 0]
         return sims
 
-    def recommend_items(self,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """
         Recommend new items for a user.  Assumes you've already called
         train() to learn the similarity matrix.
 
         Parameters
         ==========
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         u : int
             Index of user for which to make recommendations.
         max_items : int
@@ -123,10 +125,10 @@ class ItemSimilarityRecommender(BaseRecommender):
             just a list of idxs.
         """
         try:
-            r = (self.similarity_matrix * self.dataset.X[u].T).toarray().flatten()
+            r = (self.similarity_matrix * dataset[u].T).toarray().flatten()
         except AttributeError:
             raise AttributeError('you must call train() before trying to recommend items')
-        known_items = set(self.dataset.X[u].indices)
+        known_items = set(dataset[u].indices)
         recs = []
         for i in r.argsort()[::-1]:
             if i not in known_items:
@@ -138,13 +140,15 @@ class ItemSimilarityRecommender(BaseRecommender):
                     break
         return recs
 
-    def batch_recommend_items(self,max_items=10,return_scores=True,show_progress=False):
+    def batch_recommend_items(self,dataset,max_items=10,return_scores=True,show_progress=False):
         """
         Recommend new items for all users in the training dataset.  Assumes
         you've already called train() to learn the similarity matrix.
 
         Parameters
         ==========
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         max_items : int
             Maximum number of recommended items to return.
         return_scores : bool
@@ -159,13 +163,13 @@ class ItemSimilarityRecommender(BaseRecommender):
             else just a list of idxs.
         """
         try:
-            r = self.dataset.X * self.similarity_matrix.T
+            r = dataset * self.similarity_matrix.T
         except AttributeError:
             raise AttributeError('you must call train() before trying to recommend items')
         # make the predicted score for all known-items
         # zero or less by substracting the max score from them
         max_score = r.data.max()  # highest predicted score
-        row,col = self.dataset.X.nonzero()  # locations of known items
+        row,col = dataset.nonzero()  # locations of known items
         data = max_score * np.ones(row.shape)
         r = r - csr_matrix((data,(row,col)),shape=r.shape)
         num_users = r.shape[0]
@@ -181,13 +185,15 @@ class ItemSimilarityRecommender(BaseRecommender):
             print
         return recs
 
-    def range_recommend_items(self,user_start,user_end,max_items=10,return_scores=True):
+    def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
         """
         Recommend new items for a range of users in the training dataset.
         Assumes you've already called train() to learn the similarity matrix.
 
         Parameters
         ==========
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         user_start : int
             Index of first user in the range to recommend.
         user_end : int
@@ -203,7 +209,7 @@ class ItemSimilarityRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        data_subset = self.dataset.X[user_start:user_end,:]
+        data_subset = dataset[user_start:user_end,:]
         try:
             r = data_subset * self.similarity_matrix.T
         except AttributeError:

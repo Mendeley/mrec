@@ -144,28 +144,30 @@ if __name__ == '__main__':
     print 'computing some item similarities...'
     print 'item\tsim\tweight'
     # if we want we can compute these individually without calling train()
-    model.init(dataset)
+    model._init(dataset)
     for i in random.sample(xrange(num_items),num_samples):
         for j,weight in model.get_similar_items(i,max_similar_items=10):
             output(i,j,weight)
 
     print 'learning entire similarity matrix...'
+    # usually we'll call train() on the entire dataset
+    model = SLIM()
     model.train(dataset)
     print 'making some recommendations...'
     print 'user\trec\tscore'
     for u in random.sample(xrange(num_users),num_samples):
-        for i,score in model.recommend_items(u,max_items=10):
+        for i,score in model.recommend_items(dataset,u,max_items=10):
             output(u,i,score)
 
     print 'making batch recommendations...'
-    recs = model.batch_recommend_items()
+    recs = model.batch_recommend_items(dataset)
     for u in xrange(num_users):
         for i,score in recs[u]:
             output(u,i,score)
 
     print 'making range recommendations...'
     for start,end in [(0,2),(2,3)]:
-        recs = model.range_recommend_items(start,end)
+        recs = model.range_recommend_items(dataset,start,end)
         for u in xrange(start,end):
             for i,score in recs[u-start]:
                 output(u,i,score)

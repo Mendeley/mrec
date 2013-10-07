@@ -46,7 +46,6 @@ class ItemPopularityRecommender(BaseRecommender):
         dataset : mrec.sparse.fast_sparse_matrix
             The user-item matrix.
         """
-        self.dataset = dataset
         d = dataset.X.tocsc()
         if self.method == 'count':
             # count the total number of ratings for each item
@@ -63,13 +62,15 @@ class ItemPopularityRecommender(BaseRecommender):
         popularity.sort(reverse=True)
         self.pop_items = [(i,c) for (c,i) in popularity]
 
-    def recommend_items(self,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """
         Recommend new items for a user.  Assumes you've already called
         train().
 
         Parameters
         ----------
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
         u : int
             Index of user for which to make recommendations (for
             compatibility with other recommenders).
@@ -84,7 +85,7 @@ class ItemPopularityRecommender(BaseRecommender):
             List of (idx,score) pairs if return_scores is True, else
             just a list of idxs.
         """
-        known_items = set(self.dataset.X[u].indices)
+        known_items = set(dataset[u].indices)
         recs = []
         for i,c in self.pop_items:
             if i not in known_items:

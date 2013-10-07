@@ -71,7 +71,7 @@ def loadz(filepath):
     y = np.load(filepath)
     return coo_matrix((y['data'],(y['row'],y['col'])),shape=y['shape'])
 
-class fast_sparse_matrix:
+class fast_sparse_matrix(object):
     """
     Adds fast columnar reads and updates to
     a scipy.sparse.csr_matrix, at the cost
@@ -96,13 +96,13 @@ class fast_sparse_matrix:
         Parameters
         ----------
 
-        X : scipy.csr_matrix
-            The csr_matrix to wrap.
+        X : scipy sparse matrix
+            The sparse matrix to wrap.
         col_view : scipy.csc_matrix, optional
             The corresponding index matrix to provide fast columnar access,
             created if not supplied here.
         """
-        self.X = X
+        self.X = X.tocsr()
         if col_view is not None:
             self.col_view = col_view
         else:
@@ -142,7 +142,7 @@ class fast_sparse_matrix:
         y = np.load(filepath,mmap_mode='r')
         X = coo_matrix((y['data'],(y['row'],y['col'])),shape=y['shape'])
         col_view = coo_matrix((y['v_data'],(y['v_row'],y['v_col'])),shape=y['v_shape'])
-        return fast_sparse_matrix(X.tocsr(),col_view.tocsc())
+        return fast_sparse_matrix(X,col_view.tocsc())
 
     @staticmethod
     def loadtxt(filepath,comments='#',delimiter=None,skiprows=0,usecols=None,index_offset=1):
@@ -170,7 +170,7 @@ class fast_sparse_matrix:
             The default offset is chosen so that 1-indexed data on file results in a
             fast_sparse_matrix holding 0-indexed matrices.
         """
-        X = loadtxt(filepath,comments=comments,delimiter=delimiter,skiprows=skiprows,usecols=usecols).tocsr()
+        X = loadtxt(filepath,comments=comments,delimiter=delimiter,skiprows=skiprows,usecols=usecols)
         return fast_sparse_matrix(X)
 
     @staticmethod
@@ -184,6 +184,6 @@ class fast_sparse_matrix:
         filepath : file or str
             The matrixmarket file to read.
         """
-        X = mmread(filepath).tocsr()
+        X = mmread(filepath)
         return fast_sparse_matrix(X)
 

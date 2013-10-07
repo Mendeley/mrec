@@ -3,10 +3,6 @@ class BaseRecommender(object):
     Minimal interface to be implemented by recommenders.
     """
 
-    def _init(self,dataset):
-        self.dataset = dataset
-        self.num_users,self.num_items = self.dataset.shape
-
     def get_similar_items(self,j,max_similar_items=30):
         """
         Get the most similar items to a supplied item.

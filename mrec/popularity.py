@@ -43,10 +43,13 @@ class ItemPopularityRecommender(BaseRecommender):
         Parameters
         ----------
 
-        dataset : mrec.sparse.fast_sparse_matrix
+        dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix
             The user-item matrix.
         """
-        d = dataset.X.tocsc()
+        if type(dataset) == fast_sparse_matrix:
+            d = dataset.X.tocsc()
+        else:
+            d = dataset.tocsc()
         if self.method == 'count':
             # count the total number of ratings for each item
             popularity = [(d[:,i].nnz,i) for i in xrange(d.shape[1])]

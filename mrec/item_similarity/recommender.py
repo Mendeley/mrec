@@ -7,6 +7,7 @@ from itertools import izip
 from operator import itemgetter
 from scipy.sparse import csr_matrix
 
+from ..sparse import fast_sparse_matrix
 from ..base_recommender import BaseRecommender
 
 class ItemSimilarityRecommender(BaseRecommender):
@@ -16,13 +17,20 @@ class ItemSimilarityRecommender(BaseRecommender):
     need to supply the compute_similarities() method.
     """
 
+    def _init(self,dataset):
+        if type(dataset) == fast_sparse_matrix:
+            self.dataset = dataset
+        else:
+            self.dataset = fast_sparse_matrix(dataset)
+        self.num_users,self.num_items = self.dataset.shape
+
     def fit(self,dataset):
         """
         Learn the complete similarity matrix from a user-item matrix.
 
         Parameters
         ==========
-        dataset : mrec.sparse.fast_sparse_matrix
+        dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix
             The matrix of user-item counts, row i holds the counts for
             the i-th user.
         """

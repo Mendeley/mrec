@@ -47,6 +47,7 @@ def load_sparse_matrix(input_format,filepath):
         - csv
         - mm  (MatrixMarket)
         - npz (scipy.sparse.csr_matrix serialized with mrec.sparse.savez())
+        - fsm (mrec.sparse.fast_sparse_matrix)
     filepath : str
         The file to load.
     """
@@ -58,6 +59,8 @@ def load_sparse_matrix(input_format,filepath):
         return mmread(filepath).tocsr()
     elif input_format == 'npz':
         return loadz(filepath)
+    elif input_format == 'fsm':
+        return fast_sparse_matrix.load(filepath).X
     raise ValueError('unknown input format: {0}'.format(input_format))
 
 def save_recommender(model,filepath):

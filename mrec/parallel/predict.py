@@ -10,14 +10,14 @@ def run(task):
     import numpy as np
     from scipy.sparse import coo_matrix
 
-    from mrec import load_fast_sparse_matrix, load_recommender, load_sparse_matrix
+    from mrec import load_sparse_matrix, load_recommender
     from mrec.evaluation import Evaluator
 
     modelfile,input_format,trainfile,test_input_format,testfile,outdir,start,end,evaluator,generate = task
 
     # initialise the model
     model = load_recommender(modelfile)
-    dataset = load_fast_sparse_matrix(input_format,trainfile)
+    dataset = load_sparse_matrix(input_format,trainfile)
 
     outfile = os.path.join(outdir,'recs.{0}-{1}.tsv'.format(start,end))
 

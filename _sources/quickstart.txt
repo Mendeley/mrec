@@ -4,14 +4,20 @@ Getting started with mrec
 
 Install mrec
 ------------
-`mrec` requires `numpy`, `scipy`, `scikit-learn` and `ipython`.  You can most easily install these
-using pip::
+You can most easily install `mrec` with pip::
+
+    $ sudo pip install mrec
+
+Installing from source
+""""""""""""""""""""""
+Alternatively you can install `mrec` from source.  `mrec` requires `numpy`, `scipy`, `scikit-learn` and `ipython`.
+You can most easily install these using pip::
 
     $ sudo pip install numpy scipy scikit-learn ipython
 
 You can then install `mrec` from source in the standard way::
 
-    $ git clone git://github.com/mendeley/mrec.git
+    $ git clone https://github.com/Mendeley/mrec.git
     $ cd mrec
     $ sudo python setup.py install
 

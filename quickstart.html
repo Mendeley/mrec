@@ -53,7 +53,10 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Getting started with mrec</a><ul>
-<li><a class="reference internal" href="#install-mrec">Install mrec</a></li>
+<li><a class="reference internal" href="#install-mrec">Install mrec</a><ul>
+<li><a class="reference internal" href="#installing-from-source">Installing from source</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#get-some-data">Get some data</a></li>
 <li><a class="reference internal" href="#get-the-data-ready-to-use">Get the data ready to use</a></li>
 <li><a class="reference internal" href="#learn-from-the-data">Learn from the data</a></li>
@@ -98,12 +101,17 @@
 <h1>Getting started with mrec<a class="headerlink" href="#getting-started-with-mrec" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="install-mrec">
 <h2>Install mrec<a class="headerlink" href="#install-mrec" title="Permalink to this headline">¶</a></h2>
-<p><cite>mrec</cite> requires <cite>numpy</cite>, <cite>scipy</cite>, <cite>scikit-learn</cite> and <cite>ipython</cite>.  You can most easily install these
-using pip:</p>
+<p>You can most easily install <cite>mrec</cite> with pip:</p>
+<div class="highlight-python"><pre>$ sudo pip install mrec</pre>
+</div>
+<div class="section" id="installing-from-source">
+<h3>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h3>
+<p>Alternatively you can install <cite>mrec</cite> from source.  <cite>mrec</cite> requires <cite>numpy</cite>, <cite>scipy</cite>, <cite>scikit-learn</cite> and <cite>ipython</cite>.
+You can most easily install these using pip:</p>
 <div class="highlight-python"><pre>$ sudo pip install numpy scipy scikit-learn ipython</pre>
 </div>
 <p>You can then install <cite>mrec</cite> from source in the standard way:</p>
-<div class="highlight-python"><pre>$ git clone git://github.com/mendeley/mrec.git
+<div class="highlight-python"><pre>$ git clone https://github.com/Mendeley/mrec.git
 $ cd mrec
 $ sudo python setup.py install</pre>
 </div>
@@ -112,6 +120,7 @@ $ sudo python setup.py install</pre>
 <p class="first admonition-title">Note</p>
 <p>You may want to specify where the scripts are installed:</p>
 <div class="last highlight-python"><pre>$ sudo python setup.py install --install-scripts /path/to/script/dir</pre>
+</div>
 </div>
 </div>
 </div>

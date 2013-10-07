@@ -27,7 +27,7 @@ class PrecomputedItemSimilarityRecommender(ItemSimilarityRecommender):
     def compute_similarities(self,j):
         return self.similarity_matrix[j,:]
 
-    def train(self,dataset):
+    def fit(self,dataset):
         pass
 
     def __str__(self):

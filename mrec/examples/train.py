@@ -137,7 +137,7 @@ def main():
             logging.info('processing {0}...'.format(trainfile))
             model = ItemPopularityRecommender(method=opts.popularity_method,thresh=opts.popularity_thresh)
             dataset = load_fast_sparse_matrix(opts.input_format,trainfile)
-            model.train(dataset)
+            model.fit(dataset)
             modelfile = get_modelfile(trainfile,opts.outdir)
             save_recommender(model,modelfile)
         logging.info('done')

@@ -39,7 +39,7 @@ class get_known_items_from_thresholded_csr_matrix(object):
 # methods to refit a model to a new training dataset
 
 def retrain_recommender(model,dataset):
-    model.train(dataset)
+    model.fit(dataset)
 
 # methods for metric computation itself
 

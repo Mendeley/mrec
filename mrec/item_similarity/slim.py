@@ -143,7 +143,7 @@ if __name__ == '__main__':
 
     print 'computing some item similarities...'
     print 'item\tsim\tweight'
-    # if we want we can compute these individually without calling train()
+    # if we want we can compute these individually without calling fit()
     model._init(dataset)
     for i in random.sample(xrange(num_items),num_samples):
         for j,weight in model.get_similar_items(i,max_similar_items=10):
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     print 'learning entire similarity matrix...'
     # usually we'll call train() on the entire dataset
     model = SLIM()
-    model.train(dataset)
+    model.fit(dataset)
     print 'making some recommendations...'
     print 'user\trec\tscore'
     for u in random.sample(xrange(num_users),num_samples):

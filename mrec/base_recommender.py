@@ -83,7 +83,7 @@ class BaseRecommender(object):
     def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
         """
         Recommend new items for a range of users in the training dataset.
-        Assumes you've already called train() to learn the similarity matrix.
+        Assumes you've already called fit() to learn the similarity matrix.
 
         Parameters
         ==========

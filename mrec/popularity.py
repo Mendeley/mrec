@@ -35,7 +35,7 @@ class ItemPopularityRecommender(BaseRecommender):
         self.method = method
         self.thresh = thresh
 
-    def train(self,dataset):
+    def fit(self,dataset):
         """
         Compute the most popular items using the method specified
         in the constructor.
@@ -65,7 +65,7 @@ class ItemPopularityRecommender(BaseRecommender):
     def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """
         Recommend new items for a user.  Assumes you've already called
-        train().
+        fit().
 
         Parameters
         ----------

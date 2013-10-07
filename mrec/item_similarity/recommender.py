@@ -16,7 +16,7 @@ class ItemSimilarityRecommender(BaseRecommender):
     need to supply the compute_similarities() method.
     """
 
-    def train(self,dataset):
+    def fit(self,dataset):
         """
         Learn the complete similarity matrix from a user-item matrix.
 
@@ -105,7 +105,7 @@ class ItemSimilarityRecommender(BaseRecommender):
     def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """
         Recommend new items for a user.  Assumes you've already called
-        train() to learn the similarity matrix.
+        fit() to learn the similarity matrix.
 
         Parameters
         ==========
@@ -127,7 +127,7 @@ class ItemSimilarityRecommender(BaseRecommender):
         try:
             r = (self.similarity_matrix * dataset[u].T).toarray().flatten()
         except AttributeError:
-            raise AttributeError('you must call train() before trying to recommend items')
+            raise AttributeError('you must call fit() before trying to recommend items')
         known_items = set(dataset[u].indices)
         recs = []
         for i in r.argsort()[::-1]:
@@ -143,7 +143,7 @@ class ItemSimilarityRecommender(BaseRecommender):
     def batch_recommend_items(self,dataset,max_items=10,return_scores=True,show_progress=False):
         """
         Recommend new items for all users in the training dataset.  Assumes
-        you've already called train() to learn the similarity matrix.
+        you've already called fit() to learn the similarity matrix.
 
         Parameters
         ==========
@@ -165,7 +165,7 @@ class ItemSimilarityRecommender(BaseRecommender):
         try:
             r = dataset * self.similarity_matrix.T
         except AttributeError:
-            raise AttributeError('you must call train() before trying to recommend items')
+            raise AttributeError('you must call fit() before trying to recommend items')
         # make the predicted score for all known-items
         # zero or less by substracting the max score from them
         max_score = r.data.max()  # highest predicted score
@@ -188,7 +188,7 @@ class ItemSimilarityRecommender(BaseRecommender):
     def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
         """
         Recommend new items for a range of users in the training dataset.
-        Assumes you've already called train() to learn the similarity matrix.
+        Assumes you've already called fit() to learn the similarity matrix.
 
         Parameters
         ==========
@@ -213,7 +213,7 @@ class ItemSimilarityRecommender(BaseRecommender):
         try:
             r = data_subset * self.similarity_matrix.T
         except AttributeError:
-            raise AttributeError('you must call train() before trying to recommend items')
+            raise AttributeError('you must call fit() before trying to recommend items')
         # make the predicted score for all known-items
         # zero or less by substracting the max score from them
         max_score = r.data.max()  # highest predicted score

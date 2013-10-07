@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Making and evaluating recommendations &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="next" title="Running mrec on Amazon Web Services" href="aws.html" />
+    <link rel="prev" title="Training a recommender" href="training.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="aws.html" title="Running mrec on Amazon Web Services"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="training.html" title="Training a recommender"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Making and evaluating recommendations</a><ul>
+<li><a class="reference internal" href="#evaluating-existing-recommendations">Evaluating existing recommendations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="training.html"
+                        title="previous chapter">Training a recommender</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="aws.html"
+                        title="next chapter">Running mrec on Amazon Web Services</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/evaluation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="making-and-evaluating-recommendations">
+<span id="evaluation"></span><h1>Making and evaluating recommendations<a class="headerlink" href="#making-and-evaluating-recommendations" title="Permalink to this headline">¶</a></h1>
+<p>Once you have a trained model, you can use the <tt class="docutils literal"><span class="pre">mrec_predict</span></tt> script to generate recommendations
+and to evaluate them:</p>
+<div class="highlight-python"><pre>$ mrec_predict
+Usage: mrec_predict [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -n NUM_ENGINES, --num_engines=NUM_ENGINES
+                        number of IPython engines to use
+  --input_format=INPUT_FORMAT
+                        format of training dataset(s) tsv | csv | mm
+                        (matrixmarket) | fsm (fast_sparse_matrix)
+  --test_input_format=TEST_INPUT_FORMAT
+                        format of test dataset(s) tsv | csv | mm
+                        (matrixmarket) | npz (numpy binary)  (default: npz)
+  --train=TRAIN         glob specifying path(s) to training dataset(s)
+                        IMPORTANT: must be in quotes if it includes the *
+                        wildcard
+  --modeldir=MODELDIR   directory containing trained models
+  --outdir=OUTDIR       directory for output files
+  --metrics=METRICS     which set of metrics to compute, main|hitrate
+                        (default: main)
+  --overwrite           overwrite existing files in outdir (default: False)
+  --packer=PACKER       packer for IPython.parallel (default: json)
+  --add_module_paths=ADD_MODULE_PATHS
+                        optional comma-separated list of paths to append to
+                        pythonpath (useful if you need to import uninstalled
+                        modules to IPython engines on a cluster)</pre>
+</div>
+<p>Even though you&#8217;re making predictions with a recommender that has already been trained,
+you need to specify the training file with the <tt class="docutils literal"><span class="pre">--train</span></tt> option so that the recommender
+is able to exclude items that each user has already seen from their recommendations.
+The corresponding test file used for evaluation is assumed to be in the same directory
+as the training file, and with a related filepath following the convention described
+in <a class="reference internal" href="preparation.html#filename-conventions-link"><em>Filename conventions</em></a>.</p>
+<p>You can choose one of two sets of metrics, the <cite>main</cite> metrics which include Precision&#64;k
+for various small values of <cite>k</cite> and Mean Reciprocal Rank, or <cite>hitrate</cite> which simply computes
+the <a class="reference external" href="mailto:HitRate&#37;&#52;&#48;10">HitRate<span>&#64;</span>10</a>.  <cite>hitrate</cite> is only appropriate if your test set contains a single item for
+each user; it measures how often the single test item appears in the top 10 recommendations,
+and is equivalent to <a class="reference external" href="mailto:Recall&#37;&#52;&#48;10">Recall<span>&#64;</span>10</a>.</p>
+<p>The recommendations themselves will be written to file in the <tt class="docutils literal"><span class="pre">--outdir</span></tt>, in tsv format
+<cite>user</cite>, <cite>item</cite>, <cite>score</cite>.  The <cite>score</cite> is not directly meaningful but higher is better for
+when comparing two recommended items for the same user.</p>
+<div class="section" id="evaluating-existing-recommendations">
+<h2>Evaluating existing recommendations<a class="headerlink" href="#evaluating-existing-recommendations" title="Permalink to this headline">¶</a></h2>
+<p>For convenience the <tt class="docutils literal"><span class="pre">mrec_evaluate</span></tt> script lets you compute the same evaluation metrics for recommendations that have already been saved to disk, whether
+with <tt class="docutils literal"><span class="pre">mrec_predict</span></tt> or some other external program:</p>
+<div class="highlight-python"><pre>$ mrec_evaluate
+Usage: mrec_evaluate [options]
+
+Options:
+  -h, --help            show this help message and exit
+  --input_format=INPUT_FORMAT
+                        format of training dataset(s) tsv | csv | mm
+                        (matrixmarket) | fsm (fast_sparse_matrix)
+  --test_input_format=TEST_INPUT_FORMAT
+                        format of test dataset(s) tsv | csv | mm
+                        (matrixmarket) | npz (numpy binary)  (default: npz)
+  --train=TRAIN         glob specifying path(s) to training dataset(s)
+                        IMPORTANT: must be in quotes if it includes the *
+                        wildcard
+  --recsdir=RECSDIR     directory containing tsv files of precomputed
+                        recommendations
+  --metrics=METRICS     which set of metrics to compute, main|hitrate
+                        (default: main)
+  --description=DESCRIPTION
+                        description of model which generated the
+                        recommendation</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="aws.html" title="Running mrec on Amazon Web Services"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="training.html" title="Training a recommender"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

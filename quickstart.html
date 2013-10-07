@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started with mrec &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="next" title="Preparing training data" href="preparation.html" />
+    <link rel="prev" title="mrec recommender systems library" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="preparation.html" title="Preparing training data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="mrec recommender systems library"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started with mrec</a><ul>
+<li><a class="reference internal" href="#install-mrec">Install mrec</a></li>
+<li><a class="reference internal" href="#get-some-data">Get some data</a></li>
+<li><a class="reference internal" href="#get-the-data-ready-to-use">Get the data ready to use</a></li>
+<li><a class="reference internal" href="#learn-from-the-data">Learn from the data</a></li>
+<li><a class="reference internal" href="#make-some-recommendations-and-evaluate-them">Make some recommendations and evaluate them</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">mrec recommender systems library</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="preparation.html"
+                        title="next chapter">Preparing training data</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/quickstart.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started-with-mrec">
+<h1>Getting started with mrec<a class="headerlink" href="#getting-started-with-mrec" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-mrec">
+<h2>Install mrec<a class="headerlink" href="#install-mrec" title="Permalink to this headline">¶</a></h2>
+<p><cite>mrec</cite> requires <cite>numpy</cite>, <cite>scipy</cite>, <cite>scikit-learn</cite> and <cite>ipython</cite>.  You can most easily install these
+using pip:</p>
+<div class="highlight-python"><pre>$ sudo pip install numpy scipy scikit-learn ipython</pre>
+</div>
+<p>You can then install <cite>mrec</cite> from source in the standard way:</p>
+<div class="highlight-python"><pre>$ git clone git://github.com/mendeley/mrec.git
+$ cd mrec
+$ sudo python setup.py install</pre>
+</div>
+<p>This installs both the <cite>mrec</cite> library and the scripts described in the following sections.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You may want to specify where the scripts are installed:</p>
+<div class="last highlight-python"><pre>$ sudo python setup.py install --install-scripts /path/to/script/dir</pre>
+</div>
+</div>
+</div>
+<div class="section" id="get-some-data">
+<h2>Get some data<a class="headerlink" href="#get-some-data" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start by grabbing a small dataset of movie ratings from the MovieLens project:</p>
+<div class="highlight-python"><pre>$ wget http://www.grouplens.org/system/files/ml-100k.zip
+$ unzip ml-100k.zip</pre>
+</div>
+<p>We&#8217;ll work with the <cite>u.data</cite> file: this contains the ratings themselves in TSV format: user, item, rating, timestamp
+(we&#8217;ll be ignorning the timestamps):</p>
+<div class="highlight-python"><pre>$ head ml-100k/u.data
+196 242 3   881250949
+186 302 3   891717742
+22  377 1   878887116
+244 51  2   880606923
+166 346 1   886397596
+298 474 4   884182806
+115 265 2   881171488
+253 465 5   891628467
+305 451 3   886324817
+6   86  3   883603013</pre>
+</div>
+</div>
+<div class="section" id="get-the-data-ready-to-use">
+<h2>Get the data ready to use<a class="headerlink" href="#get-the-data-ready-to-use" title="Permalink to this headline">¶</a></h2>
+<p>To do useful work we need to split this dataset into <cite>train</cite> and <cite>test</cite> movies for each user.  The idea is that
+we choose some items which the user rated and liked, and move them into the test set.  We then train our
+recommender using only the remaining items for each user.  Once we&#8217;ve generated recommendations
+we can evaluate them by seeing how many of the test items we&#8217;ve actually recommended.</p>
+<p>Deciding which items a user liked involves taking some decisions about how to interpret rating scores (or
+whatever other values you have in your input data - click counts, page views, and so on).  The Movielens
+ratings run from 1 to 5 stars, so let&#8217;s only put items in our test set if they have a score of 4 or 5.
+We also have to decide how many of the items rated by each user we should put in the test set.  Selecting
+too few test items means that we leave plenty of ratings for our recommender to learn from, but our evaluation
+scores are likely to be low (as there are few &#8220;correct&#8221; test items that can be predicted) so may not give
+us a very clear picture of whether one recommender is etter than another.  Selecting too many test items means
+that we don&#8217;t leave enough training data for our recommender to learn anything.  For now let&#8217;s put roughly
+half of the movies that each user liked into the test set.</p>
+<p>Run the <tt class="docutils literal"><span class="pre">mrec_prepare</span></tt> script to split the movies that users rated 4 or higher into roughly equal sized training and test
+sets like this:</p>
+<div class="highlight-python"><pre>$ mrec_prepare --dataset ml-100k/u.data --outdir splits --rating_thresh 4 --test_size 0.5 --binarize</pre>
+</div>
+<p>This creates five different randomly chosen train/test splits:</p>
+<div class="highlight-python"><pre>$ ls -lh splits/
+total 3.7M
+-rw-rw-r-- 1 mark mark 266K Sep 21 19:17 u.data.test.0
+-rw-rw-r-- 1 mark mark 266K Sep 21 19:17 u.data.test.1
+-rw-rw-r-- 1 mark mark 266K Sep 21 19:17 u.data.test.2
+-rw-rw-r-- 1 mark mark 266K Sep 21 19:17 u.data.test.3
+-rw-rw-r-- 1 mark mark 266K Sep 21 19:17 u.data.test.4
+-rw-rw-r-- 1 mark mark 474K Sep 21 19:17 u.data.train.0
+-rw-rw-r-- 1 mark mark 474K Sep 21 19:17 u.data.train.1
+-rw-rw-r-- 1 mark mark 474K Sep 21 19:17 u.data.train.2
+-rw-rw-r-- 1 mark mark 474K Sep 21 19:17 u.data.train.3
+-rw-rw-r-- 1 mark mark 474K Sep 21 19:17 u.data.train.4</pre>
+</div>
+<p>If you look into any of these files you&#8217;ll see that the <tt class="docutils literal"><span class="pre">--binarize</span></tt> option we gave to <tt class="docutils literal"><span class="pre">mrec_prepare</span></tt>
+has replaced the ratings with 0 or 1, depending whether or not the original rating met our chosen
+threshold of 4.</p>
+<p>Averaging evaluation results from each of these train/test splits should give us some reasonably trustworthy numbers.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You&#8217;ll see that each test file is only half as big as the corresponding training file.
+That&#8217;s because we only pick movies that the user liked to put into the test set.  The
+training files contain the other half of the movies that users liked, and <em>all</em> of
+the movies they didn&#8217;t like. Even though our recommender won&#8217;t try to learn a user&#8217;s
+tastes from their low-rated
+movies, we need to leave them in the training data so that we don&#8217;t end up
+recommending a movie that they&#8217;ve already seen.</p>
+</div>
+<p>For full details about using the <tt class="docutils literal"><span class="pre">mrec_prepare</span></tt> script see <a class="reference internal" href="preparation.html#preparation"><em>Preparing training data</em></a>.</p>
+</div>
+<div class="section" id="learn-from-the-data">
+<h2>Learn from the data<a class="headerlink" href="#learn-from-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Now you&#8217;ve prepared some data you can start training recommenders with the <tt class="docutils literal"><span class="pre">mrec_train</span></tt> script, but first
+you&#8217;ll need to start up some IPython engines to do the work:</p>
+<div class="highlight-python"><pre>$ ipcluster start -n4 --daemonize</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">-n4</span></tt> argument says that you want to start four engines.  In practice you&#8217;ll want one engine for each core
+you plan to use for processing.
+If you don&#8217;t specify <tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">ipcluster</span></tt> will start one engine for each core on your machine. That&#8217;s fine, but
+it&#8217;s useful to know exactly how many engines are running.</p>
+<p>Once the IPython engines are running you can kick off training a separate recommender for each train/test split
+like this:</p>
+<div class="highlight-python"><pre>$ mrec_train -n4 --input_format tsv --train "splits/u.data.train.*" --outdir models</pre>
+</div>
+<p>This will run for a few seconds and you&#8217;ll then find the trained models in the <tt class="docutils literal"><span class="pre">models</span></tt> directory:</p>
+<div class="highlight-python"><pre>$ ls -lh models/
+total 17M
+-rw-rw-r-- 1 mark mark 1.4M Sep 21 19:48 u.data.train.0.model.npz
+-rw-rw-r-- 1 mark mark 2.1M Sep 21 19:48 u.data.train.0.sims.tsv
+-rw-rw-r-- 1 mark mark 1.4M Sep 21 19:48 u.data.train.1.model.npz
+-rw-rw-r-- 1 mark mark 2.1M Sep 21 19:48 u.data.train.1.sims.tsv
+-rw-rw-r-- 1 mark mark 1.4M Sep 21 19:48 u.data.train.2.model.npz
+-rw-rw-r-- 1 mark mark 2.1M Sep 21 19:48 u.data.train.2.sims.tsv
+-rw-rw-r-- 1 mark mark 1.4M Sep 21 19:48 u.data.train.3.model.npz
+-rw-rw-r-- 1 mark mark 2.1M Sep 21 19:48 u.data.train.3.sims.tsv
+-rw-rw-r-- 1 mark mark 1.4M Sep 21 19:48 u.data.train.4.model.npz
+-rw-rw-r-- 1 mark mark 2.1M Sep 21 19:48 u.data.train.4.sims.tsv</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alongside each model you&#8217;ll see a file containing the item similarity matrix in TSV format.
+These can be useful if you want to inspect the similarity scores or use them outside of <cite>mrec</cite>,
+but they aren&#8217;t essential and you can delete them if you want.</p>
+</div>
+<p>For more information about training recommenders with <tt class="docutils literal"><span class="pre">mrec_train</span></tt> see <a class="reference internal" href="training.html#training"><em>Training a recommender</em></a>.</p>
+</div>
+<div class="section" id="make-some-recommendations-and-evaluate-them">
+<h2>Make some recommendations and evaluate them<a class="headerlink" href="#make-some-recommendations-and-evaluate-them" title="Permalink to this headline">¶</a></h2>
+<p>Now we have some trained models you can run the <tt class="docutils literal"><span class="pre">mrec_predict</span></tt> script to generate recommendations
+and more importantly to evaluate them:</p>
+<div class="highlight-python"><pre>$ mrec_predict -n4 --input_format tsv --test_input_format tsv --train "splits/u.data.train.*" --modeldir models --outdir recs</pre>
+</div>
+<p>This will run for a few seconds printing out some progress information before showing the evaluation results:</p>
+<div class="highlight-python"><pre>SLIM(SGDRegressor(alpha=0.101, epsilon=0.1, eta0=0.01, fit_intercept=False,
+   l1_ratio=0.990099009901, learning_rate=invscaling,
+   loss=squared_loss, n_iter=5, p=None, penalty=elasticnet,
+   power_t=0.25, random_state=None, rho=None, shuffle=False, verbose=0,
+   warm_start=False))
+mrr            0.6541 +/- 0.0023
+prec@5         0.4082 +/- 0.0016
+prec@10        0.3529 +/- 0.0010
+prec@15        0.3180 +/- 0.0009
+prec@20        0.2933 +/- 0.0008</pre>
+</div>
+<p>This tells us that the recommender we trained was a SLIM model, based on scikit-learn&#8217;s SGDRegressor.
+The metrics shown are Mean Reciprocal Rank and Precision&#64;k for a few values of k.  The precision values
+are the easiest to understand: prec&#64;5 of 0.4 means that on average two of the first five items recommended
+to each user were found in the test set, i.e. they were movies that the user did really like.</p>
+<p>You&#8217;ll find the recommendations themselves in the <cite>recs</cite> directory:</p>
+<div class="highlight-python"><pre>$ head recs/u.data.train.0.recs.tsv
+237 100 0.22976178339
+237 194 0.215614718584
+237 174 0.205740941451
+237 318 0.199876443948
+237 357 0.190513438762
+237 195 0.188450807147
+237 480 0.16834165636
+237 197 0.167543389552
+237 181 0.166211624407
+237 134 0.164500008501</pre>
+</div>
+<p>As you can see the first few recommendations from this run were for user 237, and our top recommendations
+for him are movies 100, 194, 174, 318, 357.  If you&#8217;re interested you can look these up in the u.item file
+provided by MovieLens: they are <cite>Fargo</cite>, <cite>The Sting</cite>, <cite>Raiders of the Lost Ark</cite>, <cite>Schindler&#8217;s
+List</cite> and <cite>One Flew Over the Cuckoo&#8217;s Nest</cite>.  The third column in the recommendations file is a predicted preference score.
+It doesn&#8217;t have a direct meaning, but higher is better.</p>
+<p>For more details about making and evaluating recommendations with <cite>mrec</cite> see <a class="reference internal" href="evaluation.html#evaluation"><em>Making and evaluating recommendations</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="preparation.html" title="Preparing training data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="mrec recommender systems library"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

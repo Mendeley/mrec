@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrec Package &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="up" title="API documentation" href="api.html" />
+    <link rel="prev" title="API documentation" href="api.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+          <li><a href="api.html" accesskey="U">API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mrec Package</a><ul>
+<li><a class="reference internal" href="#module-mrec.sparse"><tt class="docutils literal"><span class="pre">sparse</span></tt> Module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-mrec.popularity"><tt class="docutils literal"><span class="pre">popularity</span></tt> Module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-mrec.base_recommender"><tt class="docutils literal"><span class="pre">base_recommender</span></tt> Module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="previous chapter">API documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mrec.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mrec-package">
+<h1>mrec Package<a class="headerlink" href="#mrec-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mrec.sparse">
+<span id="sparse-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sparse</span></tt> Module<a class="headerlink" href="#module-mrec.sparse" title="Permalink to this headline">¶</a></h2>
+<p>Sparse data structures and convenience methods to load sparse matrices from file.</p>
+<dl class="class">
+<dt id="mrec.sparse.fast_sparse_matrix">
+<em class="property">class </em><tt class="descclassname">mrec.sparse.</tt><tt class="descname">fast_sparse_matrix</tt><big>(</big><em>X</em>, <em>col_view=None</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Adds fast columnar reads and updates to
+a scipy.sparse.csr_matrix, at the cost
+of keeping a csc_matrix of equal size as
+a column-wise index into the same raw data.
+It is updateable in the sense that you can
+change the values of all the existing non-
+zero entries in a given column.  Trying to
+set other entries will result in an error.</p>
+<p>For other functionality you are expected to
+call methods on the underlying csr_matrix:</p>
+<blockquote>
+<div>fsm = fast_sparse_matrix(data) # data is a csr_matrix
+col = fsm.fast_get_col(2)      # get a column quickly
+row = fsm.X[1]                 # get a row as usual</div></blockquote>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.fast_get_col" title="mrec.sparse.fast_sparse_matrix.fast_get_col"><tt class="xref py py-obj docutils literal"><span class="pre">fast_get_col</span></tt></a>(j)</td>
+<td>Return column j.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.fast_update_col" title="mrec.sparse.fast_sparse_matrix.fast_update_col"><tt class="xref py py-obj docutils literal"><span class="pre">fast_update_col</span></tt></a>(j,&nbsp;vals)</td>
+<td>Update values of existing non-zeros in column j.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.load" title="mrec.sparse.fast_sparse_matrix.load"><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt></a>(filepath)</td>
+<td>Load a fast_sparse_matrix from file written by fast_sparse_matrix.save().</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.loadmm" title="mrec.sparse.fast_sparse_matrix.loadmm"><tt class="xref py py-obj docutils literal"><span class="pre">loadmm</span></tt></a>(filepath)</td>
+<td>Create a fast_sparse_matrix from matrixmarket data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.loadtxt" title="mrec.sparse.fast_sparse_matrix.loadtxt"><tt class="xref py py-obj docutils literal"><span class="pre">loadtxt</span></tt></a>(filepath[,&nbsp;comments,&nbsp;delimiter,&nbsp;...])</td>
+<td>Create a fast_sparse_matrix from simply formatted data such as TSV, handles</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.save" title="mrec.sparse.fast_sparse_matrix.save"><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt></a>(filepath)</td>
+<td>Save to file as arrays in numpy binary format.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.sparse.fast_sparse_matrix.fast_get_col">
+<tt class="descname">fast_get_col</tt><big>(</big><em>j</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.fast_get_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return column j.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.sparse.fast_sparse_matrix.fast_update_col">
+<tt class="descname">fast_update_col</tt><big>(</big><em>j</em>, <em>vals</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.fast_update_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update values of existing non-zeros in column j.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrec.sparse.fast_sparse_matrix.load">
+<em class="property">static </em><tt class="descname">load</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a fast_sparse_matrix from file written by fast_sparse_matrix.save().</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrec.sparse.fast_sparse_matrix.loadmm">
+<em class="property">static </em><tt class="descname">loadmm</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.loadmm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a fast_sparse_matrix from matrixmarket data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : file or str</p>
+<blockquote class="last">
+<div><p>The matrixmarket file to read.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrec.sparse.fast_sparse_matrix.loadtxt">
+<em class="property">static </em><tt class="descname">loadtxt</tt><big>(</big><em>filepath</em>, <em>comments='#'</em>, <em>delimiter=None</em>, <em>skiprows=0</em>, <em>usecols=None</em>, <em>index_offset=1</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.loadtxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a fast_sparse_matrix from simply formatted data such as TSV, handles
+similar input to numpy.loadtxt().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : file or str</p>
+<blockquote>
+<div><p>File containing simply formatted row,col,val sparse matrix data.</p>
+</div></blockquote>
+<p><strong>comments</strong> : str, optional</p>
+<blockquote>
+<div><p>The character used to indicate the start of a comment (default: #).</p>
+</div></blockquote>
+<p><strong>delimiter</strong> : str, optional</p>
+<blockquote>
+<div><p>The string used to separate values. By default, this is any whitespace.</p>
+</div></blockquote>
+<p><strong>skiprows</strong> : int, optional</p>
+<blockquote>
+<div><p>Skip the first skiprows lines; default: 0.</p>
+</div></blockquote>
+<p><strong>usecols</strong> : sequence, optional</p>
+<blockquote>
+<div><p>Which columns to read, with 0 being the first. For example, usecols = (1,4,5)
+will extract the 2nd, 5th and 6th columns. The default, None, results in all
+columns being read.</p>
+</div></blockquote>
+<p><strong>index_offset</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>Offset applied to the row and col indices in the input data (default: 1).
+The default offset is chosen so that 1-indexed data on file results in a
+fast_sparse_matrix holding 0-indexed matrices.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.sparse.fast_sparse_matrix.save">
+<tt class="descname">save</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save to file as arrays in numpy binary format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrec.sparse.fast_sparse_matrix.shape">
+<tt class="descname">shape</tt><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the shape of the underlying matrix.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.sparse.loadtxt">
+<tt class="descclassname">mrec.sparse.</tt><tt class="descname">loadtxt</tt><big>(</big><em>filepath</em>, <em>comments='#'</em>, <em>delimiter=None</em>, <em>skiprows=0</em>, <em>usecols=None</em>, <em>index_offset=1</em><big>)</big><a class="headerlink" href="#mrec.sparse.loadtxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a scipy sparse matrix from simply formatted data such as TSV, handles
+similar input to numpy.loadtxt().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : file or str</p>
+<blockquote>
+<div><p>File containing simply formatted row,col,val sparse matrix data.</p>
+</div></blockquote>
+<p><strong>comments</strong> : str, optional</p>
+<blockquote>
+<div><p>The character used to indicate the start of a comment (default: #).</p>
+</div></blockquote>
+<p><strong>delimiter</strong> : str, optional</p>
+<blockquote>
+<div><p>The string used to separate values. By default, this is any whitespace.</p>
+</div></blockquote>
+<p><strong>skiprows</strong> : int, optional</p>
+<blockquote>
+<div><p>Skip the first skiprows lines; default: 0.</p>
+</div></blockquote>
+<p><strong>usecols</strong> : sequence, optional</p>
+<blockquote>
+<div><p>Which columns to read, with 0 being the first. For example, usecols = (1,4,5)
+will extract the 2nd, 5th and 6th columns. The default, None, results in all
+columns being read.</p>
+</div></blockquote>
+<p><strong>index_offset</strong> : int, optional</p>
+<blockquote>
+<div><p>Offset applied to the row and col indices in the input data (default: 1).
+The default offset is chosen so that 1-indexed data on file results in a
+fast_sparse_matrix holding 0-indexed matrices.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mat</strong> : scipy.sparse.coo_matrix</p>
+<blockquote class="last">
+<div><p>The sparse matrix.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.sparse.loadz">
+<tt class="descclassname">mrec.sparse.</tt><tt class="descname">loadz</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.loadz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a sparse matrix saved to file with savez.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The filepath to read from.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.sparse.savez">
+<tt class="descclassname">mrec.sparse.</tt><tt class="descname">savez</tt><big>(</big><em>d</em>, <em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.savez" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a sparse matrix to file in numpy binary format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>d</strong> : scipy sparse matrix</p>
+<blockquote>
+<div><p>The sparse matrix to save.</p>
+</div></blockquote>
+<p><strong>filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The filepath to write to.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mrec.popularity">
+<span id="popularity-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">popularity</span></tt> Module<a class="headerlink" href="#module-mrec.popularity" title="Permalink to this headline">¶</a></h2>
+<p>Trivial unpersonalized item popularity recommender
+intended to provide a baseline for evaluations.</p>
+<dl class="class">
+<dt id="mrec.popularity.ItemPopularityRecommender">
+<em class="property">class </em><tt class="descclassname">mrec.popularity.</tt><tt class="descname">ItemPopularityRecommender</tt><big>(</big><em>method='count'</em>, <em>thresh=0</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mrec.base_recommender.BaseRecommender" title="mrec.base_recommender.BaseRecommender"><tt class="xref py py-class docutils literal"><span class="pre">mrec.base_recommender.BaseRecommender</span></tt></a></p>
+<p>Create an unpersonalized item popularity recommender, useful
+to provide a baseline for comparison with a &#8220;real&#8221; one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>method</strong> : &#8216;count&#8217;, &#8216;sum&#8217;, &#8216;avg&#8217; or &#8216;thresh&#8217; (default: &#8216;count&#8217;)</p>
+<blockquote>
+<div><p>How to calculate the popularity of an item based on its ratings
+from all users:
+count - popularity is its total number of ratings of any value
+sum - popularity is the sum of its ratings
+avg - popularity is its mean rating
+thresh - popularity is its number of ratings higher than thresh</p>
+</div></blockquote>
+<p><strong>thresh</strong> : float, optional</p>
+<blockquote class="last">
+<div><p>The threshold used by the &#8216;thresh&#8217; method of calculating item
+popularity.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt>(dataset[,&nbsp;max_items,&nbsp;...])</td>
+<td>Recommend new items for all users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.popularity.ItemPopularityRecommender.fit" title="mrec.popularity.ItemPopularityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset)</td>
+<td>Compute the most popular items using the method specified in the constructor.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items])</td>
+<td>Get the most similar items to a supplied item.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.popularity.ItemPopularityRecommender.recommend_items" title="mrec.popularity.ItemPopularityRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
+<td>Recommend new items for a user.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.popularity.ItemPopularityRecommender.fit">
+<tt class="descname">fit</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the most popular items using the method specified
+in the constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy sparse matrix or mrec.sparse.fast_sparse_matrix</p>
+<blockquote class="last">
+<div><p>The user-item matrix.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.popularity.ItemPopularityRecommender.recommend_items">
+<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recommend new items for a user.  Assumes you&#8217;ve already called
+fit().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>User-item matrix containing known items.</p>
+</div></blockquote>
+<p><strong>u</strong> : int</p>
+<blockquote>
+<div><p>Index of user for which to make recommendations (for
+compatibility with other recommenders).</p>
+</div></blockquote>
+<p><strong>max_items</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of recommended items to return.</p>
+</div></blockquote>
+<p><strong>return_scores</strong> : bool</p>
+<blockquote>
+<div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list</p>
+<blockquote class="last">
+<div><p>List of (idx,score) pairs if return_scores is True, else
+just a list of idxs.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mrec.base_recommender">
+<span id="base-recommender-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">base_recommender</span></tt> Module<a class="headerlink" href="#module-mrec.base_recommender" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.base_recommender.BaseRecommender">
+<em class="property">class </em><tt class="descclassname">mrec.base_recommender.</tt><tt class="descname">BaseRecommender</tt><a class="headerlink" href="#mrec.base_recommender.BaseRecommender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Minimal interface to be implemented by recommenders.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.batch_recommend_items" title="mrec.base_recommender.BaseRecommender.batch_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt></a>(dataset[,&nbsp;max_items,&nbsp;...])</td>
+<td>Recommend new items for all users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.get_similar_items" title="mrec.base_recommender.BaseRecommender.get_similar_items"><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt></a>(j[,&nbsp;max_similar_items])</td>
+<td>Get the most similar items to a supplied item.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.range_recommend_items" title="mrec.base_recommender.BaseRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.recommend_items" title="mrec.base_recommender.BaseRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
+<td>Recommend new items for a user.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.base_recommender.BaseRecommender.batch_recommend_items">
+<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>show_progress=False</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recommend new items for all users in the training dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>User-item matrix containing known items.</p>
+</div></blockquote>
+<p><strong>max_items</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of recommended items to return.</p>
+</div></blockquote>
+<p><strong>return_scores</strong> : bool</p>
+<blockquote>
+<div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+<p><strong>show_progress: bool</strong> :</p>
+<blockquote>
+<div><p>If true print something to stdout to show progress.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
+<blockquote class="last">
+<div><p>Each entry is a list of (idx,score) pairs if return_scores is True,
+else just a list of idxs.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.base_recommender.BaseRecommender.get_similar_items">
+<tt class="descname">get_similar_items</tt><big>(</big><em>j</em>, <em>max_similar_items=30</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.get_similar_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the most similar items to a supplied item.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : int</p>
+<blockquote>
+<div><p>Index of item for which to get similar items.</p>
+</div></blockquote>
+<p><strong>max_similar_items</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of similar items to return.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>sims</strong> : list</p>
+<blockquote class="last">
+<div><p>Sorted list of similar items, best first.  Each entry is
+a tuple of the form (i,score).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.base_recommender.BaseRecommender.range_recommend_items">
+<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recommend new items for a range of users in the training dataset.
+Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>User-item matrix containing known items.</p>
+</div></blockquote>
+<p><strong>user_start</strong> : int</p>
+<blockquote>
+<div><p>Index of first user in the range to recommend.</p>
+</div></blockquote>
+<p><strong>user_end</strong> : int</p>
+<blockquote>
+<div><p>Index one beyond last user in the range to recommend.</p>
+</div></blockquote>
+<p><strong>max_items</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of recommended items to return.</p>
+</div></blockquote>
+<p><strong>return_scores</strong> : bool</p>
+<blockquote>
+<div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
+<blockquote class="last">
+<div><p>Each entry is a list of (idx,score) pairs if return_scores is True,
+else just a list of idxs.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.base_recommender.BaseRecommender.recommend_items">
+<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recommend new items for a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>User-item matrix containing known items.</p>
+</div></blockquote>
+<p><strong>u</strong> : int</p>
+<blockquote>
+<div><p>Index of user for which to make recommendations.</p>
+</div></blockquote>
+<p><strong>max_items</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of recommended items to return.</p>
+</div></blockquote>
+<p><strong>return_scores</strong> : bool</p>
+<blockquote>
+<div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list</p>
+<blockquote class="last">
+<div><p>List of (idx,score) pairs if return_scores is True, else
+just a list of idxs.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mrec.evaluation.html">evaluation Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrec.evaluation.html#module-mrec.evaluation.preprocessing"><tt class="docutils literal"><span class="pre">preprocessing</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.evaluation.html#module-mrec.evaluation.metrics"><tt class="docutils literal"><span class="pre">metrics</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mrec.examples.html">examples Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.train"><tt class="docutils literal"><span class="pre">train</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.predict"><tt class="docutils literal"><span class="pre">predict</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.evaluate"><tt class="docutils literal"><span class="pre">evaluate</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.filename_conventions"><tt class="docutils literal"><span class="pre">filename_conventions</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mrec.item_similarity.html">item_similarity Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.slim"><tt class="docutils literal"><span class="pre">slim</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.knn"><tt class="docutils literal"><span class="pre">knn</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.precomputed"><tt class="docutils literal"><span class="pre">precomputed</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.recommender"><tt class="docutils literal"><span class="pre">recommender</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mrec.parallel.html">parallel Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrec.parallel.html#module-mrec.parallel.train"><tt class="docutils literal"><span class="pre">train</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.parallel.html#module-mrec.parallel.predict"><tt class="docutils literal"><span class="pre">predict</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

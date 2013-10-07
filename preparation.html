@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Preparing training data &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="next" title="Training a recommender" href="training.html" />
+    <link rel="prev" title="Getting started with mrec" href="quickstart.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="training.html" title="Training a recommender"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Getting started with mrec"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Preparing training data</a><ul>
+<li><a class="reference internal" href="#rating-preprocessing-options">Rating preprocessing options</a></li>
+<li><a class="reference internal" href="#split-options">Split options</a></li>
+<li><a class="reference internal" href="#filename-conventions">Filename conventions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="quickstart.html"
+                        title="previous chapter">Getting started with mrec</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="training.html"
+                        title="next chapter">Training a recommender</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/preparation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="preparing-training-data">
+<span id="preparation"></span><h1>Preparing training data<a class="headerlink" href="#preparing-training-data" title="Permalink to this headline">¶</a></h1>
+<p>Run the <tt class="docutils literal"><span class="pre">mrec_prepare</span></tt> script to create train/test splits from a ratings dataset in TSV format.
+Each line should contain: <cite>user</cite>, <cite>item</cite>, <cite>score</cite>. <cite>user</cite> and <cite>item</cite> should be integer IDs starting from 1, and <cite>score</cite> is a rating or some other value describing how much the user likes or has interacted with the item.  Any further fields in each line will be ignored:</p>
+<div class="highlight-python"><pre>$ mrec_prepare
+Usage: mrec_prepare [options]
+
+Options:
+  -h, --help            show this help message and exit
+  --dataset=DATASET     path to input dataset in tsv format
+  --outdir=OUTDIR       directory for output files
+  --num_splits=NUM_SPLITS
+                        number of train/test splits to create (default: 5)
+  --min_items_per_user=MIN_ITEMS_PER_USER
+                        skip users with less than this number of ratings
+                        (default: 10)
+  --binarize            binarize ratings
+  --normalize           scale training ratings to unit norm
+  --rating_thresh=RATING_THRESH
+                        treat ratings below this as zero (default: 0)
+  --test_size=TEST_SIZE
+                        target number of test items for each user, if
+                        test_size &gt;= 1 treat as an absolute number, otherwise
+                        treat as a fraction of the total items (default: 0.5)
+  --discard_zeros       discard zero training ratings after thresholding (not
+                        recommended, incompatible with using training items to
+                        guarantee that recommendations are novel)
+  --sample_before_thresholding
+                        choose test items before thresholding ratings (not
+                        recommended, test items below threshold will then be
+                        discarded)</pre>
+</div>
+<p>The options are designed to support various common training and evaluation scenarios.</p>
+<div class="section" id="rating-preprocessing-options">
+<h2>Rating preprocessing options<a class="headerlink" href="#rating-preprocessing-options" title="Permalink to this headline">¶</a></h2>
+<p>If you plan to train a SLIM recommender then you most likely need to <tt class="docutils literal"><span class="pre">--binarize</span></tt> or
+<tt class="docutils literal"><span class="pre">--normalize</span></tt> ratings to get good results.  You may also want to set
+a global <tt class="docutils literal"><span class="pre">--rating_thresh</span></tt> so that an item to which a user has given a low ratings is
+not considered as &#8216;liked&#8217; by that user; ratings below the specified threshold are set
+to zero.</p>
+</div>
+<div class="section" id="split-options">
+<h2>Split options<a class="headerlink" href="#split-options" title="Permalink to this headline">¶</a></h2>
+<p>To evaluate a recommender you need to hide some of the items that were liked by each user
+by removing them to a test set.  Then you can generate recommendations based on the remaining
+training ratings, and see how many of the test items were successfully recommended.
+It will be hard to get meaningful results for users with very few rated items so these
+can simply be skipped by setting <tt class="docutils literal"><span class="pre">--min_items_per_user</span></tt>.  Usually you&#8217;ll want to create
+several train/test splits at random using the <tt class="docutils literal"><span class="pre">--num_splits</span></tt> option and then average evaluation
+results across them, so that the results aren&#8217;t biased by the particular way in which any
+one split happens to be chosen.</p>
+<p>You can choose how many items to move into the test set for
+each user with the <tt class="docutils literal"><span class="pre">--test_size</span></tt> option.  A typical choice for this is 0.5, which puts
+half of each users liked items into the test set, but you can vary this if you need to compare
+with previous results that used a different split.  You can also specify an absolute number
+of ratings by setting <tt class="docutils literal"><span class="pre">--test_size</span></tt> to an integer of 1 or more.  This is also useful if you
+plan to measure <a class="reference internal" href="evaluation.html#evaluation"><em>Hit Rate</em></a> in which case you should specify <tt class="docutils literal"><span class="pre">--test_size</span> <span class="pre">1</span></tt>.</p>
+</div>
+<div class="section" id="filename-conventions">
+<span id="filename-conventions-link"></span><h2>Filename conventions<a class="headerlink" href="#filename-conventions" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">mrec_prepare</span></tt> and the other <cite>mrec</cite> scripts use a set of filename conventions defined
+in the <a class="reference internal" href="mrec.examples.html#module-mrec.examples.filename_conventions" title="mrec.examples.filename_conventions"><tt class="xref py py-mod docutils literal"><span class="pre">mrec.examples.filename_conventions</span></tt></a> module:</p>
+<ul class="simple">
+<li>input dataset: <cite>ratings.tsv</cite></li>
+<li>training files created by <tt class="docutils literal"><span class="pre">mrec_prepare</span></tt>: <cite>ratings.tsv.train.0</cite>, <cite>ratings.tsv.train.1</cite>, ...</li>
+<li>test files created by <tt class="docutils literal"><span class="pre">mrec_prepare</span></tt>: <cite>ratings.tsv.test.0</cite>, <cite>ratings.tsv.test.1</cite>, ...</li>
+<li>models created by <tt class="docutils literal"><span class="pre">mrec_train</span></tt>: <cite>ratings.tsv.train.0.model.npz</cite>, <cite>ratings.tsv.train.1.model.npz</cite>, ...</li>
+<li>recommendations created by <tt class="docutils literal"><span class="pre">mrec_predict</span></tt>: <cite>ratings.tsv.train.0.recs.tsv</cite>, <cite>ratings.tsv.train.1.recs.tsv</cite>, ...</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="training.html" title="Training a recommender"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Getting started with mrec"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

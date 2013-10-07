@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>evaluation Package &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="up" title="mrec Package" href="mrec.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li>
+          <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">evaluation Package</a><ul>
+<li><a class="reference internal" href="#module-mrec.evaluation.preprocessing"><tt class="docutils literal"><span class="pre">preprocessing</span></tt> Module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-mrec.evaluation.metrics"><tt class="docutils literal"><span class="pre">metrics</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mrec.evaluation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="evaluation-package">
+<h1>evaluation Package<a class="headerlink" href="#evaluation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mrec.evaluation.preprocessing">
+<span id="preprocessing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">preprocessing</span></tt> Module<a class="headerlink" href="#module-mrec.evaluation.preprocessing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.evaluation.preprocessing.SplitCreator">
+<em class="property">class </em><tt class="descclassname">mrec.evaluation.preprocessing.</tt><tt class="descname">SplitCreator</tt><big>(</big><em>test_size</em>, <em>normalize=False</em>, <em>discard_zeros=False</em>, <em>sample_before_thresholding=False</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.SplitCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Split ratings for a user randomly into train
+and test groups.  Only items with positive scores
+will be included in the test group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>test_size</strong> : float</p>
+<blockquote>
+<div><p>If test_size &gt;= 1 this specifies the absolute number
+of items to put in the test group; if test_size &lt; 1
+then this specifies the test proportion.</p>
+</div></blockquote>
+<p><strong>normalize</strong> : bool (default: False)</p>
+<blockquote>
+<div><p>If True, scale training scores for each user to have unit norm.</p>
+</div></blockquote>
+<p><strong>discard_zeros</strong> : bool (default: False)</p>
+<blockquote>
+<div><p>If True then discard items with zero scores, if
+False then retain them in the training group.This
+should normally be False as such items have been seen
+(if not liked) and so the training set should include
+them so that it can be used to determine which items
+are actually novel at recommendation time.</p>
+</div></blockquote>
+<p><strong>sample_before_thresholding</strong> : bool (default: False)</p>
+<blockquote class="last">
+<div><p>If True then consider any item seen by the user for
+inclusion in the test group, even though only items
+with positive scrore will be selected. If the input
+includes items with zero scores this means that the
+test set may be smaller than the requested size for
+some users, even though they have apparently seen
+enough items.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.evaluation.preprocessing.SplitCreator.handle" title="mrec.evaluation.preprocessing.SplitCreator.handle"><tt class="xref py py-obj docutils literal"><span class="pre">handle</span></tt></a>(vals)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.evaluation.preprocessing.SplitCreator.num_train" title="mrec.evaluation.preprocessing.SplitCreator.num_train"><tt class="xref py py-obj docutils literal"><span class="pre">num_train</span></tt></a>(vals)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.evaluation.preprocessing.SplitCreator.pos_neg_vals" title="mrec.evaluation.preprocessing.SplitCreator.pos_neg_vals"><tt class="xref py py-obj docutils literal"><span class="pre">pos_neg_vals</span></tt></a>(vals)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.evaluation.preprocessing.SplitCreator.split" title="mrec.evaluation.preprocessing.SplitCreator.split"><tt class="xref py py-obj docutils literal"><span class="pre">split</span></tt></a>(vals)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.evaluation.preprocessing.SplitCreator.stratified_split" title="mrec.evaluation.preprocessing.SplitCreator.stratified_split"><tt class="xref py py-obj docutils literal"><span class="pre">stratified_split</span></tt></a>(vals)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.evaluation.preprocessing.SplitCreator.handle">
+<tt class="descname">handle</tt><big>(</big><em>vals</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.SplitCreator.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.evaluation.preprocessing.SplitCreator.num_train">
+<tt class="descname">num_train</tt><big>(</big><em>vals</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.SplitCreator.num_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.evaluation.preprocessing.SplitCreator.pos_neg_vals">
+<tt class="descname">pos_neg_vals</tt><big>(</big><em>vals</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.SplitCreator.pos_neg_vals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.evaluation.preprocessing.SplitCreator.split">
+<tt class="descname">split</tt><big>(</big><em>vals</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.SplitCreator.split" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.evaluation.preprocessing.SplitCreator.stratified_split">
+<tt class="descname">stratified_split</tt><big>(</big><em>vals</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.SplitCreator.stratified_split" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.evaluation.preprocessing.TSVParser">
+<em class="property">class </em><tt class="descclassname">mrec.evaluation.preprocessing.</tt><tt class="descname">TSVParser</tt><big>(</big><em>thresh=0</em>, <em>binarize=False</em>, <em>delimiter='t'</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.TSVParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Parses tsv input: user, item, score.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>thresh</strong> : float (default: 0)</p>
+<blockquote>
+<div><p>Set scores below this to zero.</p>
+</div></blockquote>
+<p><strong>binarize</strong> : bool (default: False)</p>
+<blockquote class="last">
+<div><p>If True, set all non-zero scores to 1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.evaluation.preprocessing.TSVParser.parse" title="mrec.evaluation.preprocessing.TSVParser.parse"><tt class="xref py py-obj docutils literal"><span class="pre">parse</span></tt></a>(line)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.evaluation.preprocessing.TSVParser.parse">
+<tt class="descname">parse</tt><big>(</big><em>line</em><big>)</big><a class="headerlink" href="#mrec.evaluation.preprocessing.TSVParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mrec.evaluation.metrics">
+<span id="metrics-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">metrics</span></tt> Module<a class="headerlink" href="#module-mrec.evaluation.metrics" title="Permalink to this headline">¶</a></h2>
+<p>Metrics to evaluate recommendations:
+* with hit rate, following e.g. Karypis lab SLIM and FISM papers
+* with prec&#64;k and MRR</p>
+<dl class="function">
+<dt id="mrec.evaluation.metrics.compute_hit_rate">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">compute_hit_rate</tt><big>(</big><em>recommended</em>, <em>known</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.compute_hit_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.compute_main_metrics">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">compute_main_metrics</tt><big>(</big><em>recommended</em>, <em>known</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.compute_main_metrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.evaluate">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">evaluate</tt><big>(</big><em>model</em>, <em>train</em>, <em>users</em>, <em>get_known_items</em>, <em>compute_metrics</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.generate_metrics">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">generate_metrics</tt><big>(</big><em>get_known_items</em>, <em>compute_metrics</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.generate_metrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="mrec.evaluation.metrics.get_known_items_from_csr_matrix">
+<em class="property">class </em><tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">get_known_items_from_csr_matrix</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.get_known_items_from_csr_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.evaluation.metrics.get_known_items_from_dict">
+<em class="property">class </em><tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">get_known_items_from_dict</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.get_known_items_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.evaluation.metrics.get_known_items_from_thresholded_csr_matrix">
+<em class="property">class </em><tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">get_known_items_from_thresholded_csr_matrix</tt><big>(</big><em>data</em>, <em>min_value</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.get_known_items_from_thresholded_csr_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.hit_rate">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">hit_rate</tt><big>(</big><em>predicted</em>, <em>true</em>, <em>k</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.hit_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.mrr">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">mrr</tt><big>(</big><em>predicted</em>, <em>true</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.mrr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.prec">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">prec</tt><big>(</big><em>predicted</em>, <em>true</em>, <em>k</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.prec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.print_report">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">print_report</tt><big>(</big><em>models</em>, <em>metrics</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.print_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this to print out the metrics returned by run_evaluation().</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.retrain_recommender">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">retrain_recommender</tt><big>(</big><em>model</em>, <em>dataset</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.retrain_recommender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.run_evaluation">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">run_evaluation</tt><big>(</big><em>models</em>, <em>retrain</em>, <em>get_split</em>, <em>num_runs</em>, <em>evaluation_func</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.run_evaluation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the main entry point to run an evaluation.</p>
+<p>Supply functions to retrain model, to get a new split of data on
+each run, to get known items from the test set, and to compute the
+metrics you want:</p>
+<blockquote>
+<div>retrain(model,dataset) should retrain model
+get_split() should return train_data,test_users,test_data
+evaluation_func(model,users,test) should return a dict of metrics</div></blockquote>
+<p>A number of suitable functions are already available in the module.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.sort_metrics_by_name">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">sort_metrics_by_name</tt><big>(</big><em>names</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.sort_metrics_by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li>
+          <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

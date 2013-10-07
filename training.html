@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Training a recommender &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="next" title="Making and evaluating recommendations" href="evaluation.html" />
+    <link rel="prev" title="Preparing training data" href="preparation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="evaluation.html" title="Making and evaluating recommendations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="preparation.html" title="Preparing training data"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Training a recommender</a><ul>
+<li><a class="reference internal" href="#parameter-tuning-for-slim">Parameter tuning for SLIM</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="preparation.html"
+                        title="previous chapter">Preparing training data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evaluation.html"
+                        title="next chapter">Making and evaluating recommendations</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/training.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="training-a-recommender">
+<span id="training"></span><h1>Training a recommender<a class="headerlink" href="#training-a-recommender" title="Permalink to this headline">¶</a></h1>
+<p>Here are the basic options for <tt class="docutils literal"><span class="pre">mrec_train</span></tt>:</p>
+<div class="highlight-python"><pre>$ mrec_train
+Usage: mrec_train [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -n NUM_ENGINES, --num_engines=NUM_ENGINES
+                        number of IPython engines to use
+  --input_format=INPUT_FORMAT
+                        format of training dataset(s) tsv | csv | mm
+                        (matrixmarket) | fsm (fast_sparse_matrix)
+  --train=TRAIN         glob specifying path(s) to training dataset(s)
+                        IMPORTANT: must be in quotes if it includes the *
+                        wildcard
+  --outdir=OUTDIR       directory for output files
+  --overwrite           overwrite existing files in outdir
+  --model=MODEL         type of model to train: slim | knn | popularity
+                        (default: slim)
+  --max_sims=MAX_SIMS   max similar items to output for each training item
+                        (default: 100)</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">--train</span></tt> input file for training can hold the user-item matrix in a variety of formats.
+You can specify more than one input file by passing a standard unix file glob
+containing the * wildcard, for example specifying <cite>&#8211;train ml100-k/u.train.*</cite> will
+train separate models for <cite>ml-100k/u.train.0</cite>, <cite>ml-100k/u.train.1</cite> and so on.
+This can be useful if you&#8217;re doing cross-validation.</p>
+<p><tt class="docutils literal"><span class="pre">mrec_train</span></tt> currently support three types of recommender: <cite>knn</cite> learns a traditional k-nearest neighbours item similarity model; <cite>slim</cite> specifies a SLIM model which learns item similarities by solving a regression problem; and <cite>popularity</cite> is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All input training files must have the same data format.</p>
+</div>
+<p>A separate recommender will be trained for each input file, and saved to disk in the
+specified output directory: if the input file is called <cite>u.train.0</cite> then the
+recommender will be saved in the file <cite>u.train.0.model.npz</cite>, and so on.  See <a class="reference internal" href="preparation.html#filename-conventions-link"><em>Filename conventions</em></a> for more information.</p>
+<p>The saved model
+can be passed to the <tt class="docutils literal"><span class="pre">mrec_predict</span></tt> script as described in <a class="reference internal" href="evaluation.html#evaluation"><em>Making and evaluating recommendations</em></a>, or used programmatically like
+this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">load_recommender</span><span class="p">(</span><span class="s">&#39;u.train.0.model.npz&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sims</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_similar_items</span><span class="p">(</span><span class="mi">231</span><span class="p">)</span>  <span class="c"># get items similar to 231</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommend_items</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span><span class="n">max_items</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>  <span class="c"># recommend top 30 items for user 101</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.recommender" title="mrec.item_similarity.recommender"><tt class="xref py py-mod docutils literal"><span class="pre">mrec.item_similarity.recommender</span></tt></a> for more details.</p>
+<p>You can supply additional options to <tt class="docutils literal"><span class="pre">mrec_train</span></tt> specifying parameter settings for the particular type of recommender you are training.
+For a SLIM recommender you probably want to specify:</p>
+<div class="highlight-python"><pre>--learner=LEARNER     underlying learner for SLIM learner: sgd | elasticnet
+                      | fs_sgd (default: sgd)
+--l1_reg=L1_REG       l1 regularization constant (default: 0.1)
+--l2_reg=L2_REG       l2 regularization constant (default: 0.001)</pre>
+</div>
+<p>For a k-nearest neighbour recommender you just need to supply:</p>
+<div class="highlight-python"><pre>--metric=METRIC       metric for knn recommender: cosine | dot (default:
+                  cosine)</pre>
+</div>
+<p>In this case <tt class="docutils literal"><span class="pre">max_sims</span></tt> is simply passed to the constructor
+of the <tt class="docutils literal"><span class="pre">KNNRecommender</span></tt> as the value of <tt class="docutils literal"><span class="pre">k</span></tt>.</p>
+<p>You can also train a baseline non-personalized recommender that just finds the most popular
+items and recommends them to everybody. The options for this are:</p>
+<div class="highlight-python"><pre>--popularity_method=POPULARITY_METHOD
+                      how to compute popularity for baseline recommender:
+                      count | sum | avg | thresh (default: count)
+--popularity_thresh=POPULARITY_THRESH
+                      ignore scores below this when computing popularity for
+                      baseline recommender (default: 0)</pre>
+</div>
+<p>The different measures mean let you base the popularity of an item on its total number of
+ratings of any value, or its total above some threshold; or on the sum or mean of its ratings.</p>
+<p>There are also a couple of options relating to the IPython.parallel framework:</p>
+<div class="highlight-python"><pre>--packer=PACKER       packer for IPython.parallel (default: pickle)
+--add_module_paths=ADD_MODULE_PATHS
+                      optional comma-separated list of paths to append to
+                      pythonpath (useful if you need to import uninstalled
+                      modules to IPython engines on a cluster)</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">--add_module_paths</span></tt> option can be useful to specify the path to <cite>mrec</cite> itself
+if you didn&#8217;t install it at start up time on all the machines in your cluster.</p>
+<div class="section" id="parameter-tuning-for-slim">
+<h2>Parameter tuning for SLIM<a class="headerlink" href="#parameter-tuning-for-slim" title="Permalink to this headline">¶</a></h2>
+<p>Before training a SLIM recommender, you&#8217;ll need to choose the regularization constants.
+You can do this easily using the <tt class="docutils literal"><span class="pre">mrec_tune</span></tt> script, which computes similarity weights for some
+sample items over a range of values for each constant, and picks the best combination based on some
+simple parameters.  The &#8216;best&#8217; regularization constants are those that give similarity weights
+that are as sparse as possible, but not too sparse.  You run <tt class="docutils literal"><span class="pre">mrec_tune</span></tt> like this:</p>
+<div class="highlight-python"><pre>$ mrec_tune -d u.data.train.0 --input_format tsv \
+    --l1_min 0.001 --l1_max 1.0 \
+    --l2_min 0.0001 --l2_max 1 \
+    --max_sims 200 --min_sims 1 --max_sparse 0.3</pre>
+</div>
+<p>This says that we want to find the best constants that result in no more than 200 similar items for each item,
+provided no more than 30% of items have no similar items at all.  We&#8217;d like to explore combinations of regularization
+constants where the l1 constant ranges from 0.001 to 1.0 and the l2 constant from 0.0001 to 1.0.
+The script will run for a few seconds and then report the best settings:</p>
+<div class="highlight-python"><pre>best parameter setting: {'l1_reg': 0.1, 'l2_reg': 0.001}
+mean # positive similarity weights per item = 96.0
+proportion of items with fewer than 1 positive similarity weights = 0.25
+mean # negative similarity weights per item = 43.4</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For this little dataset even the best constant values shown will mean that we won&#8217;t learn
+any similar items for quite a large proportion of the training items.  This isn&#8217;t
+usually a problem with production size datasets.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="evaluation.html" title="Making and evaluating recommendations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="preparation.html" title="Preparing training data"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

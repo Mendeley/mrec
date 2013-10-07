@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>examples Package &mdash; mrec 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="up" title="mrec Package" href="mrec.html" />
+    <link rel="next" title="item_similarity Package" href="mrec.item_similarity.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrec.item_similarity.html" title="item_similarity Package"
+             accesskey="N">next</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li>
+          <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">examples Package</a><ul>
+<li><a class="reference internal" href="#module-mrec.examples.train"><tt class="docutils literal"><span class="pre">train</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.examples.predict"><tt class="docutils literal"><span class="pre">predict</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.examples.evaluate"><tt class="docutils literal"><span class="pre">evaluate</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.examples.filename_conventions"><tt class="docutils literal"><span class="pre">filename_conventions</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mrec.item_similarity.html"
+                        title="next chapter">item_similarity Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mrec.examples.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="examples-package">
+<h1>examples Package<a class="headerlink" href="#examples-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mrec.examples.train">
+<span id="train-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">train</span></tt> Module<a class="headerlink" href="#module-mrec.examples.train" title="Permalink to this headline">¶</a></h2>
+<p>Train an item similarity model in parallel on an ipython cluster.
+We assume a shared filesystem (as you&#8217;ll have when running locally
+or on an AWS cluster fired up with StarCluster) to avoid passing
+data between the controller and the worker engines, as this can
+cause OOM issues for the controller.</p>
+<p>You can specify multiple training sets and the model will learn a
+separate similarity matrix for each input dataset: this makes it
+easy to generate data for cross-validated evaluation.</p>
+<dl class="function">
+<dt id="mrec.examples.train.create_tasks">
+<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">create_tasks</tt><big>(</big><em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>outdir</em>, <em>num_items</em>, <em>num_engines</em>, <em>max_similar_items</em>, <em>done</em><big>)</big><a class="headerlink" href="#mrec.examples.train.create_tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.train.find_done">
+<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">find_done</tt><big>(</big><em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.train.find_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.train.main">
+<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#mrec.examples.train.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.train.process">
+<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">process</tt><big>(</big><em>view</em>, <em>opts</em>, <em>model</em>, <em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.train.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mrec.examples.predict">
+<span id="predict-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">predict</span></tt> Module<a class="headerlink" href="#module-mrec.examples.predict" title="Permalink to this headline">¶</a></h2>
+<p>Make and evaluate recommendations in parallel on an ipython cluster,
+using models that have previously been trained and saved to file.
+We assume a shared filesystem (as you&#8217;ll have when running locally
+or on an AWS cluster fired up with StarCluster) to avoid passing
+data between the controller and the worker engines, as this can
+cause OOM issues for the controller.</p>
+<p>You can specify multiple training sets / models and separate
+recommendations will be output and evaluated for each of them: this
+makes it easy to run a cross-validated evaluation.</p>
+<dl class="function">
+<dt id="mrec.examples.predict.create_tasks">
+<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">create_tasks</tt><big>(</big><em>modelfile</em>, <em>input_format</em>, <em>trainfile</em>, <em>test_input_format</em>, <em>testfile</em>, <em>outdir</em>, <em>num_users</em>, <em>num_engines</em>, <em>done</em>, <em>evaluator</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.create_tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.predict.find_done">
+<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">find_done</tt><big>(</big><em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.find_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.predict.main">
+<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#mrec.examples.predict.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.predict.process">
+<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">process</tt><big>(</big><em>view</em>, <em>opts</em>, <em>modelfile</em>, <em>trainfile</em>, <em>testfile</em>, <em>outdir</em>, <em>evaluator</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mrec.examples.evaluate">
+<span id="evaluate-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">evaluate</span></tt> Module<a class="headerlink" href="#module-mrec.examples.evaluate" title="Permalink to this headline">¶</a></h2>
+<p>Evaluate precomputed recommendations for one or more training/test sets.
+Test and recommendation files must following naming conventions relative
+to the training filepaths.</p>
+<dl class="function">
+<dt id="mrec.examples.evaluate.main">
+<tt class="descclassname">mrec.examples.evaluate.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#mrec.examples.evaluate.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mrec.examples.filename_conventions">
+<span id="filename-conventions-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">filename_conventions</span></tt> Module<a class="headerlink" href="#module-mrec.examples.filename_conventions" title="Permalink to this headline">¶</a></h2>
+<p>File naming conventions:</p>
+<ul class="simple">
+<li>training files must contain &#8216;train&#8217; in their filename.</li>
+<li>the corresponding test files must have the same filepaths,
+but with &#8216;test&#8217; in place of &#8216;train&#8217; in their filenames.</li>
+<li>models, similarity matrices and recommendations will be
+written to filenames based on the training file.</li>
+</ul>
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_modelfile">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_modelfile</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_modelfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_recsdir">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_recsdir</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_recsdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_recsfile">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_recsfile</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_recsfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_simsdir">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_simsdir</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_simsdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_simsfile">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_simsfile</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_simsfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_sortedfile">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_sortedfile</tt><big>(</big><em>infile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_sortedfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_splitfile">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_splitfile</tt><big>(</big><em>infile</em>, <em>outdir</em>, <em>split_type</em>, <em>i</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_splitfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_testfile">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_testfile</tt><big>(</big><em>trainfile</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_testfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrec.item_similarity.html" title="item_similarity Package"
+             >next</a> |</li>
+        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li>
+          <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

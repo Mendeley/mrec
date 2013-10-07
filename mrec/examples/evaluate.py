@@ -36,12 +36,12 @@ def main():
         parser.print_help()
         raise SystemExit
 
-    opts.train = os.path.abspath(opts.train)
-    opts.recsdir = os.path.abspath(opts.recsdir)
+    opts.train = os.path.abspath(os.path.expanduser(opts.train))
+    opts.recsdir = os.path.abspath(os.path.expanduser(opts.recsdir))
 
     evaluator = Evaluator(metrics_funcs[opts.metrics],max_items=20)
 
-    trainfiles = glob.glob(os.path.expanduser(opts.train))
+    trainfiles = glob.glob(opts.train)
 
     all_metrics = defaultdict(list)
     for trainfile in trainfiles:

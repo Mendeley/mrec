@@ -139,9 +139,9 @@ def main():
         parser.print_help()
         raise SystemExit
 
-    opts.train = os.path.abspath(opts.train)
-    opts.modeldir = os.path.abspath(opts.modeldir)
-    opts.outdir = os.path.abspath(opts.outdir)
+    opts.train = os.path.abspath(os.path.expanduser(opts.train))
+    opts.modeldir = os.path.abspath(os.path.expanduser(opts.modeldir))
+    opts.outdir = os.path.abspath(os.path.expanduser(opts.outdir))
 
     # create an ipython client
     c = Client(packer=opts.packer)
@@ -155,7 +155,7 @@ def main():
 
     evaluator = Evaluator(metrics_funcs[opts.metrics],max_items=20)
 
-    trainfiles = glob.glob(os.path.expanduser(opts.train))
+    trainfiles = glob.glob(opts.train)
 
     descriptions = set()
     all_metrics = defaultdict(list)

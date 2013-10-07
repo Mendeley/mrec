@@ -125,10 +125,10 @@ def main():
         parser.print_help()
         raise SystemExit
 
-    opts.train = os.path.abspath(opts.train)
-    opts.outdir = os.path.abspath(opts.outdir)
+    opts.train = os.path.abspath(os.path.expanduser(opts.train))
+    opts.outdir = os.path.abspath(os.path.expanduser(opts.outdir))
 
-    trainfiles = glob.glob(os.path.expanduser(opts.train))
+    trainfiles = glob.glob(opts.train)
 
     if opts.model == 'popularity':
         # special case, don't need to run in parallel

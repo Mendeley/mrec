@@ -7,8 +7,8 @@ Fortunately it's easy to reduce your waiting time by running in parallel on a cl
 using the IPython.parallel framework.
 
 The `StarCluster <https://github.com/jtriley/StarCluster>`_ project makes it extremely simple to 
-provision an IPython cluster, by following the StarCluster `Quick-Start <>`_ and then
-the instructions given `here <>`_.  To run `mrec` jobs on your cluster you'll need edit the `.starcluster/config` file to install the `mrec` package.  The cluster configuration should look
+provision an IPython cluster, by following the StarCluster `Quick-Start <http://star.mit.edu/cluster/docs/latest/quickstart.html>`_ and then
+the instructions given `here <http://star.mit.edu/cluster/docs/latest/plugins/ipython.html>`_.  To run `mrec` jobs on your cluster you'll need edit the `.starcluster/config` file to install the `mrec` package.  Your cluster configuration should look
 something like this:
 
 .. code-block:: ini
@@ -40,21 +40,32 @@ something like this:
 This specifies an ``ip`` cluster template based on a StarCluster Ubuntu image which already has
 a number of scientific Python libraries installed.  The template also specifies two plugins
 to run after the machines are booted.  The first of these installs the remaining required Python
-packages: pyzmq, the latest version of IPython from github (this can be a good idea but but your mileage may vary), and mrec itself.  Finally the second plugin launches the IPython controller and worker processes themselves, and specifies ``pickle`` as the packer used to serialize objects
+packages: `pyzmq`, the latest version of IPython from github (this can be a good idea but but your mileage may vary), and `mrec` itself.  Finally the second plugin launches the IPython controller and worker processes themselves, and specifies ``pickle`` as the packer used to serialize objects
 passed between them.
 
 You can then fire up a cluster ready to run `mrec` jobs::
 
     $ starcluster start -c ip mrec_cluster
 
-This launches the number of nodes specified in the ``ip`` template, starts a controller on the
-master node and a worker process on each remaining core.  It also sets up a shared NFS file system
+This launches a cluster called "mrec_cluster" made up of the number of nodes specified in the ``ip`` template, starts a controller on the
+master node and a worker engine on each remaining core and on all the cores of the other nodes.  It also sets up a shared NFS file system
 visible to all of the nodes.
 
-You can make your training data available either on an s3 volume, by following the instructions
-in the StarCluster documentation (usually just by configuring it in the StarCluster config file)
+You can make your training data available either on an EBS volume, by following the instructions
+in the StarCluster documentation (usually just by configuring it in the StarCluster config file),
 or by putting it to the NFS by hand like this::
 
     $ starcluster sshmaster -u ipuser mrec_cluster 'mkdir data'
     $ starcluster put -u ipuser /path/to/datasets data/
+
+Now you can simply log in to the master node::
+
+    $ starcluster sshmaster -u ipuser mrec_cluster
+
+and start training as usual, just remembering that you probably have more engines available than on your local machine::
+
+    $ mrec_train -n160 --input_format tsv --train "data/datasets/train.*" --outdir models
+
+You can also use the cluster from the IPython command line or via a web notebook: see the
+StarCluster documentation for more details.
 

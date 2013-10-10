@@ -84,7 +84,63 @@
             
   <div class="section" id="running-mrec-on-amazon-web-services">
 <h1>Running mrec on Amazon Web Services<a class="headerlink" href="#running-mrec-on-amazon-web-services" title="Permalink to this headline">¶</a></h1>
-<p>TODO</p>
+<p>If you have a large dataset of ratings, the SLIM recommender implemented here can take a fair number of CPU cycles to train because it has to solve a separate regression problem for each item.
+Fortunately it&#8217;s easy to reduce your waiting time by running in parallel on a cluster of computers
+using the IPython.parallel framework.</p>
+<p>The <a class="reference external" href="https://github.com/jtriley/StarCluster">StarCluster</a> project makes it extremely simple to
+provision an IPython cluster, by following the StarCluster <a class="reference external" href="http://star.mit.edu/cluster/docs/latest/quickstart.html">Quick-Start</a> and then
+the instructions given <a class="reference external" href="http://star.mit.edu/cluster/docs/latest/plugins/ipython.html">here</a>.  To run <cite>mrec</cite> jobs on your cluster you&#8217;ll need edit the <cite>.starcluster/config</cite> file to install the <cite>mrec</cite> package.  Your cluster configuration should look
+something like this:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span class="k">[cluster ip]</span>
+<span class="na">KEYNAME</span> <span class="o">=</span> <span class="s">your-keypair</span>
+<span class="na">CLUSTER_USER</span> <span class="o">=</span> <span class="s">ipuser</span>
+<span class="na">NODE_IMAGE_ID</span> <span class="o">=</span> <span class="s">ami-6c3a2f18</span>
+<span class="na">NODE_INSTANCE_TYPE</span> <span class="o">=</span> <span class="s">m1.xlarge</span>
+<span class="na">CLUSTER_SIZE</span> <span class="o">=</span> <span class="s">40</span>
+<span class="na">CLUSTER_SHELL</span> <span class="o">=</span> <span class="s">bash</span>
+<span class="na">DISABLE_QUEUE</span> <span class="o">=</span> <span class="s">True</span>
+<span class="na">SPOT_BID</span> <span class="o">=</span> <span class="s">0.15</span>
+<span class="na">PLUGINS</span> <span class="o">=</span> <span class="s">python-packages, ipcluster</span>
+<span class="na">VOLUMES</span> <span class="o">=</span> <span class="s">your-s3-volume</span>
+
+<span class="k">[plugin python-packages]</span>
+<span class="na">setup_class</span> <span class="o">=</span> <span class="s">starcluster.plugins.pypkginstaller.PyPkgInstaller</span>
+<span class="na">install_command</span> <span class="o">=</span> <span class="s">pip install -U %s</span>
+<span class="na">packages</span> <span class="o">=</span> <span class="s">pyzmq,</span>
+<span class="s">           git+http://github.com/ipython/ipython.git,</span>
+<span class="s">           mrec</span>
+
+<span class="k">[plugin ipcluster]</span>
+<span class="na">SETUP_CLASS</span> <span class="o">=</span> <span class="s">starcluster.plugins.ipcluster.IPCluster</span>
+<span class="na">PACKER</span> <span class="o">=</span> <span class="s">pickle</span>
+<span class="na">ENABLE_NOTEBOOK</span> <span class="o">=</span> <span class="s">True</span>
+</pre></div>
+</div>
+<p>This specifies an <tt class="docutils literal"><span class="pre">ip</span></tt> cluster template based on a StarCluster Ubuntu image which already has
+a number of scientific Python libraries installed.  The template also specifies two plugins
+to run after the machines are booted.  The first of these installs the remaining required Python
+packages: <cite>pyzmq</cite>, the latest version of IPython from github (this can be a good idea but but your mileage may vary), and <cite>mrec</cite> itself.  Finally the second plugin launches the IPython controller and worker processes themselves, and specifies <tt class="docutils literal"><span class="pre">pickle</span></tt> as the packer used to serialize objects
+passed between them.</p>
+<p>You can then fire up a cluster ready to run <cite>mrec</cite> jobs:</p>
+<div class="highlight-python"><pre>$ starcluster start -c ip mrec_cluster</pre>
+</div>
+<p>This launches a cluster called &#8220;mrec_cluster&#8221; made up of the number of nodes specified in the <tt class="docutils literal"><span class="pre">ip</span></tt> template, starts a controller on the
+master node and a worker engine on each remaining core and on all the cores of the other nodes.  It also sets up a shared NFS file system
+visible to all of the nodes.</p>
+<p>You can make your training data available either on an EBS volume, by following the instructions
+in the StarCluster documentation (usually just by configuring it in the StarCluster config file),
+or by putting it to the NFS by hand like this:</p>
+<div class="highlight-python"><pre>$ starcluster sshmaster -u ipuser mrec_cluster 'mkdir data'
+$ starcluster put -u ipuser /path/to/datasets data/</pre>
+</div>
+<p>Now you can simply log in to the master node:</p>
+<div class="highlight-python"><pre>$ starcluster sshmaster -u ipuser mrec_cluster</pre>
+</div>
+<p>and start training as usual, just remembering that you probably have more engines available than on your local machine:</p>
+<div class="highlight-python"><pre>$ mrec_train -n160 --input_format tsv --train "data/datasets/train.*" --outdir models</pre>
+</div>
+<p>You can also use the cluster from the IPython command line or via a web notebook: see the
+StarCluster documentation for more details.</p>
 </div>
 
 

@@ -9,7 +9,7 @@ You can most easily install `mrec` with pip::
     $ sudo pip install mrec
 
 Installing from source
-""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~
 Alternatively you can install `mrec` from source.  `mrec` requires `numpy`, `scipy`, `scikit-learn` and `ipython`.
 You can most easily install these using pip::
 

@@ -143,11 +143,14 @@ def compute_hit_rate(recommended,known):
 
 # individual metrics
 
-def prec(predicted,true,k):
+def prec(predicted,true,k,fill=0):
     if not predicted:
         return 0
     correct = len(set(predicted[:k]).intersection(set(true)))
-    return float(correct)/len(predicted[:k])
+    ret = len(predicted[:k])
+    # if fill==1 and the cutoff is larger than the number of docs retrieved,
+    # then we assume nonrelevant docs fill in the rest (like trec_eval)
+    return float(correct)/(ret+fill*(k-ret))
 
 def hit_rate(predicted,true,k):
     assert(len(true)==1)

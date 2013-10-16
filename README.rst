@@ -4,7 +4,7 @@ mrec recommender systems library
 
 Introduction
 ------------
-`mrec` is a Python package developed at `Mendeley <http://www.mendeley.com>`_ to support recommender systems development and evaluation.  The package currently focuses on item similarity methods and experimental evaluation.
+`mrec` is a Python package developed at `Mendeley <http://www.mendeley.com>`_ to support recommender systems development and evaluation.  The package currently focuses on item similarity and other methods that work well on implicit feedback, and on experimental evaluation.
 
 Why another package when there are already some really good software projects implementing recommender systems?
 
@@ -17,6 +17,7 @@ but there are still rather few examples around that show how to get it to work i
 Highlights:
 
 - a (relatively) efficient implementation of the SLIM item similarity method.
+- an implementation of Hu, Koren & Volinsky's WRMF weighted matrix factorization for implicit feedback.
 - utilities to train models and make recommendations in parallel using IPython.
 - utilities to prepare datasets and compute quality metrics.
 

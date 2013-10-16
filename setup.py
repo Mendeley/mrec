@@ -29,4 +29,6 @@ setup(packages=find_packages(),
               'mrec_predict = mrec.examples.predict:main',
               'mrec_evaluate = mrec.examples.evaluate:main',
               'mrec_tune = mrec.examples.tune_slim:main',
+              'mrec_convert = mrec.examples.convert:main',
+              'mrec_factors = mrec.examples.factors:main',
           ]})

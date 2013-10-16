@@ -107,8 +107,8 @@ class fast_sparse_matrix(object):
             self.col_view = col_view
         else:
             # create the columnar index matrix
-            ind = X.copy()
-            ind.data = np.arange(X.nnz)
+            ind = self.X.copy()
+            ind.data = np.arange(self.X.nnz)
             self.col_view = ind.tocsc()
 
     @property

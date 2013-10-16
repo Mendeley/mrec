@@ -1,12 +1,12 @@
 import numpy as np
 from scipy.sparse import coo_matrix, csr_matrix
-from scipy.io import mmread
+from scipy.io import mmread, mmwrite
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
-from sparse import fast_sparse_matrix, loadtxt, loadz
+from sparse import fast_sparse_matrix, loadtxt, loadz, savez
 from base_recommender import BaseRecommender
 
 def load_fast_sparse_matrix(input_format,filepath):
@@ -62,6 +62,44 @@ def load_sparse_matrix(input_format,filepath):
     elif input_format == 'fsm':
         return fast_sparse_matrix.load(filepath).X
     raise ValueError('unknown input format: {0}'.format(input_format))
+
+def save_sparse_matrix(data,fmt,filepath):
+    """
+    Save a scipy sparse matrix in the specified format.  Row and column
+    indices will be converted to 1-indexed if you specify a plain text
+    format (tsv, csv, mm).
+
+    Parameters
+    ----------
+    data : scipy sparse matrix to save
+    fmt : str
+        Specifies the file format to write:
+        - tsv
+        - csv
+        - mm  (MatrixMarket)
+        - npz (save as npz archive of numpy arrays)
+        - fsm (mrec.sparse.fast_sparse_matrix)
+    filepath : str
+        The file to load.
+    """
+    if fmt == 'tsv':
+        row,col = data.nonzero()
+        out = open(filepath,'w')
+        for u,i,v in izip(row,col,data.data):
+            print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,v)
+    elif fmt == 'csv':
+        row,col = data.nonzero()
+        out = open(filepath,'w')
+        for u,i,v in izip(row,col,data.data):
+            print >>out,'{0},{1},{2}'.format(u+1,i+1,v)
+    elif fmt == 'mm':
+        mmwrite(filepath,data)
+    elif fmt == 'npz':
+        return savez(data,filepath)
+    elif fmt == 'fsm':
+        fast_sparse_matrix.load(dataset).save(filepath)
+    else:
+        raise ValueError('unknown output format: {0}'.format(fmt))
 
 def save_recommender(model,filepath):
     """

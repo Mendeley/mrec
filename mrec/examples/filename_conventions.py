@@ -22,6 +22,14 @@ def get_recsdir(trainfile,outdir):
     filename = os.path.basename(trainfile)
     return os.path.join(outdir,'{0}-recs'.format(filename))
 
+def get_modelsdir(trainfile,outdir):
+    filename = os.path.basename(trainfile)
+    return os.path.join(outdir,'{0}-models'.format(filename))
+
+def get_factorsdir(trainfile,outdir):
+    filename = os.path.basename(trainfile)
+    return os.path.join(outdir,'{0}-factors'.format(filename))
+
 def get_simsfile(trainfile,outdir):
     filename = os.path.basename(trainfile)
     return os.path.join(outdir,'{0}.sims.tsv'.format(filename))

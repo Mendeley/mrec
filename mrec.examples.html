@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>examples Package &mdash; mrec 0.1.2 documentation</title>
+    <title>examples Package &mdash; mrec 0.1.3 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.1.2',
+        URL_ROOT:    './',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,9 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.1.3 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="next" title="item_similarity Package" href="mrec.item_similarity.html" /> 
+    <link rel="next" title="item_similarity Package" href="mrec.item_similarity.html" />
+    <link rel="prev" title="evaluation Package" href="mrec.evaluation.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,7 +41,10 @@
         <li class="right" >
           <a href="mrec.item_similarity.html" title="item_similarity Package"
              accesskey="N">next</a> |</li>
-        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+        <li class="right" >
+          <a href="mrec.evaluation.html" title="evaluation Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -60,6 +62,9 @@
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mrec.evaluation.html"
+                        title="previous chapter">evaluation Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="mrec.item_similarity.html"
                         title="next chapter">item_similarity Package</a></p>
@@ -102,23 +107,8 @@ cause OOM issues for the controller.</p>
 separate similarity matrix for each input dataset: this makes it
 easy to generate data for cross-validated evaluation.</p>
 <dl class="function">
-<dt id="mrec.examples.train.create_tasks">
-<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">create_tasks</tt><big>(</big><em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>outdir</em>, <em>num_items</em>, <em>num_engines</em>, <em>max_similar_items</em>, <em>done</em><big>)</big><a class="headerlink" href="#mrec.examples.train.create_tasks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="mrec.examples.train.find_done">
-<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">find_done</tt><big>(</big><em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.train.find_done" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
 <dt id="mrec.examples.train.main">
 <tt class="descclassname">mrec.examples.train.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#mrec.examples.train.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="mrec.examples.train.process">
-<tt class="descclassname">mrec.examples.train.</tt><tt class="descname">process</tt><big>(</big><em>view</em>, <em>opts</em>, <em>model</em>, <em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.train.process" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -176,8 +166,18 @@ but with &#8216;test&#8217; in place of &#8216;train&#8217; in their filenames.<
 written to filenames based on the training file.</li>
 </ul>
 <dl class="function">
+<dt id="mrec.examples.filename_conventions.get_factorsdir">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_factorsdir</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_factorsdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="mrec.examples.filename_conventions.get_modelfile">
 <tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_modelfile</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_modelfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.examples.filename_conventions.get_modelsdir">
+<tt class="descclassname">mrec.examples.filename_conventions.</tt><tt class="descname">get_modelsdir</tt><big>(</big><em>trainfile</em>, <em>outdir</em><big>)</big><a class="headerlink" href="#mrec.examples.filename_conventions.get_modelsdir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -236,14 +236,17 @@ written to filenames based on the training file.</li>
         <li class="right" >
           <a href="mrec.item_similarity.html" title="item_similarity Package"
              >next</a> |</li>
-        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li>
+        <li class="right" >
+          <a href="mrec.evaluation.html" title="evaluation Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Mendeley Ltd..
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>

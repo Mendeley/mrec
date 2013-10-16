@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Training a recommender &mdash; mrec 0.1.2 documentation</title>
+    <title>Training a recommender &mdash; mrec 0.1.3 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.1.2',
+        URL_ROOT:    './',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.1.2 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.1.3 documentation" href="index.html" />
     <link rel="next" title="Making and evaluating recommendations" href="evaluation.html" />
     <link rel="prev" title="Preparing training data" href="preparation.html" /> 
   </head>
@@ -45,7 +43,7 @@
         <li class="right" >
           <a href="preparation.html" title="Preparing training data"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -118,7 +116,7 @@ You can specify more than one input file by passing a standard unix file glob
 containing the * wildcard, for example specifying <cite>&#8211;train ml100-k/u.train.*</cite> will
 train separate models for <cite>ml-100k/u.train.0</cite>, <cite>ml-100k/u.train.1</cite> and so on.
 This can be useful if you&#8217;re doing cross-validation.</p>
-<p><tt class="docutils literal"><span class="pre">mrec_train</span></tt> currently support three types of recommender: <cite>knn</cite> learns a traditional k-nearest neighbours item similarity model; <cite>slim</cite> specifies a SLIM model which learns item similarities by solving a regression problem; and <cite>popularity</cite> is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.</p>
+<p><tt class="docutils literal"><span class="pre">mrec_train</span></tt> currently supports four types of recommender: <cite>knn</cite> learns a traditional k-nearest neighbours item similarity model; <cite>slim</cite> specifies a SLIM model which learns item similarities by solving a regression problem; <cite>wrmf</cite> fits a confidence-weighted matrix factorization model; and <cite>popularity</cite> is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All input training files must have the same data format.</p>
@@ -148,6 +146,17 @@ For a SLIM recommender you probably want to specify:</p>
 </div>
 <p>In this case <tt class="docutils literal"><span class="pre">max_sims</span></tt> is simply passed to the constructor
 of the <tt class="docutils literal"><span class="pre">KNNRecommender</span></tt> as the value of <tt class="docutils literal"><span class="pre">k</span></tt>.</p>
+<p>For the Weighted Regularized Matrix Factoriation (WRMF) recommender you can specify:</p>
+<div class="highlight-python"><pre>--alpha=ALPHA         wrmf confidence constant (default: 1.0)
+--lbda=LBDA           wrmf regularization constant (default: 0.015)
+--als_iters=ALS_ITERS number of als iterations (default: 15)</pre>
+</div>
+<p>The confidence constant determines the model&#8217;s confidence in the rating/count associated
+with an item using a simple linear formula:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">confidence</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">count</span>
+</pre></div>
+</div>
+<p>The regularization constant and number of learning iterations control over-fitting.</p>
 <p>You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are:</p>
 <div class="highlight-python"><pre>--popularity_method=POPULARITY_METHOD
@@ -219,12 +228,12 @@ usually a problem with production size datasets.</p>
         <li class="right" >
           <a href="preparation.html" title="Preparing training data"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.1.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Mendeley Ltd..
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>

@@ -32,7 +32,7 @@ containing the * wildcard, for example specifying `--train ml100-k/u.train.*` wi
 train separate models for `ml-100k/u.train.0`, `ml-100k/u.train.1` and so on.  
 This can be useful if you're doing cross-validation.
 
-``mrec_train`` currently support three types of recommender: `knn` learns a traditional k-nearest neighbours item similarity model; `slim` specifies a SLIM model which learns item similarities by solving a regression problem; and `popularity` is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.
+``mrec_train`` currently supports four types of recommender: `knn` learns a traditional k-nearest neighbours item similarity model; `slim` specifies a SLIM model which learns item similarities by solving a regression problem; `wrmf` fits a confidence-weighted matrix factorization model; and `popularity` is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.
 
 .. note::
 
@@ -67,6 +67,19 @@ For a k-nearest neighbour recommender you just need to supply::
 
 In this case ``max_sims`` is simply passed to the constructor
 of the ``KNNRecommender`` as the value of ``k``.
+
+For the Weighted Regularized Matrix Factoriation (WRMF) recommender you can specify::
+
+    --alpha=ALPHA         wrmf confidence constant (default: 1.0)
+    --lbda=LBDA           wrmf regularization constant (default: 0.015)
+    --als_iters=ALS_ITERS number of als iterations (default: 15)
+
+The confidence constant determines the model's confidence in the rating/count associated
+with an item using a simple linear formula::
+
+    confidence = 1 + alpha * count
+
+The regularization constant and number of learning iterations control over-fitting.
 
 You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are::

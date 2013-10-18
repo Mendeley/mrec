@@ -13,7 +13,7 @@ Installing from source
 Alternatively you can install `mrec` from source.  `mrec` requires `numpy`, `scipy`, `scikit-learn` and `ipython`.
 You can most easily install these using pip::
 
-    $ sudo pip install numpy scipy scikit-learn ipython
+    $ sudo pip install numpy scipy scikit-learn ipython pyzmq
 
 You can then install `mrec` from source in the standard way::
 

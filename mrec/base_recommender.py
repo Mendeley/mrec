@@ -101,7 +101,4 @@ class BaseRecommender(object):
             else just a list of idxs.
         """
         # default implementation, you may be able to optimize this for some recommenders.
-        recs = []
-        for u in xrange(user_start,user_end):
-            recs.append(self.recommend_items(dataset,u,max_items,return_scores))
-        return recs
+        return [self.recommend_items(dataset,u,max_items,return_scores) for u in xrange(user_start,user_end)]

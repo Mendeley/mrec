@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>parallel Package &mdash; mrec 0.1.3 documentation</title>
+    <title>parallel Package &mdash; mrec 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.3',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.1.3 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.0 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="prev" title="item_similarity Package" href="mrec.item_similarity.html" /> 
+    <link rel="prev" title="mf Package" href="mrec.mf.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,9 +38,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.item_similarity.html" title="item_similarity Package"
+          <a href="mrec.mf.html" title="mf Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -50,15 +50,17 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">parallel Package</a><ul>
-<li><a class="reference internal" href="#module-mrec.parallel.train"><tt class="docutils literal"><span class="pre">train</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.parallel.item_similarity"><tt class="docutils literal"><span class="pre">item_similarity</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.parallel.wrmf"><tt class="docutils literal"><span class="pre">wrmf</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.parallel.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.parallel.predict"><tt class="docutils literal"><span class="pre">predict</span></tt> Module</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="mrec.item_similarity.html"
-                        title="previous chapter">item_similarity Package</a></p>
+  <p class="topless"><a href="mrec.mf.html"
+                        title="previous chapter">mf Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.parallel.txt"
@@ -87,13 +89,188 @@
             
   <div class="section" id="parallel-package">
 <h1>parallel Package<a class="headerlink" href="#parallel-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-mrec.parallel.train">
-<span id="train-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">train</span></tt> Module<a class="headerlink" href="#module-mrec.parallel.train" title="Permalink to this headline">¶</a></h2>
-<p>Training task to run on an ipython engine.</p>
-<dl class="function">
-<dt id="mrec.parallel.train.run">
-<tt class="descclassname">mrec.parallel.train.</tt><tt class="descname">run</tt><big>(</big><em>task</em><big>)</big><a class="headerlink" href="#mrec.parallel.train.run" title="Permalink to this definition">¶</a></dt>
+<div class="section" id="module-mrec.parallel.item_similarity">
+<span id="item-similarity-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">item_similarity</span></tt> Module<a class="headerlink" href="#module-mrec.parallel.item_similarity" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.parallel.item_similarity.ItemSimilarityRunner">
+<em class="property">class </em><tt class="descclassname">mrec.parallel.item_similarity.</tt><tt class="descname">ItemSimilarityRunner</tt><a class="headerlink" href="#mrec.parallel.item_similarity.ItemSimilarityRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.parallel.item_similarity.ItemSimilarityRunner.create_tasks" title="mrec.parallel.item_similarity.ItemSimilarityRunner.create_tasks"><tt class="xref py py-obj docutils literal"><span class="pre">create_tasks</span></tt></a>(model,&nbsp;input_format,&nbsp;trainfile,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.parallel.item_similarity.ItemSimilarityRunner.find_done" title="mrec.parallel.item_similarity.ItemSimilarityRunner.find_done"><tt class="xref py py-obj docutils literal"><span class="pre">find_done</span></tt></a>(outdir)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.parallel.item_similarity.ItemSimilarityRunner.run" title="mrec.parallel.item_similarity.ItemSimilarityRunner.run"><tt class="xref py py-obj docutils literal"><span class="pre">run</span></tt></a>(view,&nbsp;model,&nbsp;input_format,&nbsp;trainfile,&nbsp;...)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.parallel.item_similarity.ItemSimilarityRunner.create_tasks">
+<tt class="descname">create_tasks</tt><big>(</big><em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>outdir</em>, <em>num_items</em>, <em>num_engines</em>, <em>max_similar_items</em>, <em>done</em><big>)</big><a class="headerlink" href="#mrec.parallel.item_similarity.ItemSimilarityRunner.create_tasks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.item_similarity.ItemSimilarityRunner.find_done">
+<tt class="descname">find_done</tt><big>(</big><em>outdir</em><big>)</big><a class="headerlink" href="#mrec.parallel.item_similarity.ItemSimilarityRunner.find_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.item_similarity.ItemSimilarityRunner.run">
+<tt class="descname">run</tt><big>(</big><em>view</em>, <em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>num_engines</em>, <em>simsdir</em>, <em>overwrite</em>, <em>max_sims</em>, <em>simsfile</em>, <em>modelfile</em><big>)</big><a class="headerlink" href="#mrec.parallel.item_similarity.ItemSimilarityRunner.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.item_similarity.process">
+<tt class="descclassname">mrec.parallel.item_similarity.</tt><tt class="descname">process</tt><big>(</big><em>task</em><big>)</big><a class="headerlink" href="#mrec.parallel.item_similarity.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training task to run on an ipython engine.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mrec.parallel.wrmf">
+<span id="wrmf-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">wrmf</span></tt> Module<a class="headerlink" href="#module-mrec.parallel.wrmf" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.parallel.wrmf.WRMFRunner">
+<em class="property">class </em><tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">WRMFRunner</tt><a class="headerlink" href="#mrec.parallel.wrmf.WRMFRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.parallel.wrmf.WRMFRunner.create_tasks" title="mrec.parallel.wrmf.WRMFRunner.create_tasks"><tt class="xref py py-obj docutils literal"><span class="pre">create_tasks</span></tt></a>(num_factors,&nbsp;num_engines,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.parallel.wrmf.WRMFRunner.run" title="mrec.parallel.wrmf.WRMFRunner.run"><tt class="xref py py-obj docutils literal"><span class="pre">run</span></tt></a>(view,&nbsp;model,&nbsp;input_format,&nbsp;trainfile,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.parallel.wrmf.WRMFRunner.run_tasks" title="mrec.parallel.wrmf.WRMFRunner.run_tasks"><tt class="xref py py-obj docutils literal"><span class="pre">run_tasks</span></tt></a>(view,&nbsp;tasks)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.parallel.wrmf.WRMFRunner.create_tasks">
+<tt class="descname">create_tasks</tt><big>(</big><em>num_factors</em>, <em>num_engines</em>, <em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>workdir</em>, <em>factor_type</em>, <em>get_indices</em>, <em>get_fixed_factor_files</em>, <em>init_fixed_factors</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.WRMFRunner.create_tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.wrmf.WRMFRunner.run">
+<tt class="descname">run</tt><big>(</big><em>view</em>, <em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>num_engines</em>, <em>workdir</em>, <em>modelfile</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.WRMFRunner.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.wrmf.WRMFRunner.run_tasks">
+<tt class="descname">run_tasks</tt><big>(</big><em>view</em>, <em>tasks</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.WRMFRunner.run_tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.compute_factors">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">compute_factors</tt><big>(</big><em>task</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.compute_factors" title="Permalink to this definition">¶</a></dt>
+<dd><p>WRMF update method to run on an IPython engine.
+This reads from file and writes back to file,
+only filepaths and an empty model need to be passed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.get_factor_files">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">get_factor_files</tt><big>(</big><em>workdir</em>, <em>factor_type</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.get_factor_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.get_item_factor_files">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">get_item_factor_files</tt><big>(</big><em>workdir</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.get_item_factor_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.get_item_indices">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">get_item_indices</tt><big>(</big><em>data</em>, <em>i</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.get_item_indices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.get_user_factor_files">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">get_user_factor_files</tt><big>(</big><em>workdir</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.get_user_factor_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.get_user_indices">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">get_user_indices</tt><big>(</big><em>data</em>, <em>u</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.get_user_indices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.wrmf.init_item_factors">
+<tt class="descclassname">mrec.parallel.wrmf.</tt><tt class="descname">init_item_factors</tt><big>(</big><em>model</em>, <em>data</em><big>)</big><a class="headerlink" href="#mrec.parallel.wrmf.init_item_factors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mrec.parallel.warp">
+<span id="warp-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">warp</span></tt> Module<a class="headerlink" href="#module-mrec.parallel.warp" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.parallel.warp.WARPMFRunner">
+<em class="property">class </em><tt class="descclassname">mrec.parallel.warp.</tt><tt class="descname">WARPMFRunner</tt><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.parallel.warp.WARPMFRunner.create_tasks" title="mrec.parallel.warp.WARPMFRunner.create_tasks"><tt class="xref py py-obj docutils literal"><span class="pre">create_tasks</span></tt></a>(model,&nbsp;input_format,&nbsp;trainfile,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.parallel.warp.WARPMFRunner.find_done" title="mrec.parallel.warp.WARPMFRunner.find_done"><tt class="xref py py-obj docutils literal"><span class="pre">find_done</span></tt></a>(outdir)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.parallel.warp.WARPMFRunner.get_modelfile" title="mrec.parallel.warp.WARPMFRunner.get_modelfile"><tt class="xref py py-obj docutils literal"><span class="pre">get_modelfile</span></tt></a>(ix,&nbsp;workdir)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.parallel.warp.WARPMFRunner.run" title="mrec.parallel.warp.WARPMFRunner.run"><tt class="xref py py-obj docutils literal"><span class="pre">run</span></tt></a>(view,&nbsp;model,&nbsp;input_format,&nbsp;trainfile,&nbsp;...)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.parallel.warp.WARPMFRunner.create_tasks">
+<tt class="descname">create_tasks</tt><big>(</big><em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>outdir</em>, <em>num_engines</em>, <em>done</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.create_tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.warp.WARPMFRunner.find_done">
+<tt class="descname">find_done</tt><big>(</big><em>outdir</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.find_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.warp.WARPMFRunner.get_modelfile">
+<tt class="descname">get_modelfile</tt><big>(</big><em>ix</em>, <em>workdir</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.get_modelfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.parallel.warp.WARPMFRunner.run">
+<tt class="descname">run</tt><big>(</big><em>view</em>, <em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>num_engines</em>, <em>workdir</em>, <em>overwrite</em>, <em>modelfile</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mrec.parallel.warp.process">
+<tt class="descclassname">mrec.parallel.warp.</tt><tt class="descname">process</tt><big>(</big><em>task</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training task to run on an ipython engine.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="module-mrec.parallel.predict">
@@ -123,9 +300,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.item_similarity.html" title="item_similarity Package"
+          <a href="mrec.mf.html" title="mf Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

@@ -33,5 +33,6 @@ Subpackages
     mrec.evaluation
     mrec.examples
     mrec.item_similarity
+    mrec.mf
     mrec.parallel
 

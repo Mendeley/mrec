@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Training a recommender &mdash; mrec 0.1.3 documentation</title>
+    <title>Training a recommender &mdash; mrec 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.3',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.1.3 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.0 documentation" href="index.html" />
     <link rel="next" title="Making and evaluating recommendations" href="evaluation.html" />
     <link rel="prev" title="Preparing training data" href="preparation.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="preparation.html" title="Preparing training data"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -106,7 +106,7 @@ Options:
                         wildcard
   --outdir=OUTDIR       directory for output files
   --overwrite           overwrite existing files in outdir
-  --model=MODEL         type of model to train: slim | knn | popularity
+  --model=MODEL         type of model to train: slim | knn | wrmf | warp | popularity
                         (default: slim)
   --max_sims=MAX_SIMS   max similar items to output for each training item
                         (default: 100)</pre>
@@ -127,9 +127,10 @@ recommender will be saved in the file <cite>u.train.0.model.npz</cite>, and so o
 <p>The saved model
 can be passed to the <tt class="docutils literal"><span class="pre">mrec_predict</span></tt> script as described in <a class="reference internal" href="evaluation.html#evaluation"><em>Making and evaluating recommendations</em></a>, or used programmatically like
 this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">load_recommender</span><span class="p">(</span><span class="s">&#39;u.train.0.model.npz&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">train</span> <span class="o">=</span> <span class="n">load_sparse_matrix</span><span class="p">(</span><span class="s">&#39;tsv&#39;</span><span class="p">,</span><span class="s">&#39;u.train.0&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">load_recommender</span><span class="p">(</span><span class="s">&#39;u.train.0.model.npz&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sims</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_similar_items</span><span class="p">(</span><span class="mi">231</span><span class="p">)</span>  <span class="c"># get items similar to 231</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommend_items</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span><span class="n">max_items</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>  <span class="c"># recommend top 30 items for user 101</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommend_items</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="n">max_items</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>  <span class="c"># recommend top 30 items for user 101</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.recommender" title="mrec.item_similarity.recommender"><tt class="xref py py-mod docutils literal"><span class="pre">mrec.item_similarity.recommender</span></tt></a> for more details.</p>
@@ -157,6 +158,11 @@ with an item using a simple linear formula:</p>
 </pre></div>
 </div>
 <p>The regularization constant and number of learning iterations control over-fitting.</p>
+<p>For the Weighted Approximately Ranked Pairwise (WARP) loss recommender the options are:</p>
+<div class="highlight-python"><pre>--gamma=GAMMA         warp learning rate (default: 0.01)
+--C=C                 warp regularization constant (default: 100.0)
+--sgd_iters=SGD_ITERS max number of sgd iterations (default: 10000)</pre>
+</div>
 <p>You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are:</p>
 <div class="highlight-python"><pre>--popularity_method=POPULARITY_METHOD
@@ -228,7 +234,7 @@ usually a problem with production size datasets.</p>
         <li class="right" >
           <a href="preparation.html" title="Preparing training data"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

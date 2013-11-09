@@ -14,6 +14,10 @@ and to evaluate them::
       -h, --help            show this help message and exit
       -n NUM_ENGINES, --num_engines=NUM_ENGINES
                             number of IPython engines to use
+      --mb_per_task=MB_PER_TASK
+                            approximate memory limit per task in MB, so total
+                            memory usage is num_engines * mb_per_task (default: no
+                            memory limit)
       --input_format=INPUT_FORMAT
                             format of training dataset(s) tsv | csv | mm
                             (matrixmarket) | fsm (fast_sparse_matrix)
@@ -50,6 +54,12 @@ and is equivalent to Recall@10.
 The recommendations themselves will be written to file in the ``--outdir``, in tsv format
 `user`, `item`, `score`.  The `score` is not directly meaningful but higher is better for
 when comparing two recommended items for the same user.
+
+If your dataset is of any significant size, and particularly if your trained model is a
+matrix factorization recommender, you may want to limit the amount of memory allocated by
+each task to avoid OOM errors. You can do this with the ``--mb_per_task`` option: bear in
+mind that the amount of memory specified with this option will be used concurrently on each
+IPython engine.
 
 Evaluating existing recommendations
 -----------------------------------                            

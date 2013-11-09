@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; mrec 0.1.3 documentation</title>
+    <title>Index &mdash; mrec 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.3',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.1.3 documentation" href="index.html" /> 
+    <link rel="top" title="mrec 0.2.0 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -85,6 +85,9 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="B">B</h2>
@@ -103,6 +106,10 @@
       <dd><dl>
         
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.batch_recommend_items">(mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.batch_recommend_items">(mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
   </dt>
 
       </dl></dd>
@@ -127,6 +134,10 @@
 
       </dl></dd>
       
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.compute_factors">compute_factors() (in module mrec.parallel.wrmf)</a>
+  </dt>
+
+      
   <dt><a href="mrec.evaluation.html#mrec.evaluation.metrics.compute_hit_rate">compute_hit_rate() (in module mrec.evaluation.metrics)</a>
   </dt>
 
@@ -134,6 +145,8 @@
   <dt><a href="mrec.evaluation.html#mrec.evaluation.metrics.compute_main_metrics">compute_main_metrics() (in module mrec.evaluation.metrics)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.knn.KNNRecommender.compute_similarities">compute_similarities() (mrec.item_similarity.knn.KNNRecommender method)</a>
   </dt>
@@ -152,8 +165,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.slim.SLIM.compute_similarities_from_vec">compute_similarities_from_vec() (mrec.item_similarity.slim.SLIM method)</a>
   </dt>
@@ -166,6 +177,20 @@
   <dt><a href="mrec.examples.html#mrec.examples.predict.create_tasks">create_tasks() (in module mrec.examples.predict)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.item_similarity.ItemSimilarityRunner.create_tasks">(mrec.parallel.item_similarity.ItemSimilarityRunner method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.warp.WARPMFRunner.create_tasks">(mrec.parallel.warp.WARPMFRunner method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.WRMFRunner.create_tasks">(mrec.parallel.wrmf.WRMFRunner method)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -181,6 +206,16 @@
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.examples.html#mrec.examples.predict.estimate_users_per_task">estimate_users_per_task() (in module mrec.examples.predict)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.mf.html#mrec.mf.warp.WARPMFRecommender.estimate_warp_loss">estimate_warp_loss() (mrec.mf.warp.WARPMFRecommender method)</a>
+  </dt>
+
+  </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.evaluation.html#mrec.evaluation.metrics.evaluate">evaluate() (in module mrec.evaluation.metrics)</a>
@@ -210,6 +245,16 @@
   <dt><a href="mrec.examples.html#mrec.examples.predict.find_done">find_done() (in module mrec.examples.predict)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.item_similarity.ItemSimilarityRunner.find_done">(mrec.parallel.item_similarity.ItemSimilarityRunner method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.warp.WARPMFRunner.find_done">(mrec.parallel.warp.WARPMFRunner method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit">fit() (mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender method)</a>
   </dt>
@@ -221,6 +266,18 @@
 
         
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.slim.NNFeatureSelectingSGDRegressor.fit">(mrec.item_similarity.slim.NNFeatureSelectingSGDRegressor method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.fit">(mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.mf.html#mrec.mf.warp.WARPMFRecommender.fit">(mrec.mf.warp.WARPMFRecommender method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.mf.html#mrec.mf.wrmf.WRMFRecommender.fit">(mrec.mf.wrmf.WRMFRecommender method)</a>
   </dt>
 
         
@@ -239,7 +296,23 @@
   </dt>
 
       
+  <dt><a href="mrec.examples.html#mrec.examples.predict.get_dataset_size">get_dataset_size() (in module mrec.examples.predict)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.get_factor_files">get_factor_files() (in module mrec.parallel.wrmf)</a>
+  </dt>
+
+      
   <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_factorsdir">get_factorsdir() (in module mrec.examples.filename_conventions)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.get_item_factor_files">get_item_factor_files() (in module mrec.parallel.wrmf)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.get_item_indices">get_item_indices() (in module mrec.parallel.wrmf)</a>
   </dt>
 
       
@@ -258,30 +331,30 @@
   <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_modelfile">get_modelfile() (in module mrec.examples.filename_conventions)</a>
   </dt>
 
-      
-  <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_modelsdir">get_modelsdir() (in module mrec.examples.filename_conventions)</a>
+      <dd><dl>
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.warp.WARPMFRunner.get_modelfile">(mrec.parallel.warp.WARPMFRunner method)</a>
   </dt>
 
+      </dl></dd>
       
-  <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_recsdir">get_recsdir() (in module mrec.examples.filename_conventions)</a>
+  <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_modelsdir">get_modelsdir() (in module mrec.examples.filename_conventions)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_recsdir">get_recsdir() (in module mrec.examples.filename_conventions)</a>
+  </dt>
+
+      
   <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_recsfile">get_recsfile() (in module mrec.examples.filename_conventions)</a>
   </dt>
 
       
-  <dt><a href="mrec.html#mrec.base_recommender.BaseRecommender.get_similar_items">get_similar_items() (mrec.base_recommender.BaseRecommender method)</a>
+  <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.get_similar_items">get_similar_items() (mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.get_similar_items">(mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
-  </dt>
-
-      </dl></dd>
       
   <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_simsdir">get_simsdir() (in module mrec.examples.filename_conventions)</a>
   </dt>
@@ -300,6 +373,14 @@
 
       
   <dt><a href="mrec.examples.html#mrec.examples.filename_conventions.get_testfile">get_testfile() (in module mrec.examples.filename_conventions)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.get_user_factor_files">get_user_factor_files() (in module mrec.parallel.wrmf)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.get_user_indices">get_user_indices() (in module mrec.parallel.wrmf)</a>
   </dt>
 
   </dl></td>
@@ -325,6 +406,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="mrec.mf.html#mrec.mf.wrmf.WRMFRecommender.init_factors">init_factors() (mrec.mf.wrmf.WRMFRecommender method)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.init_item_factors">init_item_factors() (in module mrec.parallel.wrmf)</a>
+  </dt>
+
+      
   <dt><a href="mrec.html#mrec.popularity.ItemPopularityRecommender">ItemPopularityRecommender (class in mrec.popularity)</a>
   </dt>
 
@@ -332,6 +421,10 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender">ItemSimilarityRecommender (class in mrec.item_similarity.recommender)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.item_similarity.ItemSimilarityRunner">ItemSimilarityRunner (class in mrec.parallel.item_similarity)</a>
   </dt>
 
   </dl></td>
@@ -355,15 +448,19 @@
   </dt>
 
       
-  <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix">load_similarity_matrix() (mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
+  <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.load_factors">load_factors() (mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
   </dt>
 
       
-  <dt><a href="mrec.html#mrec.sparse.fast_sparse_matrix.loadmm">loadmm() (mrec.sparse.fast_sparse_matrix static method)</a>
+  <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix">load_similarity_matrix() (mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.html#mrec.sparse.fast_sparse_matrix.loadmm">loadmm() (mrec.sparse.fast_sparse_matrix static method)</a>
+  </dt>
+
       
   <dt><a href="mrec.html#mrec.sparse.loadtxt">loadtxt() (in module mrec.sparse)</a>
   </dt>
@@ -397,7 +494,23 @@
   <dt><a href="mrec.examples.html#mrec.examples.train.main">(in module mrec.examples.train)</a>
   </dt>
 
+        
+  <dt><a href="mrec.mf.html#mrec.mf.warp.main">(in module mrec.mf.warp)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.mf.html#mrec.mf.wrmf.main">(in module mrec.mf.wrmf)</a>
+  </dt>
+
       </dl></dd>
+      
+  <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender">MatrixFactorizationRecommender (class in mrec.mf.recommender)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.mf.html#mrec.mf.warp.WARPMFRecommender.mini_batch">mini_batch() (mrec.mf.warp.WARPMFRecommender method)</a>
+  </dt>
+
       
   <dt><a href="mrec.html#module-mrec.base_recommender">mrec.base_recommender (module)</a>
   </dt>
@@ -430,12 +543,12 @@
   <dt><a href="mrec.item_similarity.html#module-mrec.item_similarity.knn">mrec.item_similarity.knn (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#module-mrec.item_similarity.precomputed">mrec.item_similarity.precomputed (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#module-mrec.item_similarity.recommender">mrec.item_similarity.recommender (module)</a>
   </dt>
@@ -445,11 +558,31 @@
   </dt>
 
       
+  <dt><a href="mrec.mf.html#module-mrec.mf.recommender">mrec.mf.recommender (module)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.mf.html#module-mrec.mf.warp">mrec.mf.warp (module)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.mf.html#module-mrec.mf.wrmf">mrec.mf.wrmf (module)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#module-mrec.parallel.item_similarity">mrec.parallel.item_similarity (module)</a>
+  </dt>
+
+      
   <dt><a href="mrec.parallel.html#module-mrec.parallel.predict">mrec.parallel.predict (module)</a>
   </dt>
 
       
-  <dt><a href="mrec.parallel.html#module-mrec.parallel.train">mrec.parallel.train (module)</a>
+  <dt><a href="mrec.parallel.html#module-mrec.parallel.warp">mrec.parallel.warp (module)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#module-mrec.parallel.wrmf">mrec.parallel.wrmf (module)</a>
   </dt>
 
       
@@ -512,6 +645,16 @@
   <dt><a href="mrec.examples.html#mrec.examples.predict.process">process() (in module mrec.examples.predict)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.item_similarity.process">(in module mrec.parallel.item_similarity)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.warp.process">(in module mrec.parallel.warp)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -527,6 +670,10 @@
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items">(mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
   </dt>
 
+        
+  <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items">(mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
+  </dt>
+
       </dl></dd>
       
   <dt><a href="mrec.html#mrec.base_recommender.BaseRecommender.recommend_items">recommend_items() (mrec.base_recommender.BaseRecommender method)</a>
@@ -535,6 +682,10 @@
       <dd><dl>
         
   <dt><a href="mrec.item_similarity.html#mrec.item_similarity.recommender.ItemSimilarityRecommender.recommend_items">(mrec.item_similarity.recommender.ItemSimilarityRecommender method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items">(mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
   </dt>
 
         
@@ -554,12 +705,24 @@
 
       <dd><dl>
         
-  <dt><a href="mrec.parallel.html#mrec.parallel.train.run">(in module mrec.parallel.train)</a>
+  <dt><a href="mrec.parallel.html#mrec.parallel.item_similarity.ItemSimilarityRunner.run">(mrec.parallel.item_similarity.ItemSimilarityRunner method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.warp.WARPMFRunner.run">(mrec.parallel.warp.WARPMFRunner method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.WRMFRunner.run">(mrec.parallel.wrmf.WRMFRunner method)</a>
   </dt>
 
       </dl></dd>
       
   <dt><a href="mrec.evaluation.html#mrec.evaluation.metrics.run_evaluation">run_evaluation() (in module mrec.evaluation.metrics)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.WRMFRunner.run_tasks">run_tasks() (mrec.parallel.wrmf.WRMFRunner method)</a>
   </dt>
 
   </dl></td>
@@ -619,6 +782,50 @@
   </dl></td>
 </tr></table>
 
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.mf.html#mrec.mf.wrmf.WRMFRecommender.update">update() (mrec.mf.wrmf.WRMFRecommender method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.mf.html#mrec.mf.warp.WARPMFRecommender.validation_loss">validation_loss() (mrec.mf.warp.WARPMFRecommender method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.mf.html#mrec.mf.warp.WARPMFRecommender">WARPMFRecommender (class in mrec.mf.warp)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.warp.WARPMFRunner">WARPMFRunner (class in mrec.parallel.warp)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.mf.html#mrec.mf.wrmf.WRMFRecommender">WRMFRecommender (class in mrec.mf.wrmf)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.parallel.html#mrec.parallel.wrmf.WRMFRunner">WRMFRunner (class in mrec.parallel.wrmf)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
 
 
           </div>
@@ -635,7 +842,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">mrec 0.1.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

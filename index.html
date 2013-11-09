@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrec recommender systems library &mdash; mrec 0.1.3 documentation</title>
+    <title>mrec recommender systems library &mdash; mrec 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.3',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.1.3 documentation" href="#" />
+    <link rel="top" title="mrec 0.2.0 documentation" href="#" />
     <link rel="next" title="Getting started with mrec" href="quickstart.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="quickstart.html" title="Getting started with mrec"
              accesskey="N">next</a> |</li>
-        <li><a href="#">mrec 0.1.3 documentation</a> &raquo;</li> 
+        <li><a href="#">mrec 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -98,22 +98,35 @@ or on a cluster.  The combination of IPython and scientific Python libraries is 
 but there are still rather few examples around that show how to get it to work in practice.</p>
 <p>Highlights:</p>
 <ul class="simple">
-<li>a (relatively) efficient implementation of the SLIM item similarity method.</li>
-<li>an implementation of Hu, Koren &amp; Volinsky&#8217;s WRMF weighted matrix factorization for implicit feedback.</li>
+<li>a (relatively) efficient implementation of the SLIM item similarity method. <a class="footnote-reference" href="#id5" id="id1">[1]</a></li>
+<li>an implementation of Hu, Koren &amp; Volinsky&#8217;s WRMF weighted matrix factorization for implicit feedback. <a class="footnote-reference" href="#id6" id="id2">[2]</a></li>
+<li>a matrix factorization model that optimizes the Weighted Approximately Ranked Pairwise (WARP) ranking loss. <a class="footnote-reference" href="#id7" id="id3">[3]</a></li>
 <li>utilities to train models and make recommendations in parallel using IPython.</li>
 <li>utilities to prepare datasets and compute quality metrics.</li>
 </ul>
 <p>Documentation for mrec can be found at <a class="reference external" href="http://mendeley.github.io/mrec">http://mendeley.github.io/mrec</a>.</p>
 <p>The source code is available at <a class="reference external" href="https://github.com/mendeley/mrec">https://github.com/mendeley/mrec</a>.</p>
-<p><cite>mrec</cite> implements the SLIM recommender described in <a class="footnote-reference" href="#id2" id="id1">[1]</a>.  Please cite this paper if you
+<p><cite>mrec</cite> implements the SLIM recommender described in <a class="footnote-reference" href="#id5" id="id4">[1]</a>.  Please cite this paper if you
 use <cite>mrec</cite> in your research.</p>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
+<table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Mark Levy, Kris Jack (2013) Efficient Top-N Recommendation by Linear Regression. In Large Scale Recommender Systems Workshop in RecSys&#8216;13.</td></tr>
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> Mark Levy, Kris Jack (2013). Efficient Top-N Recommendation by Linear Regression. In Large Scale Recommender Systems Workshop in RecSys&#8216;13.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Hu, Y., Koren, Y., &amp; Volinsky, C. (2008). Collaborative filtering for implicit feedback datasets. In IEEE ICDM&#8216;08.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Weston, J., Bengio, S., &amp; Usunier, N. (2010). Large scale image annotation: learning to rank with joint word-image embeddings. Machine learning, 81(1), 21-35.</td></tr>
 </tbody>
 </table>
 </div>
@@ -150,7 +163,7 @@ use <cite>mrec</cite> in your research.</p>
         <li class="right" >
           <a href="quickstart.html" title="Getting started with mrec"
              >next</a> |</li>
-        <li><a href="#">mrec 0.1.3 documentation</a> &raquo;</li> 
+        <li><a href="#">mrec 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -21,7 +21,7 @@ Here are the basic options for ``mrec_train``::
                             wildcard
       --outdir=OUTDIR       directory for output files
       --overwrite           overwrite existing files in outdir
-      --model=MODEL         type of model to train: slim | knn | popularity
+      --model=MODEL         type of model to train: slim | knn | wrmf | warp | popularity
                             (default: slim)
       --max_sims=MAX_SIMS   max similar items to output for each training item
                             (default: 100)
@@ -46,9 +46,10 @@ The saved model
 can be passed to the ``mrec_predict`` script as described in :ref:`evaluation`, or used programmatically like
 this::
 
+    >>> train = load_sparse_matrix('tsv','u.train.0')
     >>> model = load_recommender('u.train.0.model.npz')
     >>> sims = model.get_similar_items(231)  # get items similar to 231
-    >>> recs = model.recommend_items(101,max_items=30)  # recommend top 30 items for user 101
+    >>> recs = model.recommend_items(train,101,max_items=30)  # recommend top 30 items for user 101
 
 See :mod:`mrec.item_similarity.recommender` for more details.
 
@@ -81,26 +82,32 @@ with an item using a simple linear formula::
 
 The regularization constant and number of learning iterations control over-fitting.
 
+For the Weighted Approximately Ranked Pairwise (WARP) loss recommender the options are::
+
+    --gamma=GAMMA         warp learning rate (default: 0.01)
+    --C=C                 warp regularization constant (default: 100.0)
+    --sgd_iters=SGD_ITERS max number of sgd iterations (default: 10000)
+
 You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are::
 
-      --popularity_method=POPULARITY_METHOD
-                            how to compute popularity for baseline recommender:
-                            count | sum | avg | thresh (default: count)
-      --popularity_thresh=POPULARITY_THRESH
-                            ignore scores below this when computing popularity for
-                            baseline recommender (default: 0)
+    --popularity_method=POPULARITY_METHOD
+                          how to compute popularity for baseline recommender:
+                          count | sum | avg | thresh (default: count)
+    --popularity_thresh=POPULARITY_THRESH
+                          ignore scores below this when computing popularity for
+                          baseline recommender (default: 0)
                         
 The different measures mean let you base the popularity of an item on its total number of
 ratings of any value, or its total above some threshold; or on the sum or mean of its ratings.
 
 There are also a couple of options relating to the IPython.parallel framework::
 
-      --packer=PACKER       packer for IPython.parallel (default: pickle)
-      --add_module_paths=ADD_MODULE_PATHS
-                            optional comma-separated list of paths to append to
-                            pythonpath (useful if you need to import uninstalled
-                            modules to IPython engines on a cluster)
+    --packer=PACKER       packer for IPython.parallel (default: pickle)
+    --add_module_paths=ADD_MODULE_PATHS
+                          optional comma-separated list of paths to append to
+                          pythonpath (useful if you need to import uninstalled
+                          modules to IPython engines on a cluster)
 
 The ``--add_module_paths`` option can be useful to specify the path to `mrec` itself
 if you didn't install it at start up time on all the machines in your cluster.

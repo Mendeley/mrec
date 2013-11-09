@@ -17,13 +17,6 @@ class ItemSimilarityRecommender(BaseRecommender):
     need to supply the compute_similarities() method.
     """
 
-    def _init(self,dataset):
-        if type(dataset) == fast_sparse_matrix:
-            self.dataset = dataset
-        else:
-            self.dataset = fast_sparse_matrix(dataset)
-        self.num_users,self.num_items = self.dataset.shape
-
     def fit(self,dataset):
         """
         Learn the complete similarity matrix from a user-item matrix.
@@ -34,20 +27,22 @@ class ItemSimilarityRecommender(BaseRecommender):
             The matrix of user-item counts, row i holds the counts for
             the i-th user.
         """
-        self._init(dataset)
+        if not isinstance(dataset,fast_sparse_matrix):
+            dataset = fast_sparse_matrix(dataset)
+        num_users,num_items = dataset.shape
         # build up a sparse similarity matrix
         data = []
         row = []
         col = []
-        for j in xrange(self.num_items):
-            w = self.compute_similarities(j)
+        for j in xrange(num_items):
+            w = self.compute_similarities(dataset,j)
             for k,v in enumerate(w):
                 if v != 0:
                     data.append(v)
                     row.append(j)
                     col.append(k)
         idx = np.array([row,col],dtype='int32')
-        self.similarity_matrix = csr_matrix((data,idx),(self.num_items,self.num_items))
+        self.similarity_matrix = csr_matrix((data,idx),(num_items,num_items))
 
     def load_similarity_matrix(self,filepath,num_items,offset=1):
         """
@@ -67,7 +62,7 @@ class ItemSimilarityRecommender(BaseRecommender):
         idx = np.array([row,col],dtype='int32')-offset
         self.similarity_matrix = csr_matrix((data,idx),(num_items,num_items))
 
-    def compute_similarities(self,j):
+    def compute_similarities(self,dataset,j):
         """
         Compute pairwise similarity scores between the j-th item and
         every item in the dataset.
@@ -76,6 +71,8 @@ class ItemSimilarityRecommender(BaseRecommender):
         ==========
         j : int
             Index of item for which to compute similarity scores.
+        dataset : mrec.sparse.fast_sparse_matrix
+            The user-item matrix.
 
         Returns
         =======
@@ -84,7 +81,7 @@ class ItemSimilarityRecommender(BaseRecommender):
         """
         pass
 
-    def get_similar_items(self,j,max_similar_items=30):
+    def get_similar_items(self,j,max_similar_items=30,dataset=None):
         """
         Get the most similar items to a supplied item.
 
@@ -94,6 +91,9 @@ class ItemSimilarityRecommender(BaseRecommender):
             Index of item for which to get similar items.
         max_similar_items : int
             Maximum number of similar items to return.
+        dataset : mrec.sparse.fast_sparse_matrix
+            The user-item matrix. Not required if you've already called fit()
+            to learn the similarity matrix.
 
         Returns
         =======
@@ -106,7 +106,7 @@ class ItemSimilarityRecommender(BaseRecommender):
             sims = sorted(w,key=itemgetter(1),reverse=True)[:max_similar_items]
             sims = [(i,f) for i,f in sims if f > 0]
         else:
-            w = self.compute_similarities(j)
+            w = self.compute_similarities(dataset,j)
             sims = [(i,w[i]) for i in w.argsort()[-1:-max_similar_items-1:-1] if w[i] > 0]
         return sims
 

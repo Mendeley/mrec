@@ -21,9 +21,8 @@ def estimate_sparsity(task):
     tot_neg = 0
     below_min_nnz = 0
 
-    model._init(dataset)
     for i in sample_items:
-        w = model.compute_similarities(i)
+        w = model.compute_similarities(dataset,i)
         nnz = sum(w>0)
         tot_nnz += nnz
         if nnz < min_nnz:

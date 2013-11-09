@@ -30,12 +30,6 @@ class MatrixFactorizationRecommender(BaseRecommender):
         """
         pass
 
-    def _init(self,train):
-        self.data = train
-        self.num_users,self.num_items = self.data.shape
-        self.U = None  # user factors
-        self.V = None  # item factors
-
     def load_factors(self,user_factor_filepath,item_factor_filepath,fmt):
         """
         Load precomputed user and item factors from file.
@@ -63,6 +57,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             self.V = np.loadtxt(item_factor_filepath)
         else:
             raise ValueError('unknown input format {0}'.format(fmt))
+        # ensure that memory layout avoids extra allocation in dot product
+        self.U = np.asfortranarray(self.U)
 
     def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """

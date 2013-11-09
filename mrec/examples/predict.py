@@ -20,17 +20,14 @@ from shutil import rmtree
 import logging
 from collections import defaultdict
 
-from mrec import load_fast_sparse_matrix, read_recommender_description
+from mrec import load_sparse_matrix, read_recommender_description, load_recommender
 from mrec.parallel import predict
+from mrec.mf.recommender import MatrixFactorizationRecommender
+from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 from filename_conventions import *
 
 def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
-
-    logging.info('finding number of users...')
-    dataset = load_fast_sparse_matrix(opts.input_format,trainfile)
-    num_users,num_items = dataset.shape
-    del dataset
 
     recsdir = get_recsdir(trainfile,opts.outdir)
     logging.info('creating recs directory {0}...'.format(recsdir))
@@ -44,7 +41,15 @@ def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
             logging.info('found {0} output files'.format(len(done)))
 
     logging.info('creating tasks...')
-    tasks = create_tasks(modelfile,opts.input_format,trainfile,opts.test_input_format,testfile,recsdir,num_users,opts.num_engines,done,evaluator)
+    tasks = create_tasks(modelfile,
+                         opts.input_format,
+                         trainfile,
+                         opts.test_input_format,
+                         testfile,recsdir,
+                         opts.num_engines,
+                         opts.mb_per_task,
+                         done,
+                         evaluator)
 
     logging.info('running in parallel across ipython engines...')
     results = []
@@ -85,6 +90,59 @@ def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
 
     return read_recommender_description(modelfile),avg_metrics
 
+def create_tasks(modelfile,
+                 input_format,
+                 trainfile,
+                 test_input_format,
+                 testfile,outdir,
+                 num_engines,
+                 mb_per_task,
+                 done,
+                 evaluator):
+    users_per_task,num_users = estimate_users_per_task(num_engines,mb_per_task,input_format,trainfile,modelfile)
+    tasks = []
+    for start in xrange(0,num_users,users_per_task):
+        end = min(num_users,start+users_per_task)
+        generate = (start,end) not in done
+        tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,outdir,start,end,evaluator,generate))
+    logging.info('created {0} tasks, {1} users per task'.format(len(tasks),users_per_task))
+    return tasks
+
+def estimate_users_per_task(num_engines,mb_per_task,input_format,trainfile,modelfile):
+    num_users,num_items,nnz = get_dataset_size(input_format,trainfile)
+    # basic approach is one task per engine
+    users_per_task = int(math.ceil(float(num_users)/num_engines))
+    if mb_per_task is not None:
+        # check that this won't exceed requested memory budget
+        logging.info('loading model to get size...')
+        model = load_recommender(modelfile)
+        ONE_MB = 2**20
+        # we load the training data on every task
+        available_mb_per_task = mb_per_task - (nnz*(8+4+4))/ONE_MB
+        if isinstance(model,MatrixFactorizationRecommender):
+            # we have to load the factors on every task
+            available_mb_per_task -= ((model.U.size+model.V.size)*8)/ONE_MB
+            if mb_per_task > 0:
+                # remaining mem usage is dominated by computed scores:
+                users_per_task = min(users_per_task,(available_mb_per_task*ONE_MB) / (num_items*8))
+        elif isinstance(model,ItemSimilarityRecommender):
+            # we have to load the similarity matrix on every task
+            available_mb_per_task -= (model.similarity_matrix.nnz*(8+4+4))/ONE_MB
+            if mb_per_task > 0:
+                # estimate additional usage from avg items per user and sims per item
+                items_per_user = nnz / num_users
+                sims_per_item = model.similarity_matrix.nnz / num_items
+                users_per_task = min(users_per_task,(available_mb_per_task*ONE_MB) / (items_per_user*sims_per_item*(8+4+4)))
+        if available_mb_per_task <= 0:
+            logging.warn('not possible to limit to {0}MB per task, ignoring'.format(mb_per_task))
+
+    return users_per_task,num_users
+
+def get_dataset_size(input_format,datafile):
+    logging.info('loading dataset to get size...')
+    dataset = load_sparse_matrix(input_format,datafile)
+    return dataset.shape[0],dataset.shape[1],dataset.nnz
+
 def find_done(outdir):
     success_files = glob.glob(os.path.join(outdir,'*.SUCCESS'))
     r = re.compile('.*?([0-9]+)-([0-9]+)\.SUCCESS$')
@@ -95,15 +153,6 @@ def find_done(outdir):
         end = int(m.group(2))
         done.append((start,end))
     return done
-
-def create_tasks(modelfile,input_format,trainfile,test_input_format,testfile,outdir,num_users,num_engines,done,evaluator):
-    users_per_engine = int(math.ceil(float(num_users)/num_engines))
-    tasks = []
-    for start in xrange(0,num_users,users_per_engine):
-        end = min(num_users,start+users_per_engine)
-        generate = (start,end) not in done
-        tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,outdir,start,end,evaluator,generate))
-    return tasks
 
 def main():
 
@@ -120,6 +169,7 @@ def main():
 
     parser = OptionParser()
     parser.add_option('-n','--num_engines',dest='num_engines',type='int',default=0,help='number of IPython engines to use')
+    parser.add_option('--mb_per_task',dest='mb_per_task',type='int',default=None,help='approximate memory limit per task in MB, so total memory usage is num_engines * mb_per_task (default: no memory limit)')
     parser.add_option('--input_format',dest='input_format',help='format of training dataset(s) tsv | csv | mm (matrixmarket) | fsm (fast_sparse_matrix)')
     parser.add_option('--test_input_format',dest='test_input_format',default='npz',help='format of test dataset(s) tsv | csv | mm (matrixmarket) | npz (numpy binary)  (default: %default)')
     parser.add_option('--train',dest='train',help='glob specifying path(s) to training dataset(s) IMPORTANT: must be in quotes if it includes the * wildcard')

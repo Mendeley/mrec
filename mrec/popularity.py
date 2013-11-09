@@ -46,7 +46,7 @@ class ItemPopularityRecommender(BaseRecommender):
         dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix
             The user-item matrix.
         """
-        if type(dataset) == fast_sparse_matrix:
+        if isinstance(dataset,fast_sparse_matrix):
             d = dataset.X.tocsc()
         else:
             d = dataset.tocsc()

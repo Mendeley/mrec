@@ -80,23 +80,22 @@ class SLIM(ItemSimilarityRecommender):
             raise SystemExit('unknown model type: {0}'.format(model))
         self.ignore_negative_weights = ignore_negative_weights
 
-    def compute_similarities(self,j):
+    def compute_similarities(self,dataset,j):
         """Compute item similarity weights for item j."""
-        A = self.dataset
-        # zero out the j-th column of A so we get w[j] = 0
-        a = A.fast_get_col(j)
-        A.fast_update_col(j,np.zeros(a.nnz))
-        self.model.fit(A.X,a.toarray())
-        # reinstate the j-th column of A
-        A.fast_update_col(j,a.data)
+        # zero out the j-th column of the input so we get w[j] = 0
+        a = dataset.fast_get_col(j)
+        dataset.fast_update_col(j,np.zeros(a.nnz))
+        self.model.fit(dataset.X,a.toarray())
+        # reinstate the j-th column
+        dataset.fast_update_col(j,a.data)
         w = self.model.coef_
         if self.ignore_negative_weights:
             w[w<0] = 0
         return w
 
-    def compute_similarities_from_vec(self,a):
+    def compute_similarities_from_vec(self,dataset,a):
         """Compute item similarity weights for out-of-dataset item vector."""
-        self.model.fit(self.dataset.X,a)
+        self.model.fit(dataset.X,a)
         return self.model.coef_
 
     def __str__(self):
@@ -144,9 +143,8 @@ if __name__ == '__main__':
     print 'computing some item similarities...'
     print 'item\tsim\tweight'
     # if we want we can compute these individually without calling fit()
-    model._init(dataset)
     for i in random.sample(xrange(num_items),num_samples):
-        for j,weight in model.get_similar_items(i,max_similar_items=10):
+        for j,weight in model.get_similar_items(i,max_similar_items=10,dataset=dataset):
             output(i,j,weight)
 
     print 'learning entire similarity matrix...'
@@ -156,18 +154,18 @@ if __name__ == '__main__':
     print 'making some recommendations...'
     print 'user\trec\tscore'
     for u in random.sample(xrange(num_users),num_samples):
-        for i,score in model.recommend_items(dataset,u,max_items=10):
+        for i,score in model.recommend_items(dataset.X,u,max_items=10):
             output(u,i,score)
 
     print 'making batch recommendations...'
-    recs = model.batch_recommend_items(dataset)
+    recs = model.batch_recommend_items(dataset.X)
     for u in xrange(num_users):
         for i,score in recs[u]:
             output(u,i,score)
 
     print 'making range recommendations...'
     for start,end in [(0,2),(2,3)]:
-        recs = model.range_recommend_items(dataset,start,end)
+        recs = model.range_recommend_items(dataset.X,start,end)
         for u in xrange(start,end):
             for i,score in recs[u-start]:
                 output(u,i,score)

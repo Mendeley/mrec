@@ -55,24 +55,25 @@ class WRMFRecommender(MatrixFactorizationRecommender):
         if type(train) == csr_matrix:
             train = fast_sparse_matrix(train)
 
-        self._init(train)
-        self.U = self.init_factors(self.num_users,False)  # don't need values, will compute them
-        self.V = self.init_factors(self.num_items)
+        num_users,num_items = train.shape
+
+        self.U = self.init_factors(num_users,False)  # don't need values, will compute them
+        self.V = self.init_factors(num_items)
         for it in xrange(self.num_iters):
             print 'iteration',it
             # fit user factors
             VV = self.V.T.dot(self.V)
-            for u in xrange(self.num_users):
+            for u in xrange(num_users):
                 # get (positive i.e. non-zero scored) items for user
-                indices = self.data.X[u].nonzero()[1]
+                indices = train.X[u].nonzero()[1]
                 if indices.size:
                     self.U[u,:] = self.update(indices,self.V,VV)
                 else:
                     self.U[u,:] = np.zeros(self.d)
             # fit item factors
             UU = self.U.T.dot(self.U)
-            for i in xrange(self.num_items):
-                indices = self.data.fast_get_col(i).nonzero()[0]
+            for i in xrange(num_items):
+                indices = train.fast_get_col(i).nonzero()[0]
                 if indices.size:
                     self.V[i,:] = self.update(indices,self.U,UU)
                 else:

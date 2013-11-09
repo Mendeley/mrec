@@ -1,8 +1,8 @@
 #!/bin/bash
 
-GRAPHCHI_HOME=/home/mark/dev/hg/graphchi
+GRAPHCHI_HOME=$1
+TRAIN_GLOB=$2
 HERE=`pwd`
-TRAIN_GLOB=$1
 
 mkdir -p mm_factors
 
@@ -25,12 +25,12 @@ do
         --user_factors $TRAIN.mm_U.mm \
         --item_factors $TRAIN.mm_V.mm \
         --train $TRAIN \
-        --outdir als_models \
-        --description als
+        --outdir climf_models \
+        --description climf
     mv $HERE/$TRAIN.mm* mm_factors/
 done
 
 mrec_predict -n4 --input_format tsv --test_input_format tsv \
     --train "$TRAIN_GLOB" \
-    --modeldir als_models \
-    --outdir als_recs
+    --modeldir climf_models \
+    --outdir climf_recs

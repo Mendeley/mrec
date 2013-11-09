@@ -16,8 +16,9 @@ but there are still rather few examples around that show how to get it to work i
 
 Highlights:
 
-- a (relatively) efficient implementation of the SLIM item similarity method.
-- an implementation of Hu, Koren & Volinsky's WRMF weighted matrix factorization for implicit feedback.
+- a (relatively) efficient implementation of the SLIM item similarity method. [1]_
+- an implementation of Hu, Koren & Volinsky's WRMF weighted matrix factorization for implicit feedback. [2]_
+- a matrix factorization model that optimizes the Weighted Approximately Ranked Pairwise (WARP) ranking loss. [3]_
 - utilities to train models and make recommendations in parallel using IPython.
 - utilities to prepare datasets and compute quality metrics.
 
@@ -30,4 +31,6 @@ use `mrec` in your research.
 
 References
 ----------
-.. [1] Mark Levy, Kris Jack (2013) Efficient Top-N Recommendation by Linear Regression. In Large Scale Recommender Systems Workshop in RecSys'13.
+.. [1] Mark Levy, Kris Jack (2013). Efficient Top-N Recommendation by Linear Regression. In Large Scale Recommender Systems Workshop in RecSys'13.
+.. [2] Hu, Y., Koren, Y., & Volinsky, C. (2008). Collaborative filtering for implicit feedback datasets. In IEEE ICDM'08.
+.. [3] Weston, J., Bengio, S., & Usunier, N. (2010). Large scale image annotation: learning to rank with joint word-image embeddings. Machine learning, 81(1), 21-35.

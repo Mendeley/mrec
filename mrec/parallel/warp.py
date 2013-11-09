@@ -1,14 +1,14 @@
-import math
 import glob
 import re
 import os
 import subprocess
 from shutil import rmtree
 import logging
+import numpy as np
 
-from mrec import load_fast_sparse_matrix, save_recommender, load_recommender
+from mrec import save_recommender, load_recommender
 
-class WARPRunner(object):
+class WARPMFRunner(object):
 
     def run(self,view,model,input_format,trainfile,num_engines,workdir,overwrite,modelfile):
 
@@ -40,15 +40,16 @@ class WARPRunner(object):
 
         if remaining == 0:
             logging.info('SUCCESS: all tasks completed')
-            logging.info('averaging {0} models...'.format(len(done)))
+            logging.info('concatenating {0} models...'.format(len(done)))
             for ix in sorted(done):
-                # average two models at a time to limit memory usage
                 partial_model = load_recommender(self.get_modelfile(ix,workdir))
                 if ix == 0:
                     model = partial_model
                 else:
-                    model.U = (ix*model.U + partial_model.U)/float(ix+1)
-                    model.V = (ix*model.V + partial_model.V)/float(ix+1)
+                    # concatenate factors
+                    model.d += partial_model.d
+                    model.U = np.hstack((model.U,partial_model.U))
+                    model.V = np.hstack((model.V,partial_model.V))
             save_recommender(model,modelfile)
             logging.info('removing partial output files...')
             rmtree(workdir)
@@ -87,19 +88,11 @@ def process(task):
     import os
     import subprocess
     from mrec import load_sparse_matrix, save_recommender
-    from mrec.mf.warp import ShuffleSampler
 
     model,input_format,trainfile,outfile,offset,step = task
 
-    # TODO: configure this!!!
-    positive_thresh = 1
-
     dataset = load_sparse_matrix(input_format,trainfile)
-    # TODO: models don't seem to converge, investigate....
-    #sampler = ShuffleSampler(dataset,positive_thresh,42,offset,step)
-    sampler = ShuffleSampler(dataset,positive_thresh,42)
-
-    model.fit(dataset,sampler)
+    model.fit(dataset)
     save_recommender(model,outfile)
 
     # record success

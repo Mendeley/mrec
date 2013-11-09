@@ -1,6 +1,7 @@
 #!/bin/bash
 
-TRAIN_GLOB=$1
+MYMEDIALITE_HOME=$1
+TRAIN_GLOB=$2
 
 mkdir -p wrmf_recs
 
@@ -8,7 +9,7 @@ for TRAIN in $TRAIN_GLOB
 do
     recspath=wrmf_recs/`basename $TRAIN`.recs
 
-    /home/mark/dev/git/MyMediaLite/bin/item_recommendation --training-file $TRAIN \
+    $MYMEDIALITE_HOME/bin/item_recommendation --training-file $TRAIN \
        --recommender WRMF \
        --predict-items-number 20 \
        --prediction-file $recspath.tmp

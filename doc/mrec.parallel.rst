@@ -1,10 +1,26 @@
 parallel Package
 ================
 
-:mod:`train` Module
--------------------
+:mod:`item_similarity` Module
+-----------------------------
 
-.. automodule:: mrec.parallel.train
+.. automodule:: mrec.parallel.item_similarity
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`wrmf` Module
+------------------
+
+.. automodule:: mrec.parallel.wrmf
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`warp` Module
+------------------
+
+.. automodule:: mrec.parallel.warp
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,4 +32,3 @@ parallel Package
     :members:
     :undoc-members:
     :show-inheritance:
-

@@ -3,25 +3,6 @@ class BaseRecommender(object):
     Minimal interface to be implemented by recommenders.
     """
 
-    def get_similar_items(self,j,max_similar_items=30):
-        """
-        Get the most similar items to a supplied item.
-
-        Parameters
-        ==========
-        j : int
-            Index of item for which to get similar items.
-        max_similar_items : int
-            Maximum number of similar items to return.
-
-        Returns
-        =======
-        sims : list
-            Sorted list of similar items, best first.  Each entry is
-            a tuple of the form (i,score).
-        """
-        pass
-
     def recommend_items(self,dataset,u,max_items=10,return_scores=True):
         """
         Recommend new items for a user.

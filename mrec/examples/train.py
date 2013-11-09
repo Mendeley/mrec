@@ -25,9 +25,11 @@ def main():
     from mrec.item_similarity.slim import SLIM
     from mrec.item_similarity.knn import CosineKNNRecommender, DotProductKNNRecommender
     from mrec.mf.wrmf import WRMFRecommender
+    from mrec.mf.warp import WARPMFRecommender
     from mrec.popularity import ItemPopularityRecommender
     from mrec.parallel.item_similarity import ItemSimilarityRunner
     from mrec.parallel.wrmf import WRMFRunner
+    from mrec.parallel.warp import WARPMFRunner
 
     logging.basicConfig(level=logging.INFO,format='[%(asctime)s] %(levelname)s: %(message)s')
 
@@ -37,7 +39,7 @@ def main():
     parser.add_option('--train',dest='train',help='glob specifying path(s) to training dataset(s) IMPORTANT: must be in quotes if it includes the * wildcard')
     parser.add_option('--outdir',dest='outdir',help='directory for output files')
     parser.add_option('--overwrite',dest='overwrite',action='store_true',help='overwrite existing files in outdir')
-    parser.add_option('--model',dest='model',default='slim',help='type of model to train: slim | knn | wrmf | popularity (default: %default)')
+    parser.add_option('--model',dest='model',default='slim',help='type of model to train: slim | knn | wrmf | warp | popularity (default: %default)')
     parser.add_option('--max_sims',dest='max_sims',type='int',default=100,help='max similar items to output for each training item (default: %default)')
     parser.add_option('--learner',dest='learner',default='sgd',help='underlying learner for SLIM learner: sgd | elasticnet | fs_sgd (default: %default)')
     parser.add_option('--l1_reg',dest='l1_reg',type='float',default=0.1,help='l1 regularization constant (default: %default)')
@@ -47,6 +49,9 @@ def main():
     parser.add_option('--alpha',dest='alpha',type='float',default=1.0,help='wrmf confidence constant (default: %default)')
     parser.add_option('--lbda',dest='lbda',type='float',default=0.015,help='wrmf regularization constant (default: %default)')
     parser.add_option('--als_iters',dest='als_iters',type='int',default=15,help='number of als iterations (default: %default)')
+    parser.add_option('--gamma',dest='gamma',type='float',default=0.01,help='warp learning rate (default: %default)')
+    parser.add_option('--C',dest='C',type='float',default=100.0,help='warp regularization constant (default: %default)')
+    parser.add_option('--sgd_iters',dest='sgd_iters',type='int',default=10000,help='max number of sgd iterations (default: %default)')
     parser.add_option('--popularity_method',dest='popularity_method',default='count',help='how to compute popularity for baseline recommender: count | sum | avg | thresh (default: %default)')
     parser.add_option('--popularity_thresh',dest='popularity_thresh',type='float',default=0,help='ignore scores below this when computing popularity for baseline recommender (default: %default)')
     parser.add_option('--packer',dest='packer',default='json',help='packer for IPython.parallel (default: %default)')
@@ -101,6 +106,9 @@ def main():
             raise SystemExit('unknown metric: {0}'.format(opts.metric))
     elif opts.model == 'wrmf':
         model = WRMFRecommender(d=opts.num_factors,alpha=opts.alpha,lbda=opts.lbda,num_iters=opts.als_iters)
+    elif opts.model == 'warp':
+        num_factors_per_engine = max(opts.num_factors/opts.num_engines,1)
+        model = WARPMFRecommender(d=num_factors_per_engine,gamma=opts.gamma,C=opts.C,max_iters=opts.sgd_iters)
     else:
         parser.print_help()
         raise SystemExit('unknown model type: {0}'.format(opts.model))
@@ -112,6 +120,10 @@ def main():
             runner = WRMFRunner()
             factorsdir = get_factorsdir(trainfile,opts.outdir)
             runner.run(view,model,opts.input_format,trainfile,opts.num_engines,factorsdir,modelfile)
+        elif opts.model == 'warp':
+            runner = WARPMFRunner()
+            modelsdir = get_modelsdir(trainfile,opts.outdir)
+            runner.run(view,model,opts.input_format,trainfile,opts.num_engines,modelsdir,opts.overwrite,modelfile)
         else:
             runner = ItemSimilarityRunner()
             simsdir = get_simsdir(trainfile,opts.outdir)

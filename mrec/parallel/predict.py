@@ -17,12 +17,12 @@ def run(task):
 
     # initialise the model
     model = load_recommender(modelfile)
-    dataset = load_sparse_matrix(input_format,trainfile)
 
     outfile = os.path.join(outdir,'recs.{0}-{1}.tsv'.format(start,end))
 
     if generate:
         # generate recommendations for our batch of users
+        dataset = load_sparse_matrix(input_format,trainfile)
         out = open(outfile,'w')
         recs = model.range_recommend_items(dataset,start,end,max_items=20,return_scores=True)
         for u,items in zip(xrange(start,end),recs):

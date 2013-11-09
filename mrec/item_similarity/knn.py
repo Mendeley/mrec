@@ -21,14 +21,14 @@ class KNNRecommender(ItemSimilarityRecommender):
     def __init__(self,k):
         self.k = k
 
-    def compute_similarities(self,j):
-        A = self.dataset.X
-        a = self.dataset.fast_get_col(j)
+    def compute_similarities(self,dataset,j):
+        A = dataset.X
+        a = dataset.fast_get_col(j)
         d = self.compute_all_similarities(A,a)
         d[j] = 0  # zero out self-similarity
         # now zero out similarities for all but top-k items
         nn = d.argsort()[-1:-1-self.k:-1]
-        w = np.zeros(self.num_items)
+        w = np.zeros(A.shape[1])
         w[nn] = d[nn]
         return w
 
@@ -113,9 +113,8 @@ if __name__ == '__main__':
     print 'computing some item similarities...'
     print 'item\tsim\tweight'
     # if we want we can compute these individually without calling fit()
-    model._init(dataset)
     for i in random.sample(xrange(num_items),num_samples):
-        for j,weight in model.get_similar_items(i,max_similar_items=2):
+        for j,weight in model.get_similar_items(i,max_similar_items=2,dataset=dataset):
             output(i,j,weight)
 
     print 'learning entire similarity matrix...'
@@ -125,18 +124,18 @@ if __name__ == '__main__':
     print 'making some recommendations...'
     print 'user\trec\tscore'
     for u in random.sample(xrange(num_users),num_samples):
-        for i,score in model.recommend_items(dataset,u,max_items=10):
+        for i,score in model.recommend_items(dataset.X,u,max_items=10):
             output(u,i,score)
 
     print 'making batch recommendations...'
-    recs = model.batch_recommend_items(dataset)
+    recs = model.batch_recommend_items(dataset.X)
     for u in xrange(num_users):
         for i,score in recs[u]:
             output(u,i,score)
 
     print 'making range recommendations...'
     for start,end in [(0,2),(2,3)]:
-        recs = model.range_recommend_items(dataset,start,end)
+        recs = model.range_recommend_items(dataset.X,start,end)
         for u in xrange(start,end):
             for i,score in recs[u-start]:
                 output(u,i,score)

@@ -1,12 +1,15 @@
 #!/usr/bin/python
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+
+from Cython.Distutils import build_ext
+import numpy
 
 with open('README.rst') as f:
     long_description = f.read()
 
 setup(packages=find_packages(),
-      version='0.1.3',
+      version='0.2.0',
       maintainer='Mark Levy',
       name='mrec',
       package_dir={'':'.'},
@@ -21,7 +24,7 @@ setup(packages=find_packages(),
                    'Operating System :: Unix',
                    'Programming Language :: Python',
                    'Topic :: Scientific/Engineering',],
-      install_requires=['numpy','scipy','scikit-learn','ipython'],
+      install_requires=['numpy','scipy','scikit-learn','ipython','cython'],
       entry_points={
           'console_scripts':[
               'mrec_prepare = mrec.examples.prepare:main',
@@ -31,4 +34,10 @@ setup(packages=find_packages(),
               'mrec_tune = mrec.examples.tune_slim:main',
               'mrec_convert = mrec.examples.convert:main',
               'mrec_factors = mrec.examples.factors:main',
-          ]})
+          ]},
+      cmdclass={'build_ext':build_ext},
+      ext_modules=[Extension('warp_fast',
+                             sources=['mrec/mf/warp_fast.pyx'],
+                             include_dirs=[numpy.get_include()]),
+                  ]
+)

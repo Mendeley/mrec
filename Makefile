@@ -20,12 +20,12 @@ clean:
 
 # Tests...
 #
-test-code: in
+test-code:
 	$(NOSETESTS) -s mrec
 
 test-coverage:
 	$(NOSETESTS) -s --with-coverage --cover-html --cover-html-dir=coverage \
 	--cover-package=mrec mrec
 
-test: test-code test-doc
+test: test-code
 

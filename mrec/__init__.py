@@ -1,3 +1,4 @@
+from itertools import izip
 import numpy as np
 from scipy.sparse import coo_matrix, csr_matrix
 from scipy.io import mmread, mmwrite
@@ -52,9 +53,9 @@ def load_sparse_matrix(input_format,filepath):
         The file to load.
     """
     if input_format == 'tsv':
-        return loadtxt(filepath).tocsr()
+        return loadtxt(filepath)
     elif input_format == 'csv':
-        return loadtxt(filepath,delimiter=',').tocsr()
+        return loadtxt(filepath,delimiter=',')
     elif input_format == 'mm':
         return mmread(filepath).tocsr()
     elif input_format == 'npz':
@@ -65,9 +66,10 @@ def load_sparse_matrix(input_format,filepath):
 
 def save_sparse_matrix(data,fmt,filepath):
     """
-    Save a scipy sparse matrix in the specified format.  Row and column
+    Save a scipy sparse matrix in the specified format. Row and column
     indices will be converted to 1-indexed if you specify a plain text
-    format (tsv, csv, mm).
+    format (tsv, csv, mm). Note that zero entries are guaranteed to be
+    saved in tsv or csv format.
 
     Parameters
     ----------
@@ -83,21 +85,21 @@ def save_sparse_matrix(data,fmt,filepath):
         The file to load.
     """
     if fmt == 'tsv':
-        row,col = data.nonzero()
-        out = open(filepath,'w')
-        for u,i,v in izip(row,col,data.data):
-            print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,v)
+        m = data.tocoo()
+        with open(filepath,'w') as out:
+            for u,i,v in izip(m.row,m.col,m.data):
+                print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,v)
     elif fmt == 'csv':
-        row,col = data.nonzero()
-        out = open(filepath,'w')
-        for u,i,v in izip(row,col,data.data):
-            print >>out,'{0},{1},{2}'.format(u+1,i+1,v)
+        m = data.tocoo()
+        with open(filepath,'w') as out:
+            for u,i,v in izip(m.row,m.col,m.data):
+                print >>out,'{0},{1},{2}'.format(u+1,i+1,v)
     elif fmt == 'mm':
         mmwrite(filepath,data)
     elif fmt == 'npz':
         return savez(data,filepath)
     elif fmt == 'fsm':
-        fast_sparse_matrix.load(dataset).save(filepath)
+        fast_sparse_matrix(data).save(filepath)
     else:
         raise ValueError('unknown output format: {0}'.format(fmt))
 
@@ -109,6 +111,8 @@ def save_recommender(model,filepath):
 
     Parameters
     ----------
+    model : mrec.base_recommender.BaseRecommender
+        The recommender to save.
     filepath : str
         The filepath to write to.
     """

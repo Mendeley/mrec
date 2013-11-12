@@ -32,7 +32,7 @@ def loadtxt(filepath,comments='#',delimiter=None,skiprows=0,usecols=None,index_o
 
     Returns
     -------
-    mat : scipy.sparse.coo_matrix
+    mat : scipy.sparse.csr_matrix
         The sparse matrix.
     """
     d = np.loadtxt(filepath,comments=comments,delimiter=delimiter,skiprows=skiprows,usecols=usecols)
@@ -42,7 +42,7 @@ def loadtxt(filepath,comments='#',delimiter=None,skiprows=0,usecols=None,index_o
     col = d[:,1]-index_offset
     data = d[:,2]
     shape = (max(row)+1,max(col)+1)
-    return coo_matrix((data,(row,col)),shape=shape)
+    return csr_matrix((data,(row,col)),shape=shape)
 
 def savez(d,file):
     """

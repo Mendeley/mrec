@@ -4,6 +4,7 @@ from sklearn.utils.testing import assert_equal
 from sklearn.utils.testing import assert_array_equal
 
 from mrec.testing import get_random_coo_matrix
+from mrec.testing import assert_sparse_matrix_equal
 
 from mrec.sparse import loadtxt
 from mrec.sparse import savez
@@ -18,7 +19,7 @@ def test_loadtxt():
             print >>f,'{0}\t{1}\t{2}'.format(i+1,j+1,v)
     Y = loadtxt(path)
     os.remove(path)
-    assert_array_equal(X.toarray(),Y.toarray())
+    assert_sparse_matrix_equal(X,Y)
 
 def test_savez_loadz():
     m = get_random_coo_matrix()
@@ -47,16 +48,16 @@ def test_fast_get_col():
 def test_fast_update_col():
     X = get_random_coo_matrix().tocsc()
     m = fast_sparse_matrix(X)
-    rows,cols = X.shape
+    cols = X.shape[1]
     for j in xrange(cols):
-        col = m.fast_get_col(j)
-        new_vals = []
-        for i in X[:,j].indices:
-            new_vals.append(X[i,j]+1)
-        m.fast_update_col(j,new_vals)
+        vals = m.fast_get_col(j).data
+        if (vals==0).all():
+            continue
+        vals[vals!=0] += 1
+        m.fast_update_col(j,vals)
         expected = X[:,j].toarray()
         for i in xrange(expected.shape[0]):
-            if expected[i] > 0:
+            if expected[i] != 0:
                 expected[i] += 1
         assert_array_equal(m.fast_get_col(j).toarray(),expected)
 

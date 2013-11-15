@@ -2,6 +2,7 @@
 Sparse data structures and convenience methods to load sparse matrices from file.
 """
 
+import random
 import numpy as np
 from scipy.sparse import csr_matrix, coo_matrix
 from scipy.io import mmread
@@ -90,13 +91,15 @@ class fast_sparse_matrix(object):
     For other functionality you are expected to
     call methods on the underlying csr_matrix:
 
-        fsm = fast_sparse_matrix(data) # data is a csr_matrix
-        col = fsm.fast_get_col(2)      # get a column quickly
-        row = fsm.X[1]                 # get a row as usual
+    >>> fsm = fast_sparse_matrix(data) # data is a csr_matrix
+    >>> col = fsm.fast_get_col(2)      # get a column quickly
+    >>> row = fsm.X[1]                 # get a row as usual
     """
     def __init__(self,X,col_view=None):
         """
-        Create a fast_sparse_matrix from a csr_matrix X.
+        Create a fast_sparse_matrix from a csr_matrix X. Note
+        that X is not copied and its values will be modified by
+        any subsequent call to fast_update_col().
 
         Parameters
         ----------
@@ -158,6 +161,47 @@ class fast_sparse_matrix(object):
         """
         dataptr = self.col_view[:,j].data
         self.X.data[dataptr] = vals
+
+    def ensure_sparse_cols(self,max_density,remove_lowest=True):
+        """
+        Ensure that no column of the matrix excess the specified
+        density, setting excess entries to zero where necessary.
+
+        This can be useful to avoid popularity bias in collaborative
+        filtering, by pruning the number of users for popular items:
+
+        >>> num_users,num_items = train.shape
+        >>> f = fast_sparse_matrix(train)
+        >>> f.ensure_sparse_cols(max_density=0.01)
+
+        Now any item in train has non-zero ratings from at most 1% of users.
+
+        Parameters
+        ----------
+        max_density : float
+            The highest allowable column-wise density. A value of one
+            or more is treated as an absolute limit on the number of
+            non-zero entries in a column, while a value of less than
+            one is treated as a density i.e. a proportion of the overall
+            number of rows.
+        remove_lowest : boolean (default: True)
+            If true then excess entries to be set to zero in a column are
+            chosen lowest first, otherwise they are selected randomly.
+        """
+        if max_density >= 1:
+            max_nnz = int(max_density)
+        else:
+            max_nnz = int(max_density*self.shape[0])
+        for j in xrange(self.shape[1]):
+            col = self.fast_get_col(j)
+            excess = col.nnz - max_nnz
+            if excess > 0:
+                if remove_lowest:
+                    zero_entries = np.argsort(col.data)[:excess]
+                else:
+                    zero_entries = random.sample(xrange(col.nnz),excess)
+                col.data[zero_entries] = 0
+                self.fast_update_col(j,col.data)
 
     def save(self,filepath):
         """

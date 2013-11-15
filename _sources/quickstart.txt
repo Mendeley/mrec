@@ -65,7 +65,7 @@ ratings run from 1 to 5 stars, so let's only put items in our test set if they h
 We also have to decide how many of the items rated by each user we should put in the test set.  Selecting
 too few test items means that we leave plenty of ratings for our recommender to learn from, but our evaluation
 scores are likely to be low (as there are few "correct" test items that can be predicted) so may not give
-us a very clear picture of whether one recommender is etter than another.  Selecting too many test items means
+us a very clear picture of whether one recommender is better than another.  Selecting too many test items means
 that we don't leave enough training data for our recommender to learn anything.  For now let's put roughly
 half of the movies that each user liked into the test set.
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrec Package &mdash; mrec 0.2.0 documentation</title>
+    <title>mrec Package &mdash; mrec 0.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.0',
+        VERSION:     '0.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.0 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.1 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="api.html" />
     <link rel="next" title="evaluation Package" href="mrec.evaluation.html" />
     <link rel="prev" title="API documentation" href="api.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="api.html" title="API documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.1 documentation</a> &raquo;</li>
           <li><a href="api.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>
@@ -114,10 +114,11 @@ zero entries in a given column.  Trying to
 set other entries will result in an error.</p>
 <p>For other functionality you are expected to
 call methods on the underlying csr_matrix:</p>
-<blockquote>
-<div>fsm = fast_sparse_matrix(data) # data is a csr_matrix
-col = fsm.fast_get_col(2)      # get a column quickly
-row = fsm.X[1]                 # get a row as usual</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">fast_sparse_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c"># data is a csr_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">col</span> <span class="o">=</span> <span class="n">fsm</span><span class="o">.</span><span class="n">fast_get_col</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>      <span class="c"># get a column quickly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">fsm</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>                 <span class="c"># get a row as usual</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -125,42 +126,131 @@ row = fsm.X[1]                 # get a row as usual</div></blockquote>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.fast_get_col" title="mrec.sparse.fast_sparse_matrix.fast_get_col"><tt class="xref py py-obj docutils literal"><span class="pre">fast_get_col</span></tt></a>(j)</td>
-<td>Return column j.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.ensure_sparse_cols" title="mrec.sparse.fast_sparse_matrix.ensure_sparse_cols"><tt class="xref py py-obj docutils literal"><span class="pre">ensure_sparse_cols</span></tt></a>(max_density[,&nbsp;remove_lowest])</td>
+<td>Ensure that no column of the matrix excess the specified density, setting excess entries to zero where necessary.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.fast_update_col" title="mrec.sparse.fast_sparse_matrix.fast_update_col"><tt class="xref py py-obj docutils literal"><span class="pre">fast_update_col</span></tt></a>(j,&nbsp;vals)</td>
-<td>Update values of existing non-zeros in column j.</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.fast_get_col" title="mrec.sparse.fast_sparse_matrix.fast_get_col"><tt class="xref py py-obj docutils literal"><span class="pre">fast_get_col</span></tt></a>(j)</td>
+<td>Return column j of the underlying matrix.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.load" title="mrec.sparse.fast_sparse_matrix.load"><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt></a>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.fast_update_col" title="mrec.sparse.fast_sparse_matrix.fast_update_col"><tt class="xref py py-obj docutils literal"><span class="pre">fast_update_col</span></tt></a>(j,&nbsp;vals)</td>
+<td>Update values of existing non-zeros in column of the underlying matrix.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.load" title="mrec.sparse.fast_sparse_matrix.load"><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt></a>(filepath)</td>
 <td>Load a fast_sparse_matrix from file written by fast_sparse_matrix.save().</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.loadmm" title="mrec.sparse.fast_sparse_matrix.loadmm"><tt class="xref py py-obj docutils literal"><span class="pre">loadmm</span></tt></a>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.loadmm" title="mrec.sparse.fast_sparse_matrix.loadmm"><tt class="xref py py-obj docutils literal"><span class="pre">loadmm</span></tt></a>(filepath)</td>
 <td>Create a fast_sparse_matrix from matrixmarket data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.loadtxt" title="mrec.sparse.fast_sparse_matrix.loadtxt"><tt class="xref py py-obj docutils literal"><span class="pre">loadtxt</span></tt></a>(filepath[,&nbsp;comments,&nbsp;delimiter,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.loadtxt" title="mrec.sparse.fast_sparse_matrix.loadtxt"><tt class="xref py py-obj docutils literal"><span class="pre">loadtxt</span></tt></a>(filepath[,&nbsp;comments,&nbsp;delimiter,&nbsp;...])</td>
 <td>Create a fast_sparse_matrix from simply formatted data such as TSV, handles</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.save" title="mrec.sparse.fast_sparse_matrix.save"><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt></a>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.sparse.fast_sparse_matrix.save" title="mrec.sparse.fast_sparse_matrix.save"><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt></a>(filepath)</td>
 <td>Save to file as arrays in numpy binary format.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
+<dt id="mrec.sparse.fast_sparse_matrix.ensure_sparse_cols">
+<tt class="descname">ensure_sparse_cols</tt><big>(</big><em>max_density</em>, <em>remove_lowest=True</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.ensure_sparse_cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure that no column of the matrix excess the specified
+density, setting excess entries to zero where necessary.</p>
+<p>This can be useful to avoid popularity bias in collaborative
+filtering, by pruning the number of users for popular items:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">num_users</span><span class="p">,</span><span class="n">num_items</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">shape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">fast_sparse_matrix</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">ensure_sparse_cols</span><span class="p">(</span><span class="n">max_density</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now any item in train has non-zero ratings from at most 1% of users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>max_density</strong> : float</p>
+<blockquote>
+<div><p>The highest allowable column-wise density. A value of one
+or more is treated as an absolute limit on the number of
+non-zero entries in a column, while a value of less than
+one is treated as a density i.e. a proportion of the overall
+number of rows.</p>
+</div></blockquote>
+<p><strong>remove_lowest</strong> : boolean (default: True)</p>
+<blockquote class="last">
+<div><p>If true then excess entries to be set to zero in a column are
+chosen lowest first, otherwise they are selected randomly.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="mrec.sparse.fast_sparse_matrix.fast_get_col">
 <tt class="descname">fast_get_col</tt><big>(</big><em>j</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.fast_get_col" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return column j.</p>
+<dd><p>Return column j of the underlying matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : int</p>
+<blockquote>
+<div><p>Index of column to get.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>col</strong> : scipy.sparse.csc_matrix</p>
+<blockquote class="last">
+<div><p>Copy of column j of the matrix.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="mrec.sparse.fast_sparse_matrix.fast_update_col">
 <tt class="descname">fast_update_col</tt><big>(</big><em>j</em>, <em>vals</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.fast_update_col" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update values of existing non-zeros in column j.</p>
+<dd><p>Update values of existing non-zeros in column
+of the underlying matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : int</p>
+<blockquote>
+<div><p>Index of the column to update.</p>
+</div></blockquote>
+<p><strong>vals</strong> : array like</p>
+<blockquote class="last">
+<div><p>The new values to be assigned, must satisfy
+len(vals) == X[:,j].nnz i.e. this method can
+only change the value of existing non-zero entries
+of column j, it cannot add new ones.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="mrec.sparse.fast_sparse_matrix.load">
 <em class="property">static </em><tt class="descname">load</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a fast_sparse_matrix from file written by fast_sparse_matrix.save().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The filepath to load.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -172,8 +262,14 @@ row = fsm.X[1]                 # get a row as usual</div></blockquote>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : file or str</p>
-<blockquote class="last">
+<blockquote>
 <div><p>The matrixmarket file to read.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mat</strong> : mrec.sparse.fast_sparse_matrix</p>
+<blockquote class="last">
+<div><p>A fast_sparse_matrix holding the data in the file.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -213,10 +309,16 @@ will extract the 2nd, 5th and 6th columns. The default, None, results in all
 columns being read.</p>
 </div></blockquote>
 <p><strong>index_offset</strong> : int, optional</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Offset applied to the row and col indices in the input data (default: 1).
 The default offset is chosen so that 1-indexed data on file results in a
 fast_sparse_matrix holding 0-indexed matrices.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mat</strong> : mrec.sparse.fast_sparse_matrix</p>
+<blockquote class="last">
+<div><p>A fast_sparse_matrix holding the data in the file.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -228,6 +330,18 @@ fast_sparse_matrix holding 0-indexed matrices.</p>
 <dt id="mrec.sparse.fast_sparse_matrix.save">
 <tt class="descname">save</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.fast_sparse_matrix.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save to file as arrays in numpy binary format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The filepath to write to.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -277,7 +391,7 @@ fast_sparse_matrix holding 0-indexed matrices.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mat</strong> : scipy.sparse.coo_matrix</p>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mat</strong> : scipy.sparse.csr_matrix</p>
 <blockquote class="last">
 <div><p>The sparse matrix.</p>
 </div></blockquote>
@@ -289,15 +403,21 @@ fast_sparse_matrix holding 0-indexed matrices.</p>
 
 <dl class="function">
 <dt id="mrec.sparse.loadz">
-<tt class="descclassname">mrec.sparse.</tt><tt class="descname">loadz</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.loadz" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrec.sparse.</tt><tt class="descname">loadz</tt><big>(</big><em>file</em><big>)</big><a class="headerlink" href="#mrec.sparse.loadz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a sparse matrix saved to file with savez.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>file</strong> : str</p>
+<blockquote>
+<div><p>The open file or filepath to read from.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mat</strong> : scipy.sparse.coo_matrix</p>
 <blockquote class="last">
-<div><p>The filepath to read from.</p>
+<div><p>The sparse matrix.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -307,7 +427,7 @@ fast_sparse_matrix holding 0-indexed matrices.</p>
 
 <dl class="function">
 <dt id="mrec.sparse.savez">
-<tt class="descclassname">mrec.sparse.</tt><tt class="descname">savez</tt><big>(</big><em>d</em>, <em>filepath</em><big>)</big><a class="headerlink" href="#mrec.sparse.savez" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrec.sparse.</tt><tt class="descname">savez</tt><big>(</big><em>d</em>, <em>file</em><big>)</big><a class="headerlink" href="#mrec.sparse.savez" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a sparse matrix to file in numpy binary format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -317,9 +437,11 @@ fast_sparse_matrix holding 0-indexed matrices.</p>
 <blockquote>
 <div><p>The sparse matrix to save.</p>
 </div></blockquote>
-<p><strong>filepath</strong> : str</p>
+<p><strong>file</strong> : str or file</p>
 <blockquote class="last">
-<div><p>The filepath to write to.</p>
+<div><p>Either the file name (string) or an open file (file-like object)
+where the matrix will be saved. If file is a string, the <tt class="docutils literal"><span class="pre">.npz</span></tt>
+extension will be appended to the file name if it is not already there.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -648,7 +770,7 @@ just a list of idxs.</p>
         <li class="right" >
           <a href="api.html" title="API documentation"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.1 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>

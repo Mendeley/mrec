@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Training a recommender &mdash; mrec 0.2.0 documentation</title>
+    <title>Training a recommender &mdash; mrec 0.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.0',
+        VERSION:     '0.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.0 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.1 documentation" href="index.html" />
     <link rel="next" title="Making and evaluating recommendations" href="evaluation.html" />
     <link rel="prev" title="Preparing training data" href="preparation.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="preparation.html" title="Preparing training data"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -111,12 +111,19 @@ Options:
   --max_sims=MAX_SIMS   max similar items to output for each training item
                         (default: 100)</pre>
 </div>
+<p><tt class="docutils literal"><span class="pre">mrec_train</span></tt> currently supports five types of recommender:</p>
+<ul class="simple">
+<li><cite>knn</cite> learns a traditional k-nearest neighbours item similarity model</li>
+<li><cite>slim</cite> specifies a SLIM model which learns item similarities by solving a regression problem</li>
+<li><cite>wrmf</cite> fits a confidence-weighted matrix factorization model</li>
+<li><cite>warp</cite> trains a model that optimizes a ranking loss</li>
+<li><cite>popularity</cite> is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.</li>
+</ul>
 <p>The <tt class="docutils literal"><span class="pre">--train</span></tt> input file for training can hold the user-item matrix in a variety of formats.
 You can specify more than one input file by passing a standard unix file glob
 containing the * wildcard, for example specifying <cite>&#8211;train ml100-k/u.train.*</cite> will
 train separate models for <cite>ml-100k/u.train.0</cite>, <cite>ml-100k/u.train.1</cite> and so on.
 This can be useful if you&#8217;re doing cross-validation.</p>
-<p><tt class="docutils literal"><span class="pre">mrec_train</span></tt> currently supports four types of recommender: <cite>knn</cite> learns a traditional k-nearest neighbours item similarity model; <cite>slim</cite> specifies a SLIM model which learns item similarities by solving a regression problem; <cite>wrmf</cite> fits a confidence-weighted matrix factorization model; and <cite>popularity</cite> is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All input training files must have the same data format.</p>
@@ -127,7 +134,8 @@ recommender will be saved in the file <cite>u.train.0.model.npz</cite>, and so o
 <p>The saved model
 can be passed to the <tt class="docutils literal"><span class="pre">mrec_predict</span></tt> script as described in <a class="reference internal" href="evaluation.html#evaluation"><em>Making and evaluating recommendations</em></a>, or used programmatically like
 this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">train</span> <span class="o">=</span> <span class="n">load_sparse_matrix</span><span class="p">(</span><span class="s">&#39;tsv&#39;</span><span class="p">,</span><span class="s">&#39;u.train.0&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mrec</span> <span class="kn">import</span> <span class="n">load_sparse_matrix</span><span class="p">,</span> <span class="n">load_recommender</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train</span> <span class="o">=</span> <span class="n">load_sparse_matrix</span><span class="p">(</span><span class="s">&#39;tsv&#39;</span><span class="p">,</span><span class="s">&#39;u.train.0&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">load_recommender</span><span class="p">(</span><span class="s">&#39;u.train.0.model.npz&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sims</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_similar_items</span><span class="p">(</span><span class="mi">231</span><span class="p">)</span>  <span class="c"># get items similar to 231</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommend_items</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="n">max_items</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>  <span class="c"># recommend top 30 items for user 101</span>
@@ -234,7 +242,7 @@ usually a problem with production size datasets.</p>
         <li class="right" >
           <a href="preparation.html" title="Preparing training data"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

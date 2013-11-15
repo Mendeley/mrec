@@ -46,6 +46,8 @@ class ItemSimilarityRecommender(BaseRecommender):
 
     def load_similarity_matrix(self,filepath,num_items,offset=1):
         """
+        Load a precomputed similarity matrix.
+
         Parameters
         ==========
         filepath : str

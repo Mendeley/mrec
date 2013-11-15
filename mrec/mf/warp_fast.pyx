@@ -50,18 +50,22 @@ def warp_sample(np.ndarray[np.float_t,ndim=2] U,
         Sampled negative item.
     N : int
         Number of negative items that had to be sampled to find a violating one.
+    tot_trials : int
+        Total number of trials taken to find a sample.
     """
 
-    cdef unsigned int num_users, u, ix, i, N
+    cdef unsigned int num_users, u, ix, i, N, tot_trials
     cdef int j
 
     num_users = U.shape[0]
+    tot_trials = 0
 
     while True:
         u,ix,i = sample_positive_example(positive_thresh,num_users,vals,indices,indptr)
         j,N = sample_violating_negative_example(U,V,vals,indices,indptr[u],indptr[u+1],u,ix,i,max_trials)
+        tot_trials += N
         if j >= 0:
-            return u,i,j,N
+            return u,i,j,N,tot_trials
 
 cpdef sample_violating_negative_example(np.ndarray[np.float_t,ndim=2] U,
                                         np.ndarray[np.float_t,ndim=2] V,
@@ -121,7 +125,7 @@ cpdef sample_violating_negative_example(np.ndarray[np.float_t,ndim=2] U,
             # found a violating pair
             return j,N
     # no violating pair found after max_trials, give up
-    return -1,0
+    return -1,max_trials
 
 cdef sample_negative_example(num_items,
                              np.ndarray[np.float_t,ndim=1] vals,

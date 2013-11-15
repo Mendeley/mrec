@@ -1,13 +1,9 @@
-"""
-Metrics to evaluate recommendations:
-* with hit rate, following e.g. Karypis lab SLIM and FISM papers
-* with prec@k and MRR
-"""
+from sklearn.utils.testing import assert_equal
+from sklearn.utils.testing import assert_array_equal
 
-import numpy as np
-from collections import defaultdict
+from mrec.testing import get_random_coo_matrix
 
-# classes to access known items for each test user
+from mrec.evaluation.metrics import sort_metrics_by_name
 
 class get_known_items_from_dict(object):
 
@@ -36,13 +32,6 @@ class get_known_items_from_thresholded_csr_matrix(object):
         items[items<self.min_value] = 0
         return items.nonzero()
 
-# methods to refit a model to a new training dataset
-
-def retrain_recommender(model,dataset):
-    model.fit(dataset)
-
-# methods for metric computation itself
-
 def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
     """
     This is the main entry point to run an evaluation.
@@ -66,32 +55,10 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
                 metrics[i][m].append(val)
     return metrics
 
-def generate_metrics(get_known_items,compute_metrics):
-    def evaluation_func(model,train,users,test):
-        return evaluate(model,train,users,get_known_items(test),compute_metrics)
-    return evaluation_func
-
-def sort_metrics_by_name(names):
-    # group by name and number in "@n"
-    prefix2val = defaultdict(list)
-    for name in names:
-        parts = name.split('@')
-        name = parts[0]
-        if len(parts) > 1:
-            val = int(parts[1])
-            prefix2val[name].append(val)
-        else:
-            prefix2val[name] = []
-    for name,vals in prefix2val.iteritems():
-        prefix2val[name] = sorted(vals)
-    ret = []
-    for name,vals in sorted(prefix2val.iteritems()):
-        if vals:
-            for val in vals:
-                ret.append('{0}@{1}'.format(name,val))
-        else:
-            ret.append(name)
-    return ret
+def test_sort_metrics_by_name():
+    names = ['recall@10','z-score','auc','recall@5']
+    expected = ['auc','recall@5','recall@10','z-score']
+    assert_equal(expected,sort_metrics_by_name(names))
 
 def print_report(models,metrics):
     """

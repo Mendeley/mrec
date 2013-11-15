@@ -9,7 +9,7 @@ with open('README.rst') as f:
     long_description = f.read()
 
 setup(packages=find_packages(),
-      version='0.2.0',
+      version='0.2.1',
       maintainer='Mark Levy',
       name='mrec',
       package_dir={'':'.'},

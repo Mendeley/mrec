@@ -26,13 +26,19 @@ Here are the basic options for ``mrec_train``::
       --max_sims=MAX_SIMS   max similar items to output for each training item
                             (default: 100)
 
+``mrec_train`` currently supports five types of recommender:
+
+- `knn` learns a traditional k-nearest neighbours item similarity model
+- `slim` specifies a SLIM model which learns item similarities by solving a regression problem
+- `wrmf` fits a confidence-weighted matrix factorization model
+- `warp` trains a model that optimizes a ranking loss
+- `popularity` is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.
+
 The ``--train`` input file for training can hold the user-item matrix in a variety of formats.
 You can specify more than one input file by passing a standard unix file glob
 containing the * wildcard, for example specifying `--train ml100-k/u.train.*` will
 train separate models for `ml-100k/u.train.0`, `ml-100k/u.train.1` and so on.  
 This can be useful if you're doing cross-validation.
-
-``mrec_train`` currently supports four types of recommender: `knn` learns a traditional k-nearest neighbours item similarity model; `slim` specifies a SLIM model which learns item similarities by solving a regression problem; `wrmf` fits a confidence-weighted matrix factorization model; and `popularity` is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.
 
 .. note::
 
@@ -46,6 +52,7 @@ The saved model
 can be passed to the ``mrec_predict`` script as described in :ref:`evaluation`, or used programmatically like
 this::
 
+    >>> from mrec import load_sparse_matrix, load_recommender
     >>> train = load_sparse_matrix('tsv','u.train.0')
     >>> model = load_recommender('u.train.0.model.npz')
     >>> sims = model.get_similar_items(231)  # get items similar to 231

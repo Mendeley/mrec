@@ -1,3 +1,6 @@
+import numpy as np
+from scipy.sparse import csr_matrix
+
 class BaseRecommender(object):
     """
     Minimal interface to be implemented by recommenders.
@@ -86,3 +89,38 @@ class BaseRecommender(object):
         for u in xrange(user_start,user_end):
             recs.append(self.recommend_items(dataset,u,max_items,return_scores))
         return recs
+
+    def _zero_known_item_scores(self,r,train):
+        """
+        Helper function to set predicted scores/ratings for training items
+        to zero or less, to avoid recommending already known items.
+
+        Parameters
+        ==========
+        r : numpy.ndarray or scipy.sparse.csr_matrix
+            Predicted scores/ratings.
+        train : scipy.sparse.csr_matrix
+            The training user-item matrix, which can include zero-valued entries.
+
+        Returns
+        =======
+        r_safe : scipy.sparse.csr_matrix
+            r_safe is equal to r except that r[u,i] <= 0 for all u,i with entries
+            in train.
+        """
+        col = train.indices
+        if isinstance(r,csr_matrix):
+            max_score = r.data.max()
+        else:
+            max_score = r.max()
+        data = max_score * np.ones(col.shape)
+        # build up the row (user) indices
+        # - we can't just use row,col = train.nonzero() as this eliminates
+        #   u,i for which train[u,i] has been explicitly set to zero
+        row = np.zeros(col.shape)
+        for u in xrange(train.shape[0]):
+            start,end = train.indptr[u],train.indptr[u+1]
+            if end > start:
+                row[start:end] = u
+        return r - csr_matrix((data,(row,col)),shape=r.shape)
+

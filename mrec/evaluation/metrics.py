@@ -143,19 +143,62 @@ def compute_hit_rate(recommended,known):
 
 # individual metrics
 
-def prec(predicted,true,k):
+def prec(predicted,true,k,ignore_missing=False):
+    """
+    Compute precision@k.
+
+    Parameters
+    ==========
+    predicted : array like
+        Predicted items.
+    true : array like
+        True items.
+    k : int
+        Measure precision@k.
+    ignore_missing : boolean (default: False)
+        If True then measure precision only up to rank len(predicted)
+        even if this is less than k, otherwise assume that the missing
+        predictions were all incorrect
+    """
     if not predicted:
         return 0
     correct = len(set(predicted[:k]).intersection(set(true)))
+    num_predicted = k
+    if len(predicted) < k and ignore_missing:
+        num_predicted = len(predicted)
     return float(correct)/len(predicted[:k])
 
 def hit_rate(predicted,true,k):
+    """
+    Compute hit rate i.e. recall@k assume a single test item.
+
+    Parameters
+    ==========
+    predicted : array like
+        Predicted items.
+    true : array like
+        Containing the single true test item.
+    k : int
+        Measure hit rate@k.
+    """
     assert(len(true)==1)
     return int(true[0] in predicted[:k])
-    #return int(len(set(predicted[:k]).intersection(set(true)))>0)
 
 def mrr(predicted,true):
-    # TODO: NB we'll under report this as our predictions are truncated
+    """
+    Compute Mean Reciprocal Rank.
+
+    Parameters
+    ==========
+    predicted : array like
+        Predicted items.
+    true : array like
+        True items.
+
+    Notes
+    =====
+    We'll under report this as our predictions are truncated.
+    """
     for i,x in enumerate(predicted):
         if x in true:
             return 1.0/(i+1)

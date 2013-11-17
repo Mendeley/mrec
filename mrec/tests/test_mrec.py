@@ -43,7 +43,7 @@ def test_save_load_recommender():
     # TODO: likewise for U,V factors for an mf recommender
     pass
 
-def test_read_recommender_description(filepath):
+def test_read_recommender_description():
     """
     Read a recommender model description from file after it has
     been saved by save_recommender(), without loading all the

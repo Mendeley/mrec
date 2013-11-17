@@ -176,24 +176,7 @@ class ItemSimilarityRecommender(BaseRecommender):
             r = dataset * self.similarity_matrix.T
         except AttributeError:
             raise AttributeError('you must call fit() before trying to recommend items')
-        # make the predicted score for all known-items
-        # zero or less by substracting the max score from them
-        max_score = r.data.max()  # highest predicted score
-        row,col = dataset.nonzero()  # locations of known items
-        data = max_score * np.ones(row.shape)
-        r = r - csr_matrix((data,(row,col)),shape=r.shape)
-        num_users = r.shape[0]
-        recs = [[] for u in xrange(num_users)]
-        for u in xrange(num_users):
-            if show_progress and u%1000 == 0:
-               print u,'..',
-            if return_scores:
-                recs[u] = [(i,v) for v,i in sorted(izip(r[u,:].data,r[u,:].indices),reverse=True) if v > 0][:max_items]
-            else:
-                recs[u] = [i for v,i in sorted(izip(r[u,:].data,r[u,:].indices),reverse=True) if v > 0][:max_items]
-        if show_progress:
-            print
-        return recs
+        return self._get_recommendations_from_predictions(r,dataset,0,r.shape[0],max_items,return_scores,show_progress)
 
     def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
         """
@@ -219,23 +202,50 @@ class ItemSimilarityRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        data_subset = dataset[user_start:user_end,:]
         try:
-            r = data_subset * self.similarity_matrix.T
+            r = dataset[user_start:user_end,:] * self.similarity_matrix.T
         except AttributeError:
             raise AttributeError('you must call fit() before trying to recommend items')
-        # make the predicted score for all known-items
-        # zero or less by substracting the max score from them
-        max_score = r.data.max()  # highest predicted score
-        row,col = data_subset.nonzero()  # locations of known items
-        data = max_score * np.ones(row.shape)
-        r = r - csr_matrix((data,(row,col)),shape=r.shape)
+        return self._get_recommendations_from_predictions(r,dataset,user_start,user_end,max_items,return_scores)
+
+    def _get_recommendations_from_predictions(self,r,dataset,user_start,user_end,max_items,return_scores=True,show_progress=False):
+        """
+        Select recommendations given predicted scores/ratings.
+
+        Parameters
+        ==========
+        r : scipy.sparse.csr_matrix
+            Predicted scores/ratings for candidate items for users in supplied range.
+        dataset : scipy.sparse.csr_matrix
+            User-item matrix containing known items.
+        user_start : int
+            Index of first user in the range to recommend.
+        user_end : int
+            Index one beyond last user in the range to recommend.
+        max_items : int
+            Maximum number of recommended items to return.
+        return_scores : bool
+            If true return a score along with each recommended item.
+        show_progress: bool
+            If true print something to stdout to show progress.
+
+        Returns
+        =======
+        recs : list of lists
+            Each entry is a list of (idx,score) pairs if return_scores is True,
+            else just a list of idxs.
+        """
+        r = self._zero_known_item_scores(r,dataset[user_start:user_end,:])
         recs = [[] for u in xrange(user_start,user_end)]
         for u in xrange(user_start,user_end):
             ux = u - user_start
+            if show_progress and ux%1000 == 0:
+               print ux,'..',
             ru = r[ux,:]
             if return_scores:
                 recs[ux] = [(i,v) for v,i in sorted(izip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
             else:
                 recs[ux] = [i for v,i in sorted(izip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
+        if show_progress:
+            print
         return recs

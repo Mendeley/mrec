@@ -1,9 +1,26 @@
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 import numpy as np
 from scipy.sparse import csr_matrix
 
 class BaseRecommender(object):
     """
-    Minimal interface to be implemented by recommenders.
+    Minimal interface to be implemented by recommenders, along with
+    some helper methods. A concrete recommender must implement the
+    recommend_items() method and should provide its own implementation
+    of __str__() so that it can be identified when printing results.
+
+    Notes
+    =====
+    In most cases you should inherit from either
+    `mrec.mf.recommender.MatrixFactorizationRecommender` or
+    `mrec.item_similarity.recommender.ItemSimilarityRecommender`
+    and *not* directly from this class.
+
+    These provide more efficient implementations of save(), load()
+    and the batch methods to recommend items.
     """
 
     def recommend_items(self,dataset,u,max_items=10,return_scores=True):
@@ -27,7 +44,90 @@ class BaseRecommender(object):
             List of (idx,score) pairs if return_scores is True, else
             just a list of idxs.
         """
+        raise NotImplementedError('you must implement recommend_items()')
+
+    def save(self,filepath):
+        """
+        Serialize model to file.
+
+        Parameters
+        ==========
+        filepath : str
+            Filepath to write to.
+        """
+        archive = self._create_archive()
+        if archive:
+            np.savez(filepath,**archive)
+        else:
+            pickle.dump(self,open(filepath,'w'))
+
+    def _create_archive(self):
+        """
+        Optionally return a dict of fields to be serialized
+        in a numpy archive: this lets you store arrays efficiently
+        by separating them from the model itself.
+
+        Returns
+        =======
+        archive : dict
+            Fields to serialize, must include the model itself
+            under the key 'model'.
+        """
         pass
+
+    @staticmethod
+    def load(filepath):
+        """
+        Load a recommender model from file after it has been serialized with
+        save().
+
+        Parameters
+        ==========
+        filepath : str
+            The filepath to read from.
+        """
+        r = np.load(filepath)
+        if isinstance(r,BaseRecommender):
+            model = r
+        else:
+            model = np.loads(str(r['model']))
+            model._load_archive(r)  # restore any fields serialized separately
+        return model
+
+    def _load_archive(archive):
+        """
+        Load fields from a numpy archive.
+
+        Notes
+        =====
+        This is called by the static load() method and should be used
+        to restore the fields returned by _create_archive().
+        """
+        pass
+
+    @staticmethod
+    def read_recommender_description(filepath):
+        """
+        Read a recommender model description from file after it has
+        been saved by save(), without loading any additional
+        associated data into memory.
+
+        Parameters
+        ----------
+        filepath : str
+            The filepath to read from.
+        """
+        r = np.load(filepath,mmap_mode='r')
+        if isinstance(r,BaseRecommender):
+            model = r
+        else:
+            model = np.loads(str(r['model']))
+        return str(model)
+
+    def __str__(self):
+        if hasattr(self,'description'):
+            return self.description
+        return 'unspecified recommender: you should set self.description or implement __str__()'
 
     def batch_recommend_items(self,dataset,max_items=10,return_scores=True,show_progress=False):
         """
@@ -49,8 +149,12 @@ class BaseRecommender(object):
         recs : list of lists
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
+
+        Notes
+        =====
+        This provides a default implementation, you will be able to optimize
+        this for most recommenders.
         """
-        # default implementation, you may be able to optimize this for some recommenders.
         recs = []
         for u in xrange(self.num_users):
             if show_progress and u%1000 == 0:
@@ -83,12 +187,13 @@ class BaseRecommender(object):
         recs : list of lists
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
+
+        Notes
+        =====
+        This provides a default implementation, you will be able to optimize
+        this for most recommenders.
         """
-        # default implementation, you may be able to optimize this for some recommenders.
-        recs = []
-        for u in xrange(user_start,user_end):
-            recs.append(self.recommend_items(dataset,u,max_items,return_scores))
-        return recs
+        return [self.recommend_items(dataset,u,max_items,return_scores) for u in xrange(user_start,user_end)]
 
     def _zero_known_item_scores(self,r,train):
         """

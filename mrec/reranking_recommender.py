@@ -3,17 +3,69 @@ Recommender that gets candidates using an item similarity model
 and then reranks them using a matrix factorization model.
 """
 
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+import numpy as np
+
 from base_recommender import BaseRecommender
 
 class RerankingRecommender(BaseRecommender):
+    """
+    A secondary recommender that combines an item similarity
+    model and a matrix factorization one. The item similarity
+    model is used to select candidate items for each user which
+    are then reranked based on their latent factors.
 
-    def __init__(self,item_similarity_recommender,mf_recommender,num_candidates=200):
+    Parameters
+    ==========
+    item_similarity_recommender : mrec.item_similarity.recommender.ItemSimilarityRecommender
+        The model used to select candidates.
+    mf_recommender : mrec.mf.recommender.MatrixFactorizationRecommender
+        The model used to rerank them.
+    num_candidates : int (default: 100)
+        The number of candidate items drawn from the first model for each user.
+    """
+
+    def __init__(self,item_similarity_recommender,mf_recommender,num_candidates=100):
         self.item_similarity_recommender = item_similarity_recommender
         self.mf_recommender = mf_recommender
         self.num_candidates = num_candidates
+        self.description = 'RerankingRecommender({0},{1})'.format(self.item_similarity_recommender,self.mf_recommender)
 
-    def __str__(self):
-        return 'RerankingRecommender({0},{1})'.format(self.item_similarity_recommender,self.mf_recommender)
+    def _create_archive(self):
+        archive = self.item_similarity_recommender._create_archive()
+        archive['item_similarity_model'] = archive['model']
+        archive.update(self.mf_recommender._create_archive())
+        archive['mf_model'] = archive['model']
+        tmp = self.item_similarity_recommender,self.mf_recommender
+        self.item_similarity_model = self.mf_recommender = None
+        m = pickle.dumps(self)
+        self.item_similarity_model,self.mf_recommender = tmp
+        archive['model'] = m
+        return archive
+
+    def _load_archive(self,archive):
+        self.item_similarity_recommender = np.loads(str(archive['item_similarity_model']))
+        self.item_similarity_recommender._load_archive(archive)
+        self.mf_recommender = np.loads(str(archive['mf_model']))
+        self.mf_recommender._load_archive(archive)
+
+    def fit(self,train):
+        """
+        Fit both models to the training data.
+
+        train : scipy.sparse.csr_matrix
+            The training user-item matrix.
+
+        Notes
+        =====
+        You are not obliged to call this, alternatively you can pass
+        ready trained models to the RerankingRecommender constructor.
+        """
+        self.item_similarity_recommender.fit(train)
+        self.mf_recommender.fit(train)
 
     def rerank(self,u,candidates,max_items,return_scores):
         """
@@ -140,34 +192,13 @@ def main():
     # load training set as scipy sparse matrix
     train = load_sparse_matrix(file_format,filepath)
 
-    item_sim_model = CosineKNNRecommender(k=50)
-    item_sim_model.fit(train)
+    item_sim_model = CosineKNNRecommender(k=100)
+    mf_model = WARPMFRecommender(d=80,gamma=0.01,C=100.0,max_iters=25000,validation_iters=1000,batch_size=10)
+    recommender = RerankingRecommender(item_sim_model,mf_model,num_candidates=100)
 
-    mf_model = WARPMFRecommender(d=100,gamma=0.01,C=100.0,max_iters=15000,validation_iters=1000,batch_size=10)
-    mf_model.fit(train)
+    recommender.fit(train)
 
-    recommender = RerankingRecommender(item_sim_model,mf_model)
-
-    recs = recommender.batch_recommend_items(train,max_items=20)
-    recs2 = recommender.range_recommend_items(train,2,20,max_items=20)
-
-    for u in xrange(2,20):
-        knn = item_sim_model.recommend_items(train,u,max_items=20)
-        print 'cosine knn:'
-        for i,score in knn:
-            print '{0}\t{1}\t{2}'.format(u,i,score)
-        reranked = recommender.recommend_items(train,u,max_items=20)
-        print 'recs[u]'
-        print recs[u]
-        print 'reranked'
-        print reranked
-        print 'recs2[u-2]'
-        print recs2[u-2]
-        assert(reranked == recs[u])
-        assert(reranked == recs2[u-2])
-        print 'reranked:'
-        for i,score in reranked:
-            print '{0}\t{1}\t{2}'.format(u,i,score)
+    save_recommender(recommender,outfile)
 
 if __name__ == '__main__':
     main()

@@ -105,9 +105,7 @@ def save_sparse_matrix(data,fmt,filepath):
 
 def save_recommender(model,filepath):
     """
-    Save a recommender model to file.  If the model holds similarity matrix
-    then numpy.savez is used to save it to disk efficiently, otherwise the
-    model is simply pickled.
+    Save a recommender model to file.
 
     Parameters
     ----------
@@ -116,22 +114,7 @@ def save_recommender(model,filepath):
     filepath : str
         The filepath to write to.
     """
-    if hasattr(model,'similarity_matrix'):
-        # pickle the model without its similarity matrix
-        tmp = model.similarity_matrix
-        model.similarity_matrix = None
-        m = pickle.dumps(model)
-        # use numpy to save the similarity matrix efficiently
-        model.similarity_matrix = tmp
-        if isinstance(model.similarity_matrix,np.ndarray):
-            np.savez(filepath,mat=model.similarity_matrix,model=m)
-        elif isinstance(model.similarity_matrix,csr_matrix):
-            d = model.similarity_matrix.tocoo(copy=False)
-            np.savez(filepath,row=d.row,col=d.col,data=d.data,shape=d.shape,model=m)
-        else:
-            pickle.dump(model,open(filepath,'w'))
-    else:
-        pickle.dump(model,open(filepath,'w'))
+    model.save(filepath)
 
 def load_recommender(filepath):
     """
@@ -143,19 +126,7 @@ def load_recommender(filepath):
     filepath : str
         The filepath to read from.
     """
-    r = np.load(filepath)
-    if isinstance(r,BaseRecommender):
-        model = r
-    else:
-        model = np.loads(str(r['model']))
-        if 'mat' in r.files:
-            model.similarity_matrix = r['mat']
-        elif 'row' in r.files:
-            model.similarity_matrix = coo_matrix((r['data'],(r['row'],r['col'])),shape=r['shape']).tocsr()
-        else:
-            raise IOError('ERROR: unexpected serialization format.'
-            'Was this file created with save_recommender()?')
-    return model
+    return BaseRecommender.load(filepath)
 
 def read_recommender_description(filepath):
     """
@@ -168,9 +139,4 @@ def read_recommender_description(filepath):
     filepath : str
         The filepath to read from.
     """
-    r = np.load(filepath,mmap_mode='r')
-    if isinstance(r,BaseRecommender):
-        model = r
-    else:
-        model = np.loads(str(r['model']))
-    return str(model)
+    return BaseRecommender.read_recommender_description(filepath)

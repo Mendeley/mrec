@@ -3,6 +3,10 @@ Base class for recommenders that work
 by matrix factorization.
 """
 
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 import numpy as np
 from itertools import izip
 from scipy.sparse import csr_matrix
@@ -13,6 +17,31 @@ class MatrixFactorizationRecommender(BaseRecommender):
     """
     Base class for matrix factorization recommenders.
     """
+
+    def _create_archive(self):
+        """
+        Return fields to be serialized in a numpy archive.
+
+        Returns
+        =======
+        archive : dict
+            Fields to serialize, includes the model itself
+            under the key 'model'.
+        """
+        # pickle the model without its factors
+        # then use numpy to save the factors efficiently
+        tmp = (self.U,self.V)
+        self.U = self.V = None
+        m = pickle.dumps(self)
+        self.U,self.V = tmp
+        return {'model':m,'U':self.U,'V':self.V}
+
+    def _load_archive(self,archive):
+        """
+        Load fields from a numpy archive.
+        """
+        self.U = archive['U']
+        self.V = archive['V']
 
     def __str__(self):
         if hasattr(self,'description'):

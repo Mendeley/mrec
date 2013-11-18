@@ -9,7 +9,7 @@ with open('README.rst') as f:
     long_description = f.read()
 
 setup(packages=find_packages(),
-      version='0.2.2',
+      version='0.2.3',
       maintainer='Mark Levy',
       name='mrec',
       package_dir={'':'.'},
@@ -17,7 +17,7 @@ setup(packages=find_packages(),
       description='mrec recommender systems library',
       long_description=long_description,
       url='https://github.com/mendeley/mrec',
-      download_url='https://github.com/mendeley/mrec/tarball/master#egg=mrec-0.2.2',
+      download_url='https://github.com/mendeley/mrec/tarball/master#egg=mrec-0.2.3',
       classifiers=['Development Status :: 4 - Beta',
                    'Environment :: Console',
                    'License :: OSI Approved :: BSD License',

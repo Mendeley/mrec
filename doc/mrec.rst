@@ -17,6 +17,14 @@ mrec Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`reranking_recommender` Module
+------------------------------
+
+.. automodule:: mrec.reranking_recommender
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`base_recommender` Module
 ------------------------------
 

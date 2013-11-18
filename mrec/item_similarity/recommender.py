@@ -2,10 +2,14 @@
 Base class for item similarity recommenders.
 """
 
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 import numpy as np
 from itertools import izip
 from operator import itemgetter
-from scipy.sparse import csr_matrix
+from scipy.sparse import csr_matrix, coo_matrix
 
 from ..sparse import fast_sparse_matrix
 from ..base_recommender import BaseRecommender
@@ -44,9 +48,50 @@ class ItemSimilarityRecommender(BaseRecommender):
         idx = np.array([row,col],dtype='int32')
         self.similarity_matrix = csr_matrix((data,idx),(num_items,num_items))
 
+    def _create_archive(self):
+        """
+        Return fields to be serialized in a numpy archive.
+
+        Returns
+        =======
+        archive : dict
+            Fields to serialize, includes the model itself
+            under the key 'model'.
+        """
+        # pickle the model without its similarity matrix
+        # and use numpy to save the similarity matrix efficiently
+        tmp = self.similarity_matrix
+        self.similarity_matrix = None
+        m = pickle.dumps(self)
+        self.similarity_matrix = tmp
+        if isinstance(self.similarity_matrix,np.ndarray):
+            archive = {'mat':self.similarity_matrix,'model':m}
+        elif isinstance(self.similarity_matrix,csr_matrix):
+            d = self.similarity_matrix.tocoo(copy=False)
+            archive = {'row':d.row,'col':d.col,'data':d.data,'shape':d.shape,'model':m}
+        else:
+            # similarity matrix has unexpected type
+            archive = None
+        return archive
+
+    def _load_archive(self,archive):
+        """
+        Load fields from a numpy archive.
+        """
+        if 'mat' in archive.files:
+            self.similarity_matrix = archive['mat']
+        elif 'row' in archive.files:
+            data = archive['data']
+            row = archive['row']
+            col = archive['col']
+            shape = archive['shape']
+            self.similarity_matrix = coo_matrix((data,(row,col)),shape=shape).tocsr()
+        else:
+            raise IOError('unexpected serialization format, cannot find similarity matrix')
+
     def load_similarity_matrix(self,filepath,num_items,offset=1):
         """
-        Load a precomputed similarity matrix.
+        Load a precomputed similarity matrix from tsv.
 
         Parameters
         ==========

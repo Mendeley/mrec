@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mf Package &mdash; mrec 0.2.2 documentation</title>
+    <title>mf Package &mdash; mrec 0.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.2',
+        VERSION:     '0.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.2 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.3 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
     <link rel="next" title="parallel Package" href="mrec.parallel.html" />
     <link rel="prev" title="item_similarity Package" href="mrec.item_similarity.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="mrec.item_similarity.html" title="item_similarity Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -147,16 +147,25 @@ R. Pan et al., One-class collaborative filtering, ICDM 2008.
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.init_factors" title="mrec.mf.wrmf.WRMFRecommender.init_factors"><tt class="xref py py-obj docutils literal"><span class="pre">init_factors</span></tt></a>(num_factors[,&nbsp;assign_values])</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
 <td>Load precomputed user and item factors from file.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend up to max_items most highly recommended items for user u.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.update" title="mrec.mf.wrmf.WRMFRecommender.update"><tt class="xref py py-obj docutils literal"><span class="pre">update</span></tt></a>(indices,&nbsp;H,&nbsp;HH)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.update" title="mrec.mf.wrmf.WRMFRecommender.update"><tt class="xref py py-obj docutils literal"><span class="pre">update</span></tt></a>(indices,&nbsp;H,&nbsp;HH)</td>
 <td>Update latent factors for a single user or item.</td>
 </tr>
 </tbody>
@@ -276,17 +285,26 @@ to track model progress and enforce stopping condition.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.fit" title="mrec.mf.warp.WARPMFRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train)</td>
 <td>Learn factors from training set.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
 <td>Load precomputed user and item factors from file.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.mini_batch" title="mrec.mf.warp.WARPMFRecommender.mini_batch"><tt class="xref py py-obj docutils literal"><span class="pre">mini_batch</span></tt></a>(train)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.mini_batch" title="mrec.mf.warp.WARPMFRecommender.mini_batch"><tt class="xref py py-obj docutils literal"><span class="pre">mini_batch</span></tt></a>(train)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend up to max_items most highly recommended items for user u.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -394,14 +412,23 @@ by matrix factorization.</p>
 <tr class="row-even"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.fit" title="mrec.mf.recommender.MatrixFactorizationRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train)</td>
 <td>Learn user and item factors from training dataset.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.load_factors" title="mrec.mf.recommender.MatrixFactorizationRecommender.load_factors"><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt></a>(user_factor_filepath,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.load_factors" title="mrec.mf.recommender.MatrixFactorizationRecommender.load_factors"><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt></a>(user_factor_filepath,&nbsp;...)</td>
 <td>Load precomputed user and item factors from file.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items" title="mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items" title="mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items" title="mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend up to max_items most highly recommended items for user u.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -596,7 +623,7 @@ just a list of idxs.</p>
         <li class="right" >
           <a href="mrec.item_similarity.html" title="item_similarity Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

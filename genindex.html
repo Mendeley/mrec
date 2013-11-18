@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; mrec 0.2.2 documentation</title>
+    <title>Index &mdash; mrec 0.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.2',
+        VERSION:     '0.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.2 documentation" href="index.html" /> 
+    <link rel="top" title="mrec 0.2.3 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">mrec 0.2.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -109,6 +109,10 @@
 
         
   <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.batch_recommend_items">(mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
+  </dt>
+
+        
+  <dt><a href="mrec.html#mrec.reranking_recommender.RerankingRecommender.batch_recommend_items">(mrec.reranking_recommender.RerankingRecommender method)</a>
   </dt>
 
       </dl></dd>
@@ -295,6 +299,10 @@
   <dt><a href="mrec.html#mrec.popularity.ItemPopularityRecommender.fit">(mrec.popularity.ItemPopularityRecommender method)</a>
   </dt>
 
+        
+  <dt><a href="mrec.html#mrec.reranking_recommender.RerankingRecommender.fit">(mrec.reranking_recommender.RerankingRecommender method)</a>
+  </dt>
+
       </dl></dd>
   </dl></td>
 </tr></table>
@@ -455,9 +463,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="mrec.html#mrec.sparse.fast_sparse_matrix.load">load() (mrec.sparse.fast_sparse_matrix static method)</a>
+  <dt><a href="mrec.html#mrec.base_recommender.BaseRecommender.load">load() (mrec.base_recommender.BaseRecommender static method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="mrec.html#mrec.sparse.fast_sparse_matrix.load">(mrec.sparse.fast_sparse_matrix static method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.load_factors">load_factors() (mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
   </dt>
@@ -513,6 +527,10 @@
   <dt><a href="mrec.mf.html#mrec.mf.wrmf.main">(in module mrec.mf.wrmf)</a>
   </dt>
 
+        
+  <dt><a href="mrec.html#mrec.reranking_recommender.main">(in module mrec.reranking_recommender)</a>
+  </dt>
+
       </dl></dd>
       
   <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender">MatrixFactorizationRecommender (class in mrec.mf.recommender)</a>
@@ -558,12 +576,12 @@
   <dt><a href="mrec.item_similarity.html#module-mrec.item_similarity.precomputed">mrec.item_similarity.precomputed (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#module-mrec.item_similarity.recommender">mrec.item_similarity.recommender (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="mrec.item_similarity.html#module-mrec.item_similarity.slim">mrec.item_similarity.slim (module)</a>
   </dt>
@@ -598,6 +616,10 @@
 
       
   <dt><a href="mrec.html#module-mrec.popularity">mrec.popularity (module)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.html#module-mrec.reranking_recommender">mrec.reranking_recommender (module)</a>
   </dt>
 
       
@@ -685,7 +707,15 @@
   <dt><a href="mrec.mf.html#mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items">(mrec.mf.recommender.MatrixFactorizationRecommender method)</a>
   </dt>
 
+        
+  <dt><a href="mrec.html#mrec.reranking_recommender.RerankingRecommender.range_recommend_items">(mrec.reranking_recommender.RerankingRecommender method)</a>
+  </dt>
+
       </dl></dd>
+      
+  <dt><a href="mrec.html#mrec.base_recommender.BaseRecommender.read_recommender_description">read_recommender_description() (mrec.base_recommender.BaseRecommender static method)</a>
+  </dt>
+
       
   <dt><a href="mrec.html#mrec.base_recommender.BaseRecommender.recommend_items">recommend_items() (mrec.base_recommender.BaseRecommender method)</a>
   </dt>
@@ -703,13 +733,25 @@
   <dt><a href="mrec.html#mrec.popularity.ItemPopularityRecommender.recommend_items">(mrec.popularity.ItemPopularityRecommender method)</a>
   </dt>
 
+        
+  <dt><a href="mrec.html#mrec.reranking_recommender.RerankingRecommender.recommend_items">(mrec.reranking_recommender.RerankingRecommender method)</a>
+  </dt>
+
       </dl></dd>
       
-  <dt><a href="mrec.evaluation.html#mrec.evaluation.metrics.retrain_recommender">retrain_recommender() (in module mrec.evaluation.metrics)</a>
+  <dt><a href="mrec.html#mrec.reranking_recommender.RerankingRecommender.rerank">rerank() (mrec.reranking_recommender.RerankingRecommender method)</a>
+  </dt>
+
+      
+  <dt><a href="mrec.html#mrec.reranking_recommender.RerankingRecommender">RerankingRecommender (class in mrec.reranking_recommender)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="mrec.evaluation.html#mrec.evaluation.metrics.retrain_recommender">retrain_recommender() (in module mrec.evaluation.metrics)</a>
+  </dt>
+
       
   <dt><a href="mrec.parallel.html#mrec.parallel.predict.run">run() (in module mrec.parallel.predict)</a>
   </dt>
@@ -743,9 +785,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="mrec.html#mrec.sparse.fast_sparse_matrix.save">save() (mrec.sparse.fast_sparse_matrix method)</a>
+  <dt><a href="mrec.html#mrec.base_recommender.BaseRecommender.save">save() (mrec.base_recommender.BaseRecommender method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="mrec.html#mrec.sparse.fast_sparse_matrix.save">(mrec.sparse.fast_sparse_matrix method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="mrec.html#mrec.sparse.savez">savez() (in module mrec.sparse)</a>
   </dt>
@@ -843,7 +891,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">mrec 0.2.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

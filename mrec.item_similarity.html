@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>item_similarity Package &mdash; mrec 0.2.2 documentation</title>
+    <title>item_similarity Package &mdash; mrec 0.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.2',
+        VERSION:     '0.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.2 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.3 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
     <link rel="next" title="mf Package" href="mrec.mf.html" />
     <link rel="prev" title="examples Package" href="mrec.examples.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="mrec.examples.html" title="examples Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -194,14 +194,23 @@ X. Ning and G. Karypis, ICDM 2011.
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
 <td>Get the most similar items to a supplied item.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
-<td>Load a precomputed similarity matrix.</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
+<td>Load a precomputed similarity matrix from tsv.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -251,14 +260,23 @@ intended to provide evaluation baselines.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
 <td>Get the most similar items to a supplied item.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
-<td>Load a precomputed similarity matrix.</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
+<td>Load a precomputed similarity matrix from tsv.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -297,14 +315,23 @@ intended to provide evaluation baselines.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
 <td>Get the most similar items to a supplied item.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
-<td>Load a precomputed similarity matrix.</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
+<td>Load a precomputed similarity matrix from tsv.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -355,14 +382,23 @@ implementation of the compute_all_similarities() method.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
 <td>Get the most similar items to a supplied item.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
-<td>Load a precomputed similarity matrix.</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
+<td>Load a precomputed similarity matrix from tsv.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -446,16 +482,25 @@ and all the rows of A.</p>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
 <td>Get the most similar items to a supplied item.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
-<td>Load a precomputed similarity matrix.</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt>(filepath,&nbsp;num_items)</td>
+<td>Load a precomputed similarity matrix from tsv.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.set_similarity_matrix" title="mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.set_similarity_matrix"><tt class="xref py py-obj docutils literal"><span class="pre">set_similarity_matrix</span></tt></a>(similarity_matrix)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.set_similarity_matrix" title="mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.set_similarity_matrix"><tt class="xref py py-obj docutils literal"><span class="pre">set_similarity_matrix</span></tt></a>(similarity_matrix)</td>
 <td></td>
 </tr>
 </tbody>
@@ -507,14 +552,23 @@ need to supply the compute_similarities() method.</p>
 <tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.get_similar_items" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.get_similar_items"><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt></a>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
 <td>Get the most similar items to a supplied item.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix"><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt></a>(filepath,&nbsp;num_items)</td>
-<td>Load a precomputed similarity matrix.</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix"><tt class="xref py py-obj docutils literal"><span class="pre">load_similarity_matrix</span></tt></a>(filepath,&nbsp;num_items)</td>
+<td>Load a precomputed similarity matrix from tsv.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.recommend_items" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
@@ -641,7 +695,7 @@ a tuple of the form (i,score).</p>
 <dl class="method">
 <dt id="mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix">
 <tt class="descname">load_similarity_matrix</tt><big>(</big><em>filepath</em>, <em>num_items</em>, <em>offset=1</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.load_similarity_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a precomputed similarity matrix.</p>
+<dd><p>Load a precomputed similarity matrix from tsv.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -770,7 +824,7 @@ just a list of idxs.</p>
         <li class="right" >
           <a href="mrec.examples.html" title="examples Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

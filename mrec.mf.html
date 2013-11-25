@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mf Package &mdash; mrec 0.2.3 documentation</title>
+    <title>mf Package &mdash; mrec 0.2.4 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.3 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
     <link rel="next" title="parallel Package" href="mrec.parallel.html" />
     <link rel="prev" title="item_similarity Package" href="mrec.item_similarity.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="mrec.item_similarity.html" title="item_similarity Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -212,7 +212,7 @@ fitted alternately.</p>
 <span id="warp-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">warp</span></tt> Module<a class="headerlink" href="#module-mrec.mf.warp" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="mrec.mf.warp.WARPMFRecommender">
-<em class="property">class </em><tt class="descclassname">mrec.mf.warp.</tt><tt class="descname">WARPMFRecommender</tt><big>(</big><em>d</em>, <em>gamma</em>, <em>C</em>, <em>max_iters=10000</em>, <em>validation_iters=1000</em>, <em>batch_size=10</em>, <em>positive_thresh=1e-05</em>, <em>max_trials=50</em>, <em>num_validation_users=100</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mrec.mf.warp.</tt><tt class="descname">WARPMFRecommender</tt><big>(</big><em>d</em>, <em>gamma</em>, <em>C</em>, <em>batch_size=10</em>, <em>positive_thresh=1e-05</em>, <em>max_trials=50</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender" title="mrec.mf.recommender.MatrixFactorizationRecommender"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.recommender.MatrixFactorizationRecommender</span></tt></a></p>
 <p>Learn matrix factorization optimizing the WARP loss.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -231,16 +231,6 @@ fitted alternately.</p>
 <blockquote>
 <div><p>Regularization constant.</p>
 </div></blockquote>
-<p><strong>max_iters</strong> : int</p>
-<blockquote>
-<div><p>Terminate after this number of iterations even if validation precision is
-still increasing.</p>
-</div></blockquote>
-<p><strong>validation_iters</strong> : int</p>
-<blockquote>
-<div><p>Check validation loss once each validation_iters iterations, terminate if it
-has increased.</p>
-</div></blockquote>
 <p><strong>batch_size</strong> : int</p>
 <blockquote>
 <div><p>Mini batch size for SGD updates.</p>
@@ -250,14 +240,9 @@ has increased.</p>
 <div><p>Consider an item to be &#8220;positive&#8221; i.e. liked if its rating is at least this.</p>
 </div></blockquote>
 <p><strong>max_trials</strong> : int</p>
-<blockquote>
+<blockquote class="last">
 <div><p>Number of attempts allowed to find a violating negative example during updates.
 In practice it means that we optimize for ranks 1 to max_trials-1.</p>
-</div></blockquote>
-<p><strong>num_validation_users</strong> : int</p>
-<blockquote class="last">
-<div><p>Number of users for which to create a validation set of hidden items, used
-to track model progress and enforce stopping condition.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -273,7 +258,7 @@ to track model progress and enforce stopping condition.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="mrec.mf.warp.WARPMFRecommender.create_validation_set"><tt class="xref py py-obj docutils literal"><span class="pre">create_validation_set</span></tt></a>(train)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="mrec.mf.warp.WARPMFRecommender.create_validation_set"><tt class="xref py py-obj docutils literal"><span class="pre">create_validation_set</span></tt></a>(train,&nbsp;...)</td>
 <td>Hide and return half of the known items for validation users.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.estimate_precision" title="mrec.mf.warp.WARPMFRecommender.estimate_precision"><tt class="xref py py-obj docutils literal"><span class="pre">estimate_precision</span></tt></a>(train,&nbsp;validation_set[,&nbsp;k])</td>
@@ -310,7 +295,7 @@ to track model progress and enforce stopping condition.</p>
 </table>
 <dl class="method">
 <dt id="mrec.mf.warp.WARPMFRecommender.create_validation_set">
-<tt class="descname">create_validation_set</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">create_validation_set</tt><big>(</big><em>train</em>, <em>num_validation_users</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hide and return half of the known items for validation users.</p>
 </dd></dl>
 
@@ -347,6 +332,10 @@ n users.</p>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Notes</p>
+<p>At the moment this will underestimate the precision of real
+recommendations because we do not exclude training items with zero
+ratings from the top-k predictions evaluated.</p>
 </dd></dl>
 
 <dl class="method">
@@ -623,7 +612,7 @@ just a list of idxs.</p>
         <li class="right" >
           <a href="mrec.item_similarity.html" title="item_similarity Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

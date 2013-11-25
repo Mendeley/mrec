@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>evaluation Package &mdash; mrec 0.2.3 documentation</title>
+    <title>evaluation Package &mdash; mrec 0.2.4 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.3 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
     <link rel="next" title="examples Package" href="mrec.examples.html" />
     <link rel="prev" title="mrec Package" href="mrec.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="mrec.html" title="mrec Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -292,37 +292,19 @@ enough items.</p>
 <div><p>Containing the single true test item.</p>
 </div></blockquote>
 <p><strong>k</strong> : int</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Measure hit rate&#64;k.</p>
 </div></blockquote>
 </td>
 </tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mrec.evaluation.metrics.mrr">
-<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">mrr</tt><big>(</big><em>predicted</em>, <em>true</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.mrr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute Mean Reciprocal Rank.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>predicted</strong> : array like</p>
-<blockquote>
-<div><p>Predicted items.</p>
-</div></blockquote>
-<p><strong>true</strong> : array like</p>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>hitrate</strong> : int</p>
 <blockquote class="last">
-<div><p>True items.</p>
+<div><p>1 if true is amongst predicted, 0 if not.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>We&#8217;ll under report this as our predictions are truncated.</p>
 </dd></dl>
 
 <dl class="function">
@@ -346,10 +328,16 @@ enough items.</p>
 <div><p>Measure precision&#64;k.</p>
 </div></blockquote>
 <p><strong>ignore_missing</strong> : boolean (default: False)</p>
-<blockquote class="last">
+<blockquote>
 <div><p>If True then measure precision only up to rank len(predicted)
 even if this is less than k, otherwise assume that the missing
 predictions were all incorrect</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>prec&#64;k</strong> : float</p>
+<blockquote class="last">
+<div><p>Precision at k.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -367,6 +355,36 @@ predictions were all incorrect</p>
 <dt id="mrec.evaluation.metrics.retrain_recommender">
 <tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">retrain_recommender</tt><big>(</big><em>model</em>, <em>dataset</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.retrain_recommender" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="mrec.evaluation.metrics.rr">
+<tt class="descclassname">mrec.evaluation.metrics.</tt><tt class="descname">rr</tt><big>(</big><em>predicted</em>, <em>true</em><big>)</big><a class="headerlink" href="#mrec.evaluation.metrics.rr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Reciprocal Rank.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>predicted</strong> : array like</p>
+<blockquote>
+<div><p>Predicted items.</p>
+</div></blockquote>
+<p><strong>true</strong> : array like</p>
+<blockquote>
+<div><p>True items.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>rr</strong> : float</p>
+<blockquote class="last">
+<div><p>Reciprocal of rank at which first true item is found in predicted.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>We&#8217;ll under report this as our predictions are truncated.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="mrec.evaluation.metrics.run_evaluation">
@@ -411,7 +429,7 @@ evaluation_func(model,users,test) should return a dict of metrics</div></blockqu
         <li class="right" >
           <a href="mrec.html" title="mrec Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrec Package &mdash; mrec 0.2.3 documentation</title>
+    <title>mrec Package &mdash; mrec 0.2.4 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.3 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="api.html" />
     <link rel="next" title="evaluation Package" href="mrec.evaluation.html" />
     <link rel="prev" title="API documentation" href="api.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="api.html" title="API documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
           <li><a href="api.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>
@@ -1030,12 +1030,17 @@ just a list of idxs.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
 <blockquote class="last">
-<div><p>Filepath to write to.</p>
+<div><p>Filepath to write to, which must have the &#8216;.npz&#8217; suffix.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Notes</p>
+<p>Internally numpy.savez may be used to serialize the model and
+this would add the &#8216;.npz&#8217; suffix to the supplied filepath if
+it were not already present, which would most likely cause errors
+in client code.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1103,7 +1108,7 @@ just a list of idxs.</p>
         <li class="right" >
           <a href="api.html" title="API documentation"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>

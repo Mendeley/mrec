@@ -93,7 +93,6 @@ For the Weighted Approximately Ranked Pairwise (WARP) loss recommender the optio
 
     --gamma=GAMMA         warp learning rate (default: 0.01)
     --C=C                 warp regularization constant (default: 100.0)
-    --sgd_iters=SGD_ITERS max number of sgd iterations (default: 10000)
 
 You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are::

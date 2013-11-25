@@ -18,12 +18,6 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         Learning rate.
     C : float
         Regularization constant.
-    max_iters : int
-        Terminate after this number of iterations even if validation precision is
-        still increasing.
-    validation_iters : int
-        Check validation loss once each validation_iters iterations, terminate if it
-        has increased.
     batch_size : int
         Mini batch size for SGD updates.
     positive_thresh: float
@@ -31,26 +25,20 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
     max_trials : int
         Number of attempts allowed to find a violating negative example during updates.
         In practice it means that we optimize for ranks 1 to max_trials-1.
-    num_validation_users : int
-        Number of users for which to create a validation set of hidden items, used
-        to track model progress and enforce stopping condition.
     """
 
-    def __init__(self,d,gamma,C,max_iters=10000,validation_iters=1000,batch_size=10,positive_thresh=0.00001,max_trials=50,num_validation_users=100):
+    def __init__(self,d,gamma,C,batch_size=10,positive_thresh=0.00001,max_trials=50):
         self.d = d  # embedding dimension
         self.gamma = gamma # learning rate
         self.C = C  # regularization constant
-        self.max_iters = max_iters
-        self.validation_iters = validation_iters # check validation error after this many iterations
         self.batch_size = batch_size
         self.positive_thresh = positive_thresh
         self.max_trials = max_trials
-        self.num_validation_users = num_validation_users
         self.U = None
         self.V = None
 
     def __str__(self):
-        return 'WARPMF(d={0},gamma={1},C={2},max_iters={3},validation_iters={4})'.format(self.d,self.gamma,self.C,self.max_iters,self.validation_iters)
+        return 'WARPMF(d={0},gamma={1},C={2})'.format(self.d,self.gamma,self.C)
 
     def _init(self,train):
         num_users,num_items = train.shape
@@ -78,11 +66,24 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
             will be used.
         """
         self._init(train)
-        validation_set = self.create_validation_set(train)
+
+        # use 1% of users for validation, with a floor
+        num_users = train.shape[0]
+        num_validation_users = max(num_users/100,100)
+        # ensure reasonable expected number of updates per validation user
+        validation_iters = 100*num_users/num_validation_users
+        # and reasonable number of validation cycles
+        max_iters = 30*validation_iters
+
+        print num_validation_users,'validation users'
+        print validation_iters,'validation iters'
+        print max_iters,'max_iters'
+
+        validation_set = self.create_validation_set(train,num_validation_users)
         precs = []
         tot_trials = 0
-        for it in xrange(self.max_iters):
-            if it % self.validation_iters == 0:
+        for it in xrange(max_iters):
+            if it % validation_iters == 0:
                 # TODO: could have a stopping condition or budget on tot_trials
                 print 'tot_trials',tot_trials
                 tot_trials = 0
@@ -98,26 +99,12 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
             apply_updates(self.V,v_pos_rows,dV_pos,self.gamma,self.C)
             apply_updates(self.V,v_neg_rows,dV_neg,self.gamma,self.C)
 
-    def create_validation_set(self,train):
+    def create_validation_set(self,train,num_validation_users):
         """
         Hide and return half of the known items for validation users.
         """
-
-        # TRY THIS:: keep expected number of updates per validation user constant
-        # say validation_iters * num_validation_users / num_users = 100
-        # also in general use 1% of users for validation, with a floor
-        num_users = train.shape[0]
-        self.num_validation_users = max(num_users/100,100)
-        self.validation_iters = 100*num_users/self.num_validation_users
-        # also let's assume we want a reasonable number of validation cycles
-        self.max_iters = 20*self.validation_iters
-
-        print self.num_validation_users,'validation users'
-        print self.validation_iters,'validation iters'
-        print self.max_iters,'max_iters'
-
         validation = dict()
-        for u in xrange(self.num_validation_users):
+        for u in xrange(num_validation_users):
             positive = np.where(train[u].data > 0)[0]
             hidden = random.sample(positive,positive.shape[0]/2)
             if hidden:
@@ -213,7 +200,7 @@ def main():
     # load training set as scipy sparse matrix
     train = load_sparse_matrix(file_format,filepath)
 
-    model = WARPMFRecommender(d=100,gamma=0.01,C=100.0,max_iters=15000,validation_iters=1000,batch_size=10)
+    model = WARPMFRecommender(d=100,gamma=0.01,C=100.0,batch_size=10)
     model.fit(train)
 
     save_recommender(model,outfile)

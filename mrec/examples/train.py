@@ -51,7 +51,6 @@ def main():
     parser.add_option('--als_iters',dest='als_iters',type='int',default=15,help='number of als iterations (default: %default)')
     parser.add_option('--gamma',dest='gamma',type='float',default=0.01,help='warp learning rate (default: %default)')
     parser.add_option('--C',dest='C',type='float',default=100.0,help='warp regularization constant (default: %default)')
-    parser.add_option('--sgd_iters',dest='sgd_iters',type='int',default=15000,help='max number of sgd iterations (default: %default)')
     parser.add_option('--popularity_method',dest='popularity_method',default='count',help='how to compute popularity for baseline recommender: count | sum | avg | thresh (default: %default)')
     parser.add_option('--popularity_thresh',dest='popularity_thresh',type='float',default=0,help='ignore scores below this when computing popularity for baseline recommender (default: %default)')
     parser.add_option('--packer',dest='packer',default='json',help='packer for IPython.parallel (default: %default)')
@@ -108,7 +107,7 @@ def main():
         model = WRMFRecommender(d=opts.num_factors,alpha=opts.alpha,lbda=opts.lbda,num_iters=opts.als_iters)
     elif opts.model == 'warp':
         num_factors_per_engine = max(opts.num_factors/opts.num_engines,1)
-        model = WARPMFRecommender(d=num_factors_per_engine,gamma=opts.gamma,C=opts.C,max_iters=opts.sgd_iters)
+        model = WARPMFRecommender(d=num_factors_per_engine,gamma=opts.gamma,C=opts.C)
     else:
         parser.print_help()
         raise SystemExit('unknown model type: {0}'.format(opts.model))

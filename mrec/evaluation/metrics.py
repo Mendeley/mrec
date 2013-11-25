@@ -160,13 +160,13 @@ def prec(predicted,true,k,ignore_missing=False):
         even if this is less than k, otherwise assume that the missing
         predictions were all incorrect
     """
-    if not predicted:
+    if len(predicted) == 0:
         return 0
     correct = len(set(predicted[:k]).intersection(set(true)))
     num_predicted = k
     if len(predicted) < k and ignore_missing:
         num_predicted = len(predicted)
-    return float(correct)/len(predicted[:k])
+    return float(correct)/num_predicted
 
 def hit_rate(predicted,true,k):
     """

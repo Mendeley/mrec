@@ -122,13 +122,13 @@ def estimate_users_per_task(num_engines,mb_per_task,input_format,trainfile,model
         if isinstance(model,MatrixFactorizationRecommender):
             # we have to load the factors on every task
             available_mb_per_task -= ((model.U.size+model.V.size)*8)/ONE_MB
-            if mb_per_task > 0:
+            if available_mb_per_task > 0:
                 # remaining mem usage is dominated by computed scores:
                 users_per_task = min(users_per_task,(available_mb_per_task*ONE_MB) / (num_items*8))
         elif isinstance(model,ItemSimilarityRecommender):
             # we have to load the similarity matrix on every task
             available_mb_per_task -= (model.similarity_matrix.nnz*(8+4+4))/ONE_MB
-            if mb_per_task > 0:
+            if available_mb_per_task > 0:
                 # estimate additional usage from avg items per user and sims per item
                 items_per_user = nnz / num_users
                 sims_per_item = model.similarity_matrix.nnz / num_items
@@ -169,7 +169,7 @@ def main():
 
     parser = OptionParser()
     parser.add_option('-n','--num_engines',dest='num_engines',type='int',default=0,help='number of IPython engines to use')
-    parser.add_option('--mb_per_task',dest='mb_per_task',type='int',default=None,help='approximate memory limit per task in MB, so total memory usage is num_engines * mb_per_task (default: no memory limit)')
+    parser.add_option('--mb_per_task',dest='mb_per_task',type='int',default=400,help='approximate memory limit per task in MB, so total memory usage is num_engines * mb_per_task (default: %default MB)')
     parser.add_option('--input_format',dest='input_format',help='format of training dataset(s) tsv | csv | mm (matrixmarket) | fsm (fast_sparse_matrix)')
     parser.add_option('--test_input_format',dest='test_input_format',default='npz',help='format of test dataset(s) tsv | csv | mm (matrixmarket) | npz (numpy binary)  (default: %default)')
     parser.add_option('--train',dest='train',help='glob specifying path(s) to training dataset(s) IMPORTANT: must be in quotes if it includes the * wildcard')

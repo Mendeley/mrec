@@ -53,8 +53,18 @@ class BaseRecommender(object):
         Parameters
         ==========
         filepath : str
-            Filepath to write to.
+            Filepath to write to, which must have the '.npz' suffix.
+
+        Notes
+        =====
+        Internally numpy.savez may be used to serialize the model and
+        this would add the '.npz' suffix to the supplied filepath if
+        it were not already present, which would most likely cause errors
+        in client code.
         """
+        if not filepath.endswith('.npz'):
+            raise ValueError('filepath must have ".npz" suffix')
+
         archive = self._create_archive()
         if archive:
             np.savez(filepath,**archive)

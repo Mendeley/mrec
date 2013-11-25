@@ -10,11 +10,11 @@ You can most easily install `mrec` with pip::
 
 Installing from source
 ~~~~~~~~~~~~~~~~~~~~~~
-Alternatively you can install `mrec` from source.  Installing `mrec` requires `numpy`, `scipy`, `scikit-learn`, `ipython`
-and `cython` and you'll also need `pyzmq` to run the utilities.
+Alternatively you can install `mrec` from source.  Installing `mrec` requires `numpy`, `scipy`, `scikit-learn`, `ipython`,
+`cython` and `psutil`, and you'll also need `pyzmq` to run the utilities.
 You can most easily install these using pip::
 
-    $ sudo pip install numpy scipy scikit-learn cython ipython pyzmq
+    $ sudo pip install numpy scipy scikit-learn cython ipython pyzmq psutil
 
 You can then install `mrec` from source in the standard way::
 

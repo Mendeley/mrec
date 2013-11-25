@@ -9,7 +9,7 @@ with open('README.rst') as f:
     long_description = f.read()
 
 setup(packages=find_packages(),
-      version='0.2.3',
+      version='0.2.4',
       maintainer='Mark Levy',
       name='mrec',
       package_dir={'':'.'},
@@ -17,14 +17,14 @@ setup(packages=find_packages(),
       description='mrec recommender systems library',
       long_description=long_description,
       url='https://github.com/mendeley/mrec',
-      download_url='https://github.com/mendeley/mrec/tarball/master#egg=mrec-0.2.3',
+      download_url='https://github.com/mendeley/mrec/tarball/master#egg=mrec-0.2.4',
       classifiers=['Development Status :: 4 - Beta',
                    'Environment :: Console',
                    'License :: OSI Approved :: BSD License',
                    'Operating System :: Unix',
                    'Programming Language :: Python',
                    'Topic :: Scientific/Engineering',],
-      install_requires=['numpy','scipy','scikit-learn','ipython','cython'],
+      install_requires=['numpy','scipy','scikit-learn','ipython','cython','psutil'],
       entry_points={
           'console_scripts':[
               'mrec_prepare = mrec.examples.prepare:main',

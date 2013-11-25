@@ -27,6 +27,8 @@ from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 from filename_conventions import *
 
+ONE_MB = 2**20
+
 def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
 
     recsdir = get_recsdir(trainfile,opts.outdir)
@@ -46,7 +48,6 @@ def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
                          trainfile,
                          opts.test_input_format,
                          testfile,recsdir,
-                         opts.num_engines,
                          opts.mb_per_task,
                          done,
                          evaluator)
@@ -95,11 +96,10 @@ def create_tasks(modelfile,
                  trainfile,
                  test_input_format,
                  testfile,outdir,
-                 num_engines,
                  mb_per_task,
                  done,
                  evaluator):
-    users_per_task,num_users = estimate_users_per_task(num_engines,mb_per_task,input_format,trainfile,modelfile)
+    users_per_task,num_users = estimate_users_per_task(mb_per_task,input_format,trainfile,modelfile)
     tasks = []
     for start in xrange(0,num_users,users_per_task):
         end = min(num_users,start+users_per_task)
@@ -108,33 +108,29 @@ def create_tasks(modelfile,
     logging.info('created {0} tasks, {1} users per task'.format(len(tasks),users_per_task))
     return tasks
 
-def estimate_users_per_task(num_engines,mb_per_task,input_format,trainfile,modelfile):
+def estimate_users_per_task(mb_per_task,input_format,trainfile,modelfile):
     num_users,num_items,nnz = get_dataset_size(input_format,trainfile)
-    # basic approach is one task per engine
-    users_per_task = int(math.ceil(float(num_users)/num_engines))
-    if mb_per_task is not None:
-        # check that this won't exceed requested memory budget
-        logging.info('loading model to get size...')
-        model = load_recommender(modelfile)
-        ONE_MB = 2**20
-        # we load the training data on every task
-        available_mb_per_task = mb_per_task - (nnz*(8+4+4))/ONE_MB
-        if isinstance(model,MatrixFactorizationRecommender):
-            # we have to load the factors on every task
-            available_mb_per_task -= ((model.U.size+model.V.size)*8)/ONE_MB
-            if mb_per_task > 0:
-                # remaining mem usage is dominated by computed scores:
-                users_per_task = min(users_per_task,(available_mb_per_task*ONE_MB) / (num_items*8))
-        elif isinstance(model,ItemSimilarityRecommender):
-            # we have to load the similarity matrix on every task
-            available_mb_per_task -= (model.similarity_matrix.nnz*(8+4+4))/ONE_MB
-            if mb_per_task > 0:
-                # estimate additional usage from avg items per user and sims per item
-                items_per_user = nnz / num_users
-                sims_per_item = model.similarity_matrix.nnz / num_items
-                users_per_task = min(users_per_task,(available_mb_per_task*ONE_MB) / (items_per_user*sims_per_item*(8+4+4)))
-        if available_mb_per_task <= 0:
-            logging.warn('not possible to limit to {0}MB per task, ignoring'.format(mb_per_task))
+    logging.info('loading model to get size...')
+    model = load_recommender(modelfile)
+    # we load the training and test data on every task
+    # - let's guess that worst case the test data will be the same size
+    required_mb_per_task = 2*(nnz*16)/ONE_MB
+    if isinstance(model,MatrixFactorizationRecommender):
+        # we have to load the factors on every task
+        required_mb_per_task += ((model.U.size+model.V.size)*16)/ONE_MB
+        if mb_per_task > required_mb_per_task:
+            # remaining mem usage is dominated by computed scores:
+            users_per_task = ((mb_per_task-required_mb_per_task)*ONE_MB) / (num_items*16)
+    elif isinstance(model,ItemSimilarityRecommender):
+        # we have to load the similarity matrix on every task
+        required_mb_per_task += (model.similarity_matrix.nnz*16)/ONE_MB
+        if mb_per_task > required_mb_per_task:
+            # estimate additional usage from avg items per user and sims per item
+            items_per_user = nnz / num_users
+            sims_per_item = model.similarity_matrix.nnz / num_items
+            users_per_task = ((mb_per_task-required_mb_per_task)*ONE_MB) / (items_per_user*sims_per_item*16)
+    if mb_per_task <= required_mb_per_task:
+        raise RuntimeError('requires at least {0}MB per task, increase --mb_per_task if you can'.format(required_mb_per_task))
 
     return users_per_task,num_users
 
@@ -168,8 +164,7 @@ def main():
     logging.basicConfig(level=logging.INFO,format='[%(asctime)s] %(levelname)s: %(message)s')
 
     parser = OptionParser()
-    parser.add_option('-n','--num_engines',dest='num_engines',type='int',default=0,help='number of IPython engines to use')
-    parser.add_option('--mb_per_task',dest='mb_per_task',type='int',default=None,help='approximate memory limit per task in MB, so total memory usage is num_engines * mb_per_task (default: no memory limit)')
+    parser.add_option('--mb_per_task',dest='mb_per_task',type='int',default=None,help='approximate memory limit per task in MB, so total memory usage is num_engines * mb_per_task (default: share all available RAM across engines)')
     parser.add_option('--input_format',dest='input_format',help='format of training dataset(s) tsv | csv | mm (matrixmarket) | fsm (fast_sparse_matrix)')
     parser.add_option('--test_input_format',dest='test_input_format',default='npz',help='format of test dataset(s) tsv | csv | mm (matrixmarket) | npz (numpy binary)  (default: %default)')
     parser.add_option('--train',dest='train',help='glob specifying path(s) to training dataset(s) IMPORTANT: must be in quotes if it includes the * wildcard')
@@ -184,7 +179,7 @@ def main():
                      'hitrate':compute_hit_rate}
 
     (opts,args) = parser.parse_args()
-    if not opts.input_format or not opts.train or not opts.outdir or not opts.num_engines \
+    if not opts.input_format or not opts.train or not opts.outdir \
             or not opts.modeldir or opts.metrics not in metrics_funcs:
         parser.print_help()
         raise SystemExit
@@ -196,6 +191,10 @@ def main():
     # create an ipython client
     c = Client(packer=opts.packer)
     view = c.load_balanced_view()
+    if opts.mb_per_task is None:
+        import psutil
+        num_engines = len(view)
+        opts.mb_per_task = psutil.virtual_memory().available/ONE_MB/(num_engines+1)  # don't take *all* the memory
 
     if opts.add_module_paths:
         c[:].execute('import sys')

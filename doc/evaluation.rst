@@ -12,12 +12,10 @@ and to evaluate them::
 
     Options:
       -h, --help            show this help message and exit
-      -n NUM_ENGINES, --num_engines=NUM_ENGINES
-                            number of IPython engines to use
       --mb_per_task=MB_PER_TASK
                             approximate memory limit per task in MB, so total
-                            memory usage is num_engines * mb_per_task (default: no
-                            memory limit)
+                            memory usage is num_engines * mb_per_task (default:
+                            share all available RAM across engines)
       --input_format=INPUT_FORMAT
                             format of training dataset(s) tsv | csv | mm
                             (matrixmarket) | fsm (fast_sparse_matrix)
@@ -57,7 +55,8 @@ when comparing two recommended items for the same user.
 
 If your dataset is of any significant size, and particularly if your trained model is a
 matrix factorization recommender, you may want to limit the amount of memory allocated by
-each task to avoid OOM errors. You can do this with the ``--mb_per_task`` option: bear in
+each task to avoid OOM errors if you plan to do other work while ``mrec_predict`` is running.
+You can do this with the ``--mb_per_task`` option: bear in
 mind that the amount of memory specified with this option will be used concurrently on each
 IPython engine.
 

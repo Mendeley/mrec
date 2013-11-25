@@ -24,7 +24,7 @@ setup(packages=find_packages(),
                    'Operating System :: Unix',
                    'Programming Language :: Python',
                    'Topic :: Scientific/Engineering',],
-      install_requires=['numpy','scipy','scikit-learn','ipython','cython'],
+      install_requires=['numpy','scipy','scikit-learn','ipython','cython','psutil'],
       entry_points={
           'console_scripts':[
               'mrec_prepare = mrec.examples.prepare:main',

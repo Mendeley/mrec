@@ -1,6 +1,8 @@
 import numpy as np
 import random
 
+from mrec.evaluation import metrics
+
 from recommender import MatrixFactorizationRecommender
 from warp_fast import warp_sample, apply_updates, sample_positive_example, sample_violating_negative_example
 
@@ -100,6 +102,20 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         """
         Hide and return half of the known items for validation users.
         """
+
+        # TRY THIS:: keep expected number of updates per validation user constant
+        # say validation_iters * num_validation_users / num_users = 100
+        # also in general use 1% of users for validation, with a floor
+        num_users = train.shape[0]
+        self.num_validation_users = max(num_users/100,100)
+        self.validation_iters = 100*num_users/self.num_validation_users
+        # also let's assume we want a reasonable number of validation cycles
+        self.max_iters = 20*self.validation_iters
+
+        print self.num_validation_users,'validation users'
+        print self.validation_iters,'validation iters'
+        print self.max_iters,'max_iters'
+
         validation = dict()
         for u in xrange(self.num_validation_users):
             positive = np.where(train[u].data > 0)[0]
@@ -157,22 +173,32 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         =======
         prec : float
             Precision@k computed over a sample of the training users.
+
+        Notes
+        =====
+        At the moment this will underestimate the precision of real
+        recommendations because we do not exclude training items with zero
+        ratings from the top-k predictions evaluated.
         """
-        have_validation_set = isinstance(validation_set,dict)
-        if have_validation_set:
+        if isinstance(validation_set,dict):
+            have_validation_set = True
             users = validation_set.keys()
+        elif isinstance(validation_set,(int,long)):
+            have_validation_set = False
+            users = range(validation_set)
         else:
-            users = range(num_users)
+            raise ValueError('validation_set must be dict or int')
+
         r = self.U[users,:].dot(self.V.T)
         prec = 0
-        for u in users:
-            ru = r[u]
-            recs = ru.argsort()[::-1][:k]
+        for ix,u in enumerate(users):
+            ru = r[ix]
+            predicted = ru.argsort()[::-1][:k]
             if have_validation_set:
                 actual = validation_set[u]
             else:
                 actual = train[u].indices[train[u].data > 0]
-            prec += len(set(recs).intersection(set(actual)))/float(k)
+            prec += metrics.prec(predicted,actual,k)
         return prec/len(users)
 
 def main():

@@ -5,6 +5,7 @@ Metrics to evaluate recommendations:
 """
 
 import numpy as np
+from scipy import stats
 from collections import defaultdict
 
 # classes to access known items for each test user
@@ -106,10 +107,7 @@ def print_report(models,metrics):
             print 'similarity matrix nnz = {0} (density {1:.3f})'.format(nnz,density)
         for m in sort_metrics_by_name(results.keys()):
             vals = results[m]
-            mean = np.mean(vals)
-            std = np.std(vals)
-            stderr = std/len(vals)**0.5
-            print '{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),mean,stderr)
+            print '{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),np.mean(vals),stats.sem(vals,ddof=0))
 
 def evaluate(model,train,users,get_known_items,compute_metrics):
     avg_metrics = defaultdict(float)
@@ -134,7 +132,7 @@ def compute_main_metrics(recommended,known):
             'prec@10':prec(recommended,known,10),
             'prec@15':prec(recommended,known,15),
             'prec@20':prec(recommended,known,20),
-            'mrr':mrr(recommended,known)}
+            'mrr':rr(recommended,known)}
 
 def compute_hit_rate(recommended,known):
     if not known:
@@ -159,6 +157,11 @@ def prec(predicted,true,k,ignore_missing=False):
         If True then measure precision only up to rank len(predicted)
         even if this is less than k, otherwise assume that the missing
         predictions were all incorrect
+
+    Returns
+    =======
+    prec@k : float
+        Precision at k.
     """
     if len(predicted) == 0:
         return 0
@@ -180,13 +183,19 @@ def hit_rate(predicted,true,k):
         Containing the single true test item.
     k : int
         Measure hit rate@k.
+
+    Returns
+    =======
+    hitrate : int
+        1 if true is amongst predicted, 0 if not.
     """
-    assert(len(true)==1)
+    if len(true) != 1:
+        raise ValueError('can only evaluate hit rate for exactly 1 true item')
     return int(true[0] in predicted[:k])
 
-def mrr(predicted,true):
+def rr(predicted,true):
     """
-    Compute Mean Reciprocal Rank.
+    Compute Reciprocal Rank.
 
     Parameters
     ==========
@@ -194,6 +203,11 @@ def mrr(predicted,true):
         Predicted items.
     true : array like
         True items.
+
+    Returns
+    =======
+    rr : float
+        Reciprocal of rank at which first true item is found in predicted.
 
     Notes
     =====

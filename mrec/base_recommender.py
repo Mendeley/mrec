@@ -63,7 +63,7 @@ class BaseRecommender(object):
         in client code.
         """
         if not filepath.endswith('.npz'):
-            raise ValueError('filepath must have ".npz" suffix')
+            raise ValueError('invalid filepath {0}, must have ".npz" suffix'.format(filepath))
 
         archive = self._create_archive()
         if archive:

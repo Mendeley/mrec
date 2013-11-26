@@ -4,7 +4,7 @@ import random
 from mrec.evaluation import metrics
 
 from recommender import MatrixFactorizationRecommender
-from warp_fast import warp_sample, apply_updates, sample_positive_example, sample_violating_negative_example
+from warp_fast import warp_sample, apply_updates
 
 class WARPMFRecommender(MatrixFactorizationRecommender):
     """
@@ -61,12 +61,51 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         ==========
         train : scipy.sparse.csr_matrix
             User-item matrix.
-        sampler : mrec.mf.warp.Sampler (default: None)
-            Sampler to provide rating pairs, if None a UniformUserSampler(train)
-            will be used.
         """
         self._init(train)
+        max_iters,validation_iters,validation = self.create_validation_set(train)
 
+        precs = []
+        tot_trials = 0
+        for it in xrange(max_iters):
+            if it % validation_iters == 0:
+                # TODO: could have a budget on tot_trials
+                print 'tot_trials',tot_trials
+                tot_trials = 0
+                prec = self.estimate_precision(train,validation,self.predict_ratings)
+                precs.append(prec)
+                print '{0}: validation precision = {1:.3f}'.format(it,precs[-1])
+                if len(precs) > 3 and precs[-1] < precs[-2] and precs[-2] < precs[-3]:
+                    print 'validation precision got worse twice, terminating'
+                    break
+            tot_trials += self.do_batch_update(train)
+
+    def do_batch_update(self,train):
+        u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg,trials = self.mini_batch(train)
+        apply_updates(self.U,u_rows,dU,self.gamma,self.C)
+        apply_updates(self.V,v_pos_rows,dV_pos,self.gamma,self.C)
+        apply_updates(self.V,v_neg_rows,dV_neg,self.gamma,self.C)
+        return trials
+
+    def create_validation_set(self,train):
+        """
+        Hide and return half of the known items for a sample of users,
+        and estimate the number of sgd iterations to run.
+
+        Parameters
+        ==========
+        train : scipy.sparse.csr_matrix
+            User-item matrix.
+
+        Returns
+        =======
+        max_iters : int
+            Total number of sgd iterations to run.
+        validation_iters : int
+            Check progress after this many iterations.
+        validation : dict
+            Validation set.
+        """
         # use 1% of users for validation, with a floor
         num_users = train.shape[0]
         num_validation_users = max(num_users/100,100)
@@ -79,30 +118,6 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         print validation_iters,'validation iters'
         print max_iters,'max_iters'
 
-        validation_set = self.create_validation_set(train,num_validation_users)
-        precs = []
-        tot_trials = 0
-        for it in xrange(max_iters):
-            if it % validation_iters == 0:
-                # TODO: could have a stopping condition or budget on tot_trials
-                print 'tot_trials',tot_trials
-                tot_trials = 0
-                prec = self.estimate_precision(train,validation_set)
-                precs.append(prec)
-                print '{0}: validation precision = {1:.3f}'.format(it,precs[-1])
-                if len(precs) > 3 and precs[-1] < precs[-2] and precs[-2] < precs[-3]:
-                    print 'validation precision got worse twice, terminating'
-                    break
-            u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg,trials = self.mini_batch(train)
-            tot_trials += trials
-            apply_updates(self.U,u_rows,dU,self.gamma,self.C)
-            apply_updates(self.V,v_pos_rows,dV_pos,self.gamma,self.C)
-            apply_updates(self.V,v_neg_rows,dV_neg,self.gamma,self.C)
-
-    def create_validation_set(self,train,num_validation_users):
-        """
-        Hide and return half of the known items for validation users.
-        """
         validation = dict()
         for u in xrange(num_validation_users):
             positive = np.where(train[u].data > 0)[0]
@@ -110,29 +125,38 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
             if hidden:
                 train[u].data[hidden] = 0
                 validation[u] = train[u].indices[hidden]
-        return validation
+
+        return max_iters,validation_iters,validation
 
     def mini_batch(self,train):
+        u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg = self._init_mini_batch()
+        tot_trials = 0
+        for ix in xrange(self.batch_size):
+            u,i,j,N,trials = warp_sample(self.U,self.V,train.data,train.indices,train.indptr,self.positive_thresh,self.max_trials)
+            L = self.estimate_warp_loss(train,u,N)
+            tot_trials += trials
+            self._sgd_update(u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg,u,i,j,L,ix)
+
+        return u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg,tot_trials
+
+    def _init_mini_batch(self):
         u_rows = np.zeros(self.batch_size,dtype='int32')
         dU = np.zeros((self.batch_size,self.d),order='F')
         v_pos_rows = np.zeros(self.batch_size,dtype='int32')
         dV_pos = np.zeros((self.batch_size,self.d))
         v_neg_rows = np.zeros(self.batch_size,dtype='int32')
         dV_neg = np.zeros((self.batch_size,self.d))
-        tot_trials = 0
-        for ix in xrange(self.batch_size):
-            u,i,j,N,trials = warp_sample(self.U,self.V,train.data,train.indices,train.indptr,self.positive_thresh,self.max_trials)
-            L = self.estimate_warp_loss(train,u,N)
-            # compute gradient update
-            # j is the violating item i.e. U[u].V[j] is too large compared to U[u].V[i]
-            u_rows[ix] = u
-            dU[ix] = L*(self.V[i]-self.V[j])
-            v_pos_rows[ix] = i
-            dV_pos[ix] = L*self.U[u]
-            v_neg_rows[ix] = j
-            dV_neg[ix] = -L*self.U[u]
-            tot_trials += trials
-        return u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg,tot_trials
+        return u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg
+
+    def _sgd_update(self,u_rows,dU,v_pos_rows,dV_pos,v_neg_rows,dV_neg,u,i,j,L,ix):
+        # compute gradient update
+        # j is the violating item i.e. U[u].V[j] is too large compared to U[u].V[i]
+        u_rows[ix] = u
+        dU[ix] = L*(self.V[i]-self.V[j])
+        v_pos_rows[ix] = i
+        dV_pos[ix] = L*self.U[u]
+        v_neg_rows[ix] = j
+        dV_neg[ix] = -L*self.U[u]
 
     def estimate_warp_loss(self,train,u,N):
         num_items = train.shape[1]
@@ -140,7 +164,7 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         estimated_rank = (num_items-nnz-1)/N
         return self.warp_loss[estimated_rank]
 
-    def estimate_precision(self,train,validation_set,k=30):
+    def estimate_precision(self,train,validation,prediction_func,k=30):
         """
         Compute prec@k for a sample of training users.
 
@@ -150,7 +174,7 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
             The training data.
         k : int
             Measure precision@k.
-        validation_set : dict or int
+        validation : dict or int
             Validation set over which we compute precision. Either supply
             a dict of user -> list of hidden items, or an integer n, in which
             case we simply evaluate against the training data for the first
@@ -167,26 +191,33 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         recommendations because we do not exclude training items with zero
         ratings from the top-k predictions evaluated.
         """
-        if isinstance(validation_set,dict):
+        if isinstance(validation,dict):
             have_validation_set = True
-            users = validation_set.keys()
-        elif isinstance(validation_set,(int,long)):
+            users = validation.keys()
+        elif isinstance(validation,(int,long)):
             have_validation_set = False
-            users = range(validation_set)
+            users = range(validation)
         else:
-            raise ValueError('validation_set must be dict or int')
+            raise ValueError('validation must be dict or int')
 
-        r = self.U[users,:].dot(self.V.T)
+        r = prediction_func(users)
         prec = 0
         for ix,u in enumerate(users):
             ru = r[ix]
             predicted = ru.argsort()[::-1][:k]
             if have_validation_set:
-                actual = validation_set[u]
+                actual = validation[u]
             else:
                 actual = train[u].indices[train[u].data > 0]
             prec += metrics.prec(predicted,actual,k)
         return prec/len(users)
+
+    def predict_ratings(self,users=None):
+        if users is None:
+            U = self.U
+        else:
+            U = np.asfortranarray(self.U[users,:])
+        return U.dot(self.V.T)
 
 def main():
     import sys

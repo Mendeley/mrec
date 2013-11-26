@@ -39,5 +39,8 @@ setup(packages=find_packages(),
       ext_modules=[Extension('warp_fast',
                              sources=['mrec/mf/warp_fast.pyx'],
                              include_dirs=[numpy.get_include()]),
+                   Extension('warp2_fast',
+                             sources=['mrec/mf/warp2_fast.pyx'],
+                             include_dirs=[numpy.get_include()]),
                   ]
 )

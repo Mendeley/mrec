@@ -11,7 +11,8 @@ cdef extern from "math.h":
 
 def warp_sample(np.ndarray[np.float_t,ndim=2] U,
                 np.ndarray[np.float_t,ndim=2] V,
-                np.ndarray[np.float_t,ndim=2] XW,
+                np.ndarray[np.float_t,ndim=2] W,
+                np.ndarray[np.float_t,ndim=2] X,
                 np.ndarray[np.float_t,ndim=1] vals,
                 np.ndarray[np.int32_t,ndim=1] indices,
                 np.ndarray[np.int32_t,ndim=1] indptr,
@@ -25,10 +26,12 @@ def warp_sample(np.ndarray[np.float_t,ndim=2] U,
     ==========
     U : numpy.ndarray
         User factors.
-    U : numpy.ndarray
+    V : numpy.ndarray
         Item factors.
-    XW : numpy.ndarray
-        Item features projected into embedding space.
+    W : numpy.ndarray
+        Item feature factors.
+    X : numpy.ndarray
+        Item features.
     vals : numpy.ndarray
         Rating values.
     indices : numpy.ndarray
@@ -65,14 +68,15 @@ def warp_sample(np.ndarray[np.float_t,ndim=2] U,
 
     while True:
         u,ix,i = sample_positive_example(positive_thresh,num_users,vals,indices,indptr)
-        j,N = sample_violating_negative_example(U,V,XW,vals,indices,indptr[u],indptr[u+1],u,ix,i,max_trials)
+        j,N = sample_violating_negative_example(U,V,W,X,vals,indices,indptr[u],indptr[u+1],u,ix,i,max_trials)
         tot_trials += N
         if j >= 0:
             return u,i,j,N,tot_trials
 
 cpdef sample_violating_negative_example(np.ndarray[np.float_t,ndim=2] U,
                                         np.ndarray[np.float_t,ndim=2] V,
-                                        np.ndarray[np.float_t,ndim=2] XW,
+                                        np.ndarray[np.float_t,ndim=2] W,
+                                        np.ndarray[np.float_t,ndim=2] X,
                                         np.ndarray[np.float_t,ndim=1] vals,
                                         np.ndarray[np.int32_t,ndim=1] indices,
                                         begin,
@@ -90,8 +94,10 @@ cpdef sample_violating_negative_example(np.ndarray[np.float_t,ndim=2] U,
         User factors.
     V : numpy.ndarray
         Item factors.
-    XW : numpy.ndarray
-        Item features projected into embedding space.
+    W : numpy.ndarray
+        Item feature factors.
+    X : numpy.ndarray
+        Item features.
     vals : numpy.ndarray
         Rating values.
     indices : numpy.ndarray
@@ -123,11 +129,11 @@ cpdef sample_violating_negative_example(np.ndarray[np.float_t,ndim=2] U,
 
     num_items = V.shape[0]
 
-    r = U[u].dot(V[i] + XW[i])
+    r = U[u].dot(V[i] + X[i].dot(W))
     for N in xrange(1,max_trials):
         # find j!=i s.t. data[u,j] < data[u,i]
         j = sample_negative_example(num_items,vals,indices,begin,end,ix)
-        if r - U[u].dot(V[j] + XW[j]) < 1:
+        if r - U[u].dot(V[j] + X[j].dot(W)) < 1:
             # found a violating pair
             return j,N
     # no violating pair found after max_trials, give up

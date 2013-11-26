@@ -57,7 +57,6 @@ class WARP2MFRecommender(MatrixFactorizationRecommender):
         self.W = self.d**-0.5*np.random.random_sample((num_features,self.d))
         # ensure memory layout avoids extra allocation in dot product
         self.U = np.asfortranarray(self.U)
-        self.W = np.asfortranarray(self.W)
 
     def fit(self,train,X):
         """
@@ -133,18 +132,16 @@ class WARP2MFRecommender(MatrixFactorizationRecommender):
         dV_pos = np.zeros((self.batch_size,self.d))
         v_neg_rows = np.zeros(self.batch_size,dtype='int32')
         dV_neg = np.zeros((self.batch_size,self.d))
-        dW = np.zeros((num_features,self.d),order='F')
+        dW = np.zeros((num_features,self.d))
         tot_trials = 0
-        # precompute projections of item features into latent space
-        XW = X.dot(self.W)
         for ix in xrange(self.batch_size):
-            u,i,j,N,trials = warp_sample(self.U,self.V,XW,train.data,train.indices,train.indptr,self.positive_thresh,self.max_trials)
+            u,i,j,N,trials = warp_sample(self.U,self.V,self.W,X,train.data,train.indices,train.indptr,self.positive_thresh,self.max_trials)
             L = self.estimate_warp_loss(train,u,N)
             # compute gradient update
             # j is the violating item i.e. U[u]V[j]+U[u]XW[j] is too large
             # compared to U[u]V[i]+U[u]XW[i]
             u_rows[ix] = u
-            dU[ix] = L*((self.V[i]-self.V[j]) + (XW[i]-XW[j]))
+            dU[ix] = L*(self.V[i]-self.V[j] + (X[i]-X[j]).dot(self.W))
             v_pos_rows[ix] = i
             dV_pos[ix] = L*self.U[u]
             v_neg_rows[ix] = j
@@ -197,7 +194,7 @@ class WARP2MFRecommender(MatrixFactorizationRecommender):
         else:
             raise ValueError('validation_set must be dict or int')
 
-        r = self.U[users,:].dot(self.V.T + X.dot(self.W).T)
+        r = np.asfortranarray(self.U[users,:]).dot(self.V.T + X.dot(self.W).T)
         prec = 0
         for ix,u in enumerate(users):
             ru = r[ix]
@@ -232,4 +229,5 @@ def main():
     save_recommender(model,outfile)
 
 if __name__ == '__main__':
-    main()
+    import cProfile
+    cProfile.run('main()')

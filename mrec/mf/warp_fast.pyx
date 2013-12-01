@@ -171,10 +171,10 @@ cdef sample_negative_example(num_items,
             return j
 
 cdef sample_positive_example(positive_thresh,
-                              num_users,
-                              np.ndarray[np.float_t,ndim=1] vals,
-                              np.ndarray[np.int32_t,ndim=1] indices,
-                              np.ndarray[np.int32_t,ndim=1] indptr):
+                             num_users,
+                             np.ndarray[np.float_t,ndim=1] vals,
+                             np.ndarray[np.int32_t,ndim=1] indices,
+                             np.ndarray[np.int32_t,ndim=1] indptr):
     """
     Uniformly sample a user and one of their positive items.
     Note this doesn't really sample users uniformly: they will

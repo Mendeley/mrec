@@ -52,20 +52,24 @@ class RerankingRecommender(BaseRecommender):
         self.mf_recommender = np.loads(str(archive['mf_model']))
         self.mf_recommender._load_archive(archive)
 
-    def fit(self,train):
+    def fit(self,train,item_features=None):
         """
         Fit both models to the training data.
 
-        train : scipy.sparse.csr_matrix
+        Parameters
+        ==========
+        train : scipy.sparse.csr_matrix, shape = [num_users, num_items]
             The training user-item matrix.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for items in training set, required by some recommenders.
 
         Notes
         =====
         You are not obliged to call this, alternatively you can pass
         ready trained models to the RerankingRecommender constructor.
         """
-        self.item_similarity_recommender.fit(train)
-        self.mf_recommender.fit(train)
+        self.item_similarity_recommender.fit(train,item_features)
+        self.mf_recommender.fit(train,item_features)
 
     def rerank(self,u,candidates,max_items,return_scores):
         """
@@ -97,7 +101,7 @@ class RerankingRecommender(BaseRecommender):
             recs = [candidates[i] for i in reranked]
         return recs
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
         """
         Recommend new items for a user.
 
@@ -111,6 +115,8 @@ class RerankingRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for items in training set, required by some recommenders.
 
         Returns
         =======
@@ -121,7 +127,11 @@ class RerankingRecommender(BaseRecommender):
         candidates = self.item_similarity_recommender.recommend_items(dataset,u,self.num_candidates,return_scores=False)
         return self.rerank(u,candidates,max_items,return_scores=return_scores)
 
-    def batch_recommend_items(self,dataset,max_items=10,return_scores=True):
+    def batch_recommend_items(self,
+                              dataset,
+                              max_items=10,
+                              return_scores=True,
+                              item_features=None):
         """
         Recommend new items for all users in the training dataset.  Assumes
         you've already called fit() to learn the similarity matrix.
@@ -136,6 +146,8 @@ class RerankingRecommender(BaseRecommender):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for items in training set, required by some recommenders.
 
         Returns
         =======
@@ -143,12 +155,18 @@ class RerankingRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        recs = self.item_similarity_recommender.batch_recommend_items(dataset,self.num_candidates,return_scores=False)
+        recs = self.item_similarity_recommender.batch_recommend_items(dataset,self.num_candidates,return_scores=False,item_features=item_features)
         for u,candidates in enumerate(recs):
             recs[u] = self.rerank(u,candidates,max_items,return_scores=return_scores)
         return recs
 
-    def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
+    def range_recommend_items(self,
+                              dataset,
+                              user_start,
+                              user_end,
+                              max_items=10,
+                              return_scores=True,
+                              item_features=None):
         """
         Recommend new items for a range of users in the training dataset.
         Assumes you've already called fit() to learn the similarity matrix.
@@ -165,6 +183,8 @@ class RerankingRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for items in training set, required by some recommenders.
 
         Returns
         =======
@@ -172,7 +192,7 @@ class RerankingRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        recs = self.item_similarity_recommender.range_recommend_items(dataset,user_start,user_end,self.num_candidates,return_scores=False)
+        recs = self.item_similarity_recommender.range_recommend_items(dataset,user_start,user_end,self.num_candidates,return_scores=False,item_features=item_features)
         for u,candidates in enumerate(recs):
             recs[u] = self.rerank(user_start+u,candidates,max_items,return_scores=return_scores)
         return recs

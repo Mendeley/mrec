@@ -28,7 +28,7 @@ class WARP2MFRecommender(WARPMFRecommender):
     def __str__(self):
         return 'WARP2MF(d={0},gamma={1},C={2})'.format(self.d,self.gamma,self.C)
 
-    def fit(self,train,X):
+    def fit(self,train,item_features=None):
         """
         Learn factors from training set and item features.
 
@@ -36,24 +36,47 @@ class WARP2MFRecommender(WARPMFRecommender):
         ==========
         train : scipy.sparse.csr_matrix
             User-item matrix.
-        X : numpy.ndarray.
-            Item features.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for each item in the dataset.
         """
         max_iters,validation_iters,validation = self.create_validation_set(train)
         model = WARP2(self.d,self.gamma,self.C,max_iters,validation_iters,self.batch_size,self.positive_thresh,self.max_trials)
         self.description = 'WARP2MF({0})'.format(model)
-        model.fit(train,X,validation)
+        model.fit(train,item_features,validation)
 
         self.U = model.U_
         self.V = model.V_
         self.W = model.W_
 
-    def predict_ratings(self,X,users=None):
+    def predict_ratings(self,users=None,item_features=None):
+        """
+        Predict ratings/scores for all items for supplied users.
+        Assumes you've already called fit() to learn the factors.
+
+        Only call this if you really want predictions for all items.
+        To get the top-k recommended items for each user you should
+        call one of the recommend_items() instead.
+
+        Parameters
+        ==========
+        users : int or array-like
+            Index or indices of users for which to make predictions.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for each item in the dataset.
+
+        Returns
+        =======
+        predictions : numpy.ndarray, shape = [len(users), num_items]
+            Predicted ratings for all items for each supplied user.
+        """
+        if isinstance(users,int):
+            users = [users]
+
         if users is None:
             U = self.U
         else:
             U = np.asfortranarray(self.U[users,:])
-        return U.dot(self.V.T + X.dot(self.W).T)
+        return U.dot(self.V.T + item_features.dot(self.W).T)
 
 def main():
     import sys
@@ -69,6 +92,7 @@ def main():
     train = load_sparse_matrix(file_format,filepath)
     # load item features as numpy array
     X = load_sparse_matrix('tsv',feature_file).toarray()
+    # strip features for any trailing items that don't appear in training set
     num_items = train.shape[1]
     X = X[:num_items,:]
 

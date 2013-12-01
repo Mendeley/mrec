@@ -42,7 +42,7 @@ class WRMFRecommender(MatrixFactorizationRecommender):
             return self.d**-0.5*np.random.random_sample((num_factors,self.d))
         return np.empty((num_factors,self.d))
 
-    def fit(self,train):
+    def fit(self,train,item_features=None):
         """
         Learn factors from training set. User and item factors are
         fitted alternately.
@@ -51,6 +51,8 @@ class WRMFRecommender(MatrixFactorizationRecommender):
         ==========
         train : scipy.sparse.csr_matrix or mrec.sparse.fast_sparse_matrix
             User-item matrix.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for each item in the dataset, ignored here.
         """
         if type(train) == csr_matrix:
             train = fast_sparse_matrix(train)

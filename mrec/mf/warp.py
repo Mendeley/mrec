@@ -36,7 +36,7 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         self.positive_thresh = positive_thresh
         self.max_trials = max_trials
 
-    def fit(self,train):
+    def fit(self,train,item_features=None):
         """
         Learn factors from training set.
 
@@ -44,6 +44,8 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         ==========
         train : scipy.sparse.csr_matrix
             User-item matrix.
+        item_features : numpy.ndarray, shape = [num_items, num_features]
+            Features for each item in the dataset, ignored here.
         """
         max_iters,validation_iters,validation = self.create_validation_set(train)
         model = WARP(self.d,self.gamma,self.C,max_iters,validation_iters,self.batch_size,self.positive_thresh,self.max_trials)
@@ -93,13 +95,6 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
                 validation[u] = train[u].indices[hidden]
 
         return max_iters,validation_iters,validation
-
-    def predict_ratings(self,users=None):
-        if users is None:
-            U = self.U
-        else:
-            U = np.asfortranarray(self.U[users,:])
-        return U.dot(self.V.T)
 
 def main():
     import sys

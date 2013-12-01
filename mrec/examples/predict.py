@@ -29,7 +29,7 @@ from filename_conventions import *
 
 ONE_MB = 2**20
 
-def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
+def process(view,opts,modelfile,trainfile,testfile,featurefile,outdir,evaluator):
 
     recsdir = get_recsdir(trainfile,opts.outdir)
     logging.info('creating recs directory {0}...'.format(recsdir))
@@ -47,7 +47,9 @@ def process(view,opts,modelfile,trainfile,testfile,outdir,evaluator):
                          opts.input_format,
                          trainfile,
                          opts.test_input_format,
-                         testfile,recsdir,
+                         testfile,
+                         featurefile,
+                         recsdir,
                          opts.mb_per_task,
                          done,
                          evaluator)
@@ -95,7 +97,9 @@ def create_tasks(modelfile,
                  input_format,
                  trainfile,
                  test_input_format,
-                 testfile,outdir,
+                 testfile,
+                 featurefile,
+                 outdir,
                  mb_per_task,
                  done,
                  evaluator):
@@ -104,7 +108,7 @@ def create_tasks(modelfile,
     for start in xrange(0,num_users,users_per_task):
         end = min(num_users,start+users_per_task)
         generate = (start,end) not in done
-        tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,outdir,start,end,evaluator,generate))
+        tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,featurefile,outdir,start,end,evaluator,generate))
     logging.info('created {0} tasks, {1} users per task'.format(len(tasks),users_per_task))
     return tasks
 
@@ -171,6 +175,7 @@ def main():
     parser.add_option('--modeldir',dest='modeldir',help='directory containing trained models')
     parser.add_option('--outdir',dest='outdir',help='directory for output files')
     parser.add_option('--metrics',dest='metrics',default='main',help='which set of metrics to compute, main|hitrate (default: %default)')
+    parser.add_option('--item_features',dest='item_features',help='path to sparse item features in tsv format (item_id,feature_id,val)')
     parser.add_option('--overwrite',dest='overwrite',action='store_true',default=False,help='overwrite existing files in outdir (default: %default)')
     parser.add_option('--packer',dest='packer',default='json',help='packer for IPython.parallel (default: %default)')
     parser.add_option('--add_module_paths',dest='add_module_paths',help='optional comma-separated list of paths to append to pythonpath (useful if you need to import uninstalled modules to IPython engines on a cluster)')
@@ -212,7 +217,7 @@ def main():
         logging.info('processing {0}...'.format(trainfile))
         modelfile = get_modelfile(trainfile,opts.modeldir)
         testfile = get_testfile(trainfile)
-        description,metrics = process(view,opts,modelfile,trainfile,testfile,opts.outdir,evaluator)
+        description,metrics = process(view,opts,modelfile,trainfile,testfile,opts.item_features,opts.outdir,evaluator)
         descriptions.add(description)
         if metrics is not None:
             for m in metrics:

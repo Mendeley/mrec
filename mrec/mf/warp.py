@@ -4,7 +4,6 @@ import random
 from mrec.evaluation import metrics
 
 from recommender import MatrixFactorizationRecommender
-from warp_fast import warp_sample, apply_updates
 from model.warp import WARP
 
 class WARPMFRecommender(MatrixFactorizationRecommender):

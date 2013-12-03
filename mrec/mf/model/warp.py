@@ -7,7 +7,7 @@ from mrec.evaluation import metrics
 from warp_fast import warp_sample, apply_updates
 
 class WARPBatchUpdate(object):
-    """Collection of arrays to hold a batch of sgd updates"""
+    """Collection of arrays to hold a batch of WARP sgd updates."""
 
     def __init__(self,batch_size,d):
         self.u = np.zeros(batch_size,dtype='int32')
@@ -17,7 +17,11 @@ class WARPBatchUpdate(object):
         self.v_neg = np.zeros(batch_size,dtype='int32')
         self.dV_neg = np.zeros((batch_size,d))
 
-    def set_update(self,ix,u,v_pos,v_neg,dU,dV_pos,dV_neg):
+    def clear(self):
+        pass
+
+    def set_update(self,ix,update):
+        u,v_pos,v_neg,dU,dV_pos,dV_neg = update
         self.u[ix] = u
         self.dU[ix] = dU
         self.v_pos[ix] = v_pos
@@ -26,6 +30,18 @@ class WARPBatchUpdate(object):
         self.dV_neg[ix] = dV_neg
 
 class WARPDecomposition(object):
+    """
+    Matrix embedding optimizing the WARP loss.
+
+    Parameters
+    ==========
+    num_rows : int
+        Number of rows in the full matrix.
+    num_cols : int
+        Number of columns in the full matrix.
+    d : int
+        The embedding dimension for the decomposition.
+    """
 
     def __init__(self,num_rows,num_cols,d):
         # initialize factors to small random values
@@ -34,15 +50,44 @@ class WARPDecomposition(object):
         # ensure memory layout avoids extra allocation in dot product
         self.U = np.asfortranarray(self.U)
 
-    def compute_update(self,updates,ix,u,i,j,L):
-        # compute gradient update
-        # j is the violating col i.e. U[u].V[j] is too large compared to U[u].V[i]
+    def compute_gradient_step(self,u,i,j,L):
+        """
+        Compute a gradient step from results of sampling.
+
+        Parameters
+        ==========
+        u : int
+            The sampled row.
+        i : int
+            The sampled positive column.
+        j : int
+            The sampled violating negative column i.e. U[u].V[j] is currently
+            too large compared to U[u].V[i]
+        L : int
+            The number of trials required to find a violating negative column.
+
+        Returns
+        =======
+        u : int
+            As input.
+        i : int
+            As input.
+        j : int
+            As input.
+        dU : numpy.ndarray
+            Gradient step for U[u].
+        dV_pos : numpy.ndarray
+            Gradient step for V[i].
+        dV_neg : numpy.ndarray
+            Gradient step for V[j].
+        """
         dU = L*(self.V[i]-self.V[j])
         dV_pos = L*self.U[u]
         dV_neg = -L*self.U[u]
-        updates.set_update(ix,u,i,j,dU,dV_pos,dV_neg)
+        return u,i,j,dU,dV_pos,dV_neg
 
     def apply_updates(self,updates,gamma,C):
+        # delegate to cython implementation
         apply_updates(self.U,updates.u,updates.dU,gamma,C)
         apply_updates(self.V,updates.v_pos,updates.dV_pos,gamma,C)
         apply_updates(self.V,updates.v_neg,updates.dV_neg,gamma,C)
@@ -106,7 +151,7 @@ class WARP(object):
         self.max_trials = max_trials
 
     def __str__(self):
-        return 'WARP(d={0},gamma={1},C={2})'.format(self.d,self.gamma,self.C)
+        return 'WARP(d={0},gamma={1},C={2},max_iters={3},validation_iters={4},batch_size={5},positive_thresh={6},max_trials={7})'.format(self.d,self.gamma,self.C,self.max_iters,self.validation_iters,self.batch_size,self.positive_thresh,self.max_trials)
 
     def fit(self,train,validation=None):
         """
@@ -170,19 +215,24 @@ class WARP(object):
             self.warp_loss[i] = self.warp_loss[i-1]+1.0/(i+1)
 
     def compute_updates(self,train,decomposition,updates):
+        updates.clear()
         tot_trials = 0
         for ix in xrange(self.batch_size):
-            u,i,j,N,trials = warp_sample(decomposition.U,
-                                         decomposition.V,
-                                         train.data,
-                                         train.indices,
-                                         train.indptr,
-                                         self.positive_thresh,
-                                         self.max_trials)
+            u,i,j,N,trials = self.sample(train,decomposition)
             tot_trials += trials
             L = self.estimate_warp_loss(train,u,N)
-            decomposition.compute_update(updates,ix,u,i,j,L)
+            updates.set_update(ix,decomposition.compute_gradient_step(u,i,j,L))
         return tot_trials
+
+    def sample(self,train,decomposition):
+        # delegate to cython implementation
+        return warp_sample(decomposition.U,
+                           decomposition.V,
+                           train.data,
+                           train.indices,
+                           train.indptr,
+                           self.positive_thresh,
+                           self.max_trials)
 
     def estimate_warp_loss(self,train,u,N):
         num_cols = train.shape[1]

@@ -2,10 +2,10 @@ import numpy as np
 import random
 
 from warp import WARPBatchUpdate, WARPDecomposition, WARP
-from warp_fast import warp2_sample, apply_updates
+from warp_fast import warp2_sample
 
 class WARP2BatchUpdate(WARPBatchUpdate):
-    """Collection of arrays to hold a batch of sgd updates"""
+    """Collection of arrays to hold a batch of sgd updates."""
 
     def __init__(self,batch_size,num_features,d):
         WARPBatchUpdate.__init__(self,batch_size,d)
@@ -14,36 +14,74 @@ class WARP2BatchUpdate(WARPBatchUpdate):
     def clear(self):
         self.dW[:] = 0
 
-    def set_update(self,ix,u,v_pos,v_neg,dU,dV_pos,dV_neg,dW):
-        WARPBatchUpdate.set_update(self,ix,u,v_pos,v_neg,dU,dV_pos,dV_neg)
+    def set_update(self,ix,update):
+        u,v_pos,v_neg,dU,dV_pos,dV_neg,dW = update
+        WARPBatchUpdate.set_update(self,ix,(u,v_pos,v_neg,dU,dV_pos,dV_neg))
         self.dW += dW
 
 class WARP2Decomposition(WARPDecomposition):
+    """
+    Joint matrix and feature embedding optimizing the WARP loss.
+
+    Parameters
+    ==========
+    num_rows : int
+        Number of rows in the full matrix.
+    num_cols : int
+        Number of columns in the full matrix.
+    X : numpy.ndarray, shape = [num_cols, num_features]
+        Features describing each column in the matrix.
+    d : int
+        The embedding dimension.
+    """
 
     def __init__(self,num_rows,num_cols,X,d):
         WARPDecomposition.__init__(self,num_rows,num_cols,d)
-        # initialize factors to small random values
-        self.U = d**-0.5*np.random.random_sample((num_rows,d))
-        self.V = d**-0.5*np.random.random_sample((num_cols,d))
-        # ensure memory layout avoids extra allocation in dot product
-        self.U = np.asfortranarray(self.U)
         # W holds latent factors for each item feature
         self.W = d**-0.5*np.random.random_sample((X.shape[1],d))
         self.X = X
 
-    def compute_update(self,updates,ix,u,i,j,L):
-        # compute gradient update
-        # j is the violating col i.e. U[u].V[j] is too large compared to U[u].V[i]
+    def compute_gradient_step(self,u,i,j,L):
+        """
+        Compute a gradient step from results of sampling.
+
+        Parameters
+        ==========
+        u : int
+            The sampled row.
+        i : int
+            The sampled positive column.
+        j : int
+            The sampled violating negative column i.e. U[u].V[j] is currently
+            too large compared to U[u].V[i]
+        L : int
+            The number of trials required to find a violating negative column.
+
+        Returns
+        =======
+        u : int
+            As input.
+        i : int
+            As input.
+        j : int
+            As input.
+        dU : numpy.ndarray
+            Gradient step for U[u].
+        dV_pos : numpy.ndarray
+            Gradient step for V[i].
+        dV_neg : numpy.ndarray
+            Gradient step for V[j].
+        dW : numpy.ndarray
+            Gradient step for W.
+        """
         dU = L*(self.V[i]-self.V[j])
         dV_pos = L*self.U[u]
         dV_neg = -L*self.U[u]
         dW = L*np.atleast_2d(self.X[i]-self.X[j]).T.dot(np.atleast_2d(self.U[u]))
-        updates.set_update(ix,u,i,j,dU,dV_pos,dV_neg,dW)
+        return u,i,j,dU,dV_pos,dV_neg,dW
 
     def apply_updates(self,updates,gamma,C):
-        apply_updates(self.U,updates.u,updates.dU,gamma,C)
-        apply_updates(self.V,updates.v_pos,updates.dV_pos,gamma,C)
-        apply_updates(self.V,updates.v_neg,updates.dV_neg,gamma,C)
+        WARPDecomposition.apply_updates(self,updates,gamma,C)
         self.apply_matrix_update(self.W,updates.dW,gamma,C)
 
     def apply_matrix_update(self,W,dW,gamma,C):
@@ -91,34 +129,15 @@ class WARP2(WARP):
         Row factors.
     V_ : numpy.ndarray
         Column factors.
+    W_ : numpy.ndarray
+        Item feature factors.
     """
-
-    def __init__(self,
-                 d,
-                 gamma,
-                 C,
-                 max_iters,
-                 validation_iters,
-                 batch_size=10,
-                 positive_thresh=0.00001,
-                 max_trials=50):
-        self.d = d
-        self.gamma = gamma
-        self.C = C
-        self.max_iters = max_iters
-        self.validation_iters = validation_iters
-        self.batch_size = batch_size
-        self.positive_thresh = positive_thresh
-        self.max_trials = max_trials
-
-    def __str__(self):
-        return 'WARP(d={0},gamma={1},C={2})'.format(self.d,self.gamma,self.C)
 
     def fit(self,train,X,validation=None):
         """
-        Learn factors from training set. The dot product of the factors
-        reconstructs the training matrix approximately, minimizing the
-        WARP ranking loss relative to the original data.
+        Learn embedding from training set. A suitable dot product of the
+        factors reconstructs the training matrix approximately, minimizing
+        the WARP ranking loss relative to the original data.
 
         Parameters
         ==========
@@ -151,21 +170,15 @@ class WARP2(WARP):
 
         return self
 
-    def compute_updates(self,train,decomposition,updates):
-        tot_trials = 0
-        updates.clear()
-        for ix in xrange(self.batch_size):
-            u,i,j,N,trials = warp2_sample(decomposition.U,
-                                          decomposition.V,
-                                          decomposition.W,
-                                          decomposition.X,
-                                          train.data,
-                                          train.indices,
-                                          train.indptr,
-                                          self.positive_thresh,
-                                          self.max_trials)
-            tot_trials += trials
-            L = self.estimate_warp_loss(train,u,N)
-            decomposition.compute_update(updates,ix,u,i,j,L)
-        return tot_trials
+    def sample(self,train,decomposition):
+        # delegate to cython implementation
+        return warp2_sample(decomposition.U,
+                            decomposition.V,
+                            decomposition.W,
+                            decomposition.X,
+                            train.data,
+                            train.indices,
+                            train.indptr,
+                            self.positive_thresh,
+                            self.max_trials)
 

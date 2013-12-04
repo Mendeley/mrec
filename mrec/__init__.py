@@ -10,6 +10,8 @@ except ImportError:
 from sparse import fast_sparse_matrix, loadtxt, loadz, savez
 from base_recommender import BaseRecommender
 
+__version__ = '0.3.0'
+
 def load_fast_sparse_matrix(input_format,filepath):
     """
     Load a fast_sparse_matrix from an input file of the specified format,

@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 import random
 
 from warp import WARPBatchUpdate, WARPDecomposition, WARP
@@ -40,6 +41,7 @@ class WARP2Decomposition(WARPDecomposition):
         # W holds latent factors for each item feature
         self.W = d**-0.5*np.random.random_sample((X.shape[1],d))
         self.X = X
+        self.is_sparse = isinstance(X,scipy.sparse.csr_matrix)
 
     def compute_gradient_step(self,u,i,j,L):
         """
@@ -77,7 +79,10 @@ class WARP2Decomposition(WARPDecomposition):
         dU = L*(self.V[i]-self.V[j])
         dV_pos = L*self.U[u]
         dV_neg = -L*self.U[u]
-        dW = L*np.atleast_2d(self.X[i]-self.X[j]).T.dot(np.atleast_2d(self.U[u]))
+        dx = self.X[i]-self.X[j]
+        if not self.is_sparse:
+            dx = np.atleast_2d(dx)
+        dW = L*dx.T.dot(np.atleast_2d(self.U[u]))
         return u,i,j,dU,dV_pos,dV_neg,dW
 
     def apply_updates(self,updates,gamma,C):

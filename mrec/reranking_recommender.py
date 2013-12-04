@@ -60,7 +60,7 @@ class RerankingRecommender(BaseRecommender):
         ==========
         train : scipy.sparse.csr_matrix, shape = [num_users, num_items]
             The training user-item matrix.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, required by some recommenders.
 
         Notes
@@ -115,7 +115,7 @@ class RerankingRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, required by some recommenders.
 
         Returns
@@ -146,7 +146,7 @@ class RerankingRecommender(BaseRecommender):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, required by some recommenders.
 
         Returns
@@ -183,7 +183,7 @@ class RerankingRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, required by some recommenders.
 
         Returns

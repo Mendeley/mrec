@@ -104,7 +104,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset.
 
         Returns
@@ -129,7 +129,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
         ==========
         users : int or array-like
             Index or indices of users for which to make predictions.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset, ignored here.
 
         Returns
@@ -166,7 +166,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset.
 
         Returns
@@ -201,7 +201,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset.
 
         Returns

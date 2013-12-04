@@ -44,7 +44,7 @@ class ItemPopularityRecommender(BaseRecommender):
         ----------
         dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix
             The user-item matrix.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, ignored here.
         """
         if isinstance(dataset,fast_sparse_matrix):
@@ -82,7 +82,7 @@ class ItemPopularityRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, ignored here.
 
         Returns

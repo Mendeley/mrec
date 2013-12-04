@@ -37,7 +37,7 @@ class BaseRecommender(object):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Optionally supply features for each item in the dataset.
 
         Returns
@@ -58,7 +58,7 @@ class BaseRecommender(object):
         ==========
         train : scipy.sparse.csr_matrix or mrec.sparse.fast_sparse_matrix, shape = [num_users, num_items]
             User-item matrix.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for items in training set, required by some recommenders.
         """
         raise NotImplementedError('you should implement fit()')
@@ -175,7 +175,7 @@ class BaseRecommender(object):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Optionally supply features for each item in the dataset.
 
         Returns
@@ -220,7 +220,7 @@ class BaseRecommender(object):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Optionally supply features for each item in the dataset.
 
         Returns

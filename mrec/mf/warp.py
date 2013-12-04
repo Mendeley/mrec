@@ -43,7 +43,7 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         ==========
         train : scipy.sparse.csr_matrix
             User-item matrix.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset, ignored here.
         """
         max_iters,validation_iters,validation = self.create_validation_set(train)

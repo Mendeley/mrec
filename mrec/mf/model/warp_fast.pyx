@@ -3,6 +3,9 @@
 
 cimport numpy as np
 
+import numpy as np
+import scipy
+
 cdef extern from "stdlib.h":
     int rand() nogil
 
@@ -250,7 +253,7 @@ def apply_updates(np.ndarray[np.float_t,ndim=2] F,
 def warp2_sample(np.ndarray[np.float_t,ndim=2] U,
                 np.ndarray[np.float_t,ndim=2] V,
                 np.ndarray[np.float_t,ndim=2] W,
-                np.ndarray[np.float_t,ndim=2] X,
+                X,
                 np.ndarray[np.float_t,ndim=1] vals,
                 np.ndarray[np.int32_t,ndim=1] indices,
                 np.ndarray[np.int32_t,ndim=1] indptr,
@@ -311,10 +314,10 @@ def warp2_sample(np.ndarray[np.float_t,ndim=2] U,
         if j >= 0:
             return u,i,j,N,tot_trials
 
-cpdef sample_violating_negative_example2(np.ndarray[np.float_t,ndim=2] U,
+cdef sample_violating_negative_example2(np.ndarray[np.float_t,ndim=2] U,
                                         np.ndarray[np.float_t,ndim=2] V,
                                         np.ndarray[np.float_t,ndim=2] W,
-                                        np.ndarray[np.float_t,ndim=2] X,
+                                        X,
                                         np.ndarray[np.float_t,ndim=1] vals,
                                         np.ndarray[np.int32_t,ndim=1] indices,
                                         begin,
@@ -364,16 +367,43 @@ cpdef sample_violating_negative_example2(np.ndarray[np.float_t,ndim=2] U,
     cdef float r
     cdef unsigned int N, num_items
     cdef int j
+    cdef np.ndarray[np.float_t,ndim=1] XW
+    cdef np.ndarray[np.float_t,ndim=1] xbuf
 
     num_items = V.shape[0]
+    is_sparse = isinstance(X,scipy.sparse.csr_matrix)
+    if is_sparse:
+        xbuf = np.zeros((X.shape[1],))
+    else:
+        xbuf = None
 
-    r = U[u].dot(V[i] + X[i].dot(W))
+    XW = sparse_sdot(xbuf,W,X,i,is_sparse)
+    r = U[u].dot(V[i] + XW)
     for N in xrange(1,max_trials):
         # find j!=i s.t. data[u,j] < data[u,i]
         j = sample_negative_example(num_items,vals,indices,begin,end,ix)
-        if r - U[u].dot(V[j] + X[j].dot(W)) < 1:
+        XW = sparse_sdot(xbuf,W,X,j,is_sparse)
+        if r - U[u].dot(V[j] + XW) < 1:
             # found a violating pair
             return j,N
     # no violating pair found after max_trials, give up
     return -1,max_trials
 
+cdef sparse_sdot(np.ndarray[np.float_t,ndim=1] xbuf,
+                 np.ndarray[np.float_t,ndim=2] W,
+                 X,
+                 i,
+                 is_sparse):
+
+    cdef np.ndarray[np.float_t,ndim=1] XW
+
+    if is_sparse:
+        # TODO: surely there's something built in to do this...
+        for ix in xrange(X.indptr[i],X.indptr[i+1]):
+            xbuf[X.indices[ix]] = X.data[ix]
+        XW = xbuf.dot(W)
+        for ix in xrange(X.indptr[i],X.indptr[i+1]):
+            xbuf[X.indices[ix]] = 0
+    else:
+        XW = X[i].dot(W)
+    return XW

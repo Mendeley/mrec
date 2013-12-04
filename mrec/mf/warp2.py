@@ -36,7 +36,7 @@ class WARP2MFRecommender(WARPMFRecommender):
         ==========
         train : scipy.sparse.csr_matrix
             User-item matrix.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset.
         """
         max_iters,validation_iters,validation = self.create_validation_set(train)
@@ -61,7 +61,7 @@ class WARP2MFRecommender(WARPMFRecommender):
         ==========
         users : int or array-like
             Index or indices of users for which to make predictions.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset.
 
         Returns
@@ -88,10 +88,10 @@ def main():
     feature_file = sys.argv[3]
     outfile = sys.argv[4]
 
-    # load training set as scipy sparse matrix
+    # load training set
     train = load_sparse_matrix(file_format,filepath)
-    # load item features as numpy array
-    X = load_sparse_matrix('tsv',feature_file).toarray()
+    # load item features, assume they are tsv: item_id,feature_id,val
+    X = load_sparse_matrix('tsv',feature_file)
     # strip features for any trailing items that don't appear in training set
     num_items = train.shape[1]
     X = X[:num_items,:]

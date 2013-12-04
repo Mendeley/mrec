@@ -51,7 +51,7 @@ class WRMFRecommender(MatrixFactorizationRecommender):
         ==========
         train : scipy.sparse.csr_matrix or mrec.sparse.fast_sparse_matrix
             User-item matrix.
-        item_features : numpy.ndarray, shape = [num_items, num_features]
+        item_features : array_like, shape = [num_items, num_features]
             Features for each item in the dataset, ignored here.
         """
         if type(train) == csr_matrix:

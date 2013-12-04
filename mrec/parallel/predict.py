@@ -25,7 +25,7 @@ def run(task):
         dataset = load_sparse_matrix(input_format,trainfile)
         out = open(outfile,'w')
         if featurefile is not None:
-            item_features = load_sparse_matrix('tsv',featurefile).toarray()
+            item_features = load_sparse_matrix('tsv',featurefile)
             # strip features for any trailing items that don't appear in training set
             num_items = dataset.shape[1]
             item_features = item_features[:num_items,:]

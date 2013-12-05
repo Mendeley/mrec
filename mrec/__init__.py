@@ -61,7 +61,7 @@ def load_sparse_matrix(input_format,filepath):
     elif input_format == 'mm':
         return mmread(filepath).tocsr()
     elif input_format == 'npz':
-        return loadz(filepath)
+        return loadz(filepath).tocsr()
     elif input_format == 'fsm':
         return fast_sparse_matrix.load(filepath).X
     raise ValueError('unknown input format: {0}'.format(input_format))
@@ -99,7 +99,7 @@ def save_sparse_matrix(data,fmt,filepath):
     elif fmt == 'mm':
         mmwrite(filepath,data)
     elif fmt == 'npz':
-        return savez(data,filepath)
+        savez(data.tocoo(),filepath)
     elif fmt == 'fsm':
         fast_sparse_matrix(data).save(filepath)
     else:

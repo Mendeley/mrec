@@ -23,8 +23,8 @@ from IMDb. To create the features, first download the plot.list.gz file from one
 in the MovieLens datasets. Once you've unzipped this file you can use the ``extract_movie_features``
 script in the bin directory of the ``mrec`` source tree to create features and save them to file::
     
-    cd mrec
-    ./bin/extract_movie_features plot.list ml-100k/u.item 100k.features.npz
+    $ cd mrec
+    $ ./bin/extract_movie_features plot.list ml-100k/u.item 100k.features.npz
 
 .. note::
 
@@ -35,7 +35,7 @@ script in the bin directory of the ``mrec`` source tree to create features and s
 The resulting features are simply `tf-idf counts <http://en.wikipedia.org/wiki/Tf%E2%80%93idf>`_ of the words found in the plot summaries for each movie. You can load them like this::
 
     >>> from mrec import load_sparse_matrix
-    >>> features = load_sparse_matrix('100k.features.npz')
+    >>> features = load_sparse_matrix('npz','100k.features.npz')
 
 and inspect the top few word counts for the first few items::
 

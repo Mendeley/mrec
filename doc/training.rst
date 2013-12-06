@@ -31,7 +31,7 @@ Here are the basic options for ``mrec_train``::
 - `knn` learns a traditional k-nearest neighbours item similarity model
 - `slim` specifies a SLIM model which learns item similarities by solving a regression problem
 - `wrmf` fits a confidence-weighted matrix factorization model
-- `warp` trains a model that optimizes a ranking loss
+- `warp` trains a model that optimizes a ranking loss, and can also learn from item features
 - `popularity` is a trivial baseline that will make the same recommendations for all users, but which can be useful for evaluation.
 
 The ``--train`` input file for training can hold the user-item matrix in a variety of formats.

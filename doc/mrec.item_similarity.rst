@@ -1,5 +1,5 @@
-item_similarity Package
-=======================
+mrec.item_similarity Package
+============================
 
 :mod:`slim` Module
 ------------------

@@ -78,6 +78,8 @@ of the ``KNNRecommender`` as the value of ``k``.
 
 For the Weighted Regularized Matrix Factoriation (WRMF) recommender you can specify::
 
+    --num_factors=NUM_FACTORS
+                          number of latent factors (default: 80)
     --alpha=ALPHA         wrmf confidence constant (default: 1.0)
     --lbda=LBDA           wrmf regularization constant (default: 0.015)
     --als_iters=ALS_ITERS number of als iterations (default: 15)
@@ -91,8 +93,18 @@ The regularization constant and number of learning iterations control over-fitti
 
 For the Weighted Approximately Ranked Pairwise (WARP) loss recommender the options are::
 
+    --num_factors=NUM_FACTORS
+                          number of latent factors (default: 80)
     --gamma=GAMMA         warp learning rate (default: 0.01)
     --C=C                 warp regularization constant (default: 100.0)
+    --item_features=ITEM_FEATURES
+                          path to sparse item features in tsv format
+                          (item_id,feature_id,val)
+
+The ``item_features`` option here is particularly interesting: if you supply a filepath
+here then a hybrid recommender will be created, based on a model that learns
+jointly from the item features in the file and from the ratings or preference scores in
+the training user-item matrix. See :ref:`hybrid` for more details.
 
 You can also train a baseline non-personalized recommender that just finds the most popular
 items and recommends them to everybody. The options for this are::

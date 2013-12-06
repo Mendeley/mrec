@@ -1,5 +1,5 @@
-mf Package
-=======================
+mrec.mf Package
+===============
 
 :mod:`wrmf` Module
 ------------------
@@ -17,6 +17,14 @@ mf Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`warp2` Module
+-------------------
+
+.. automodule:: mrec.mf.warp2
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`recommender` Module
 -------------------------
 
@@ -24,3 +32,11 @@ mf Package
     :members:
     :undoc-members:
     :show-inheritance:
+
+ Subpackages
+------------
+
+.. toctree::
+
+    mrec.mf.model
+

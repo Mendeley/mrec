@@ -1,5 +1,5 @@
-parallel Package
-================
+mrec.parallel Package
+=====================
 
 :mod:`item_similarity` Module
 -----------------------------

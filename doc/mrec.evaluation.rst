@@ -1,5 +1,5 @@
-evaluation Package
-==================
+mrec.evaluation Package
+=======================
 
 :mod:`preprocessing` Module
 ---------------------------

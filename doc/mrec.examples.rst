@@ -1,5 +1,5 @@
-examples Package
-================
+mrec.examples Package
+=====================
 
 :mod:`train` Module
 -------------------

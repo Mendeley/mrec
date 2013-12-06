@@ -135,6 +135,10 @@ def estimate_users_per_task(mb_per_task,input_format,trainfile,modelfile):
             items_per_user = nnz / num_users
             sims_per_item = model.similarity_matrix.nnz / num_items
             users_per_task = ((mb_per_task-required_mb_per_task)*ONE_MB) / (items_per_user*sims_per_item*16)
+    else:
+        # assume nothing else to load
+        users_per_task = num_users
+
     if mb_per_task <= required_mb_per_task:
         raise RuntimeError('requires at least {0}MB per task, increase --mb_per_task if you can'.format(required_mb_per_task))
 

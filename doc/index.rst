@@ -9,6 +9,7 @@ Contents
     quickstart
     preparation
     training
+    hybrid
     evaluation
     aws
     api

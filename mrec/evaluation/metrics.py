@@ -51,9 +51,9 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
     Supply functions to retrain model, to get a new split of data on
     each run, to get known items from the test set, and to compute the
     metrics you want:
-      retrain(model,dataset) should retrain model
-      get_split() should return train_data,test_users,test_data
-      evaluation_func(model,users,test) should return a dict of metrics
+    - retrain(model,dataset) should retrain model
+    - get_split() should return train_data,test_users,test_data
+    - evaluation_func(model,users,test) should return a dict of metrics
     A number of suitable functions are already available in the module.
     """
     metrics = [defaultdict(list) for m in models]

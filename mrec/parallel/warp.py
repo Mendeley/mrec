@@ -10,7 +10,17 @@ from mrec import save_recommender, load_recommender
 
 class WARPMFRunner(object):
 
-    def run(self,view,model,input_format,trainfile,num_engines,workdir,overwrite,modelfile):
+    def run(self,
+            view,
+            model,
+            input_format,
+            trainfile,
+            feature_format,
+            featurefile,
+            num_engines,
+            workdir,
+            overwrite,
+            modelfile):
 
         logging.info('creating models directory {0}...'.format(workdir))
         subprocess.check_call(['mkdir','-p',workdir])
@@ -23,7 +33,14 @@ class WARPMFRunner(object):
                 logging.info('found {0} output files'.format(len(done)))
 
         logging.info('creating tasks...')
-        tasks = self.create_tasks(model,input_format,trainfile,workdir,num_engines,done)
+        tasks = self.create_tasks(model,
+                                  input_format,
+                                  trainfile,
+                                  feature_format,
+                                  featurefile,
+                                  workdir,
+                                  num_engines,
+                                  done)
 
         if tasks:
             logging.info('running in parallel across ipython engines...')
@@ -50,6 +67,8 @@ class WARPMFRunner(object):
                     model.d += partial_model.d
                     model.U = np.hstack((model.U,partial_model.U))
                     model.V = np.hstack((model.V,partial_model.V))
+                    if hasattr(model,'W'):
+                        model.W = np.hstack((model.W,partial_model.W))
             save_recommender(model,modelfile)
             logging.info('removing partial output files...')
             rmtree(workdir)
@@ -58,12 +77,20 @@ class WARPMFRunner(object):
             logging.error('FAILED: {0}/{1} tasks did not complete successfully'.format(remaining,len(tasks)))
             logging.error('try rerunning the command to retry the remaining tasks')
 
-    def create_tasks(self,model,input_format,trainfile,outdir,num_engines,done):
+    def create_tasks(self,
+                     model,
+                     input_format,
+                     trainfile,
+                     feature_format,
+                     featurefile,
+                     outdir,
+                     num_engines,
+                     done):
         tasks = []
         for ix in xrange(num_engines):
             if ix not in done:
                 outfile = self.get_modelfile(ix,outdir)
-                tasks.append((model,input_format,trainfile,outfile,ix,num_engines))
+                tasks.append((model,input_format,trainfile,feature_format,featurefile,outfile,ix,num_engines))
         return tasks
 
     def find_done(self,outdir):
@@ -89,10 +116,18 @@ def process(task):
     import subprocess
     from mrec import load_sparse_matrix, save_recommender
 
-    model,input_format,trainfile,outfile,offset,step = task
+    model,input_format,trainfile,feature_format,featurefile,outfile,offset,step = task
 
     dataset = load_sparse_matrix(input_format,trainfile)
-    model.fit(dataset)
+    if featurefile is not None:
+        # currently runs much faster if features are loaded as a dense matrix
+        item_features = load_sparse_matrix(feature_format,featurefile).toarray()
+        # strip features for any trailing items that don't appear in training set
+        num_items = dataset.shape[1]
+        item_features = item_features[:num_items,:]
+        model.fit(dataset,item_features=item_features)
+    else:
+        model.fit(dataset)
     save_recommender(model,outfile)
 
     # record success

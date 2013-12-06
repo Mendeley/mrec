@@ -21,15 +21,17 @@ class ItemSimilarityRecommender(BaseRecommender):
     need to supply the compute_similarities() method.
     """
 
-    def fit(self,dataset):
+    def fit(self,dataset,item_features=None):
         """
         Learn the complete similarity matrix from a user-item matrix.
 
         Parameters
         ==========
-        dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix
+        dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix, shape = [num_users, num_items]
             The matrix of user-item counts, row i holds the counts for
             the i-th user.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, ignored here.
         """
         if not isinstance(dataset,fast_sparse_matrix):
             dataset = fast_sparse_matrix(dataset)
@@ -157,7 +159,7 @@ class ItemSimilarityRecommender(BaseRecommender):
             sims = [(i,w[i]) for i in w.argsort()[-1:-max_similar_items-1:-1] if w[i] > 0]
         return sims
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
         """
         Recommend new items for a user.  Assumes you've already called
         fit() to learn the similarity matrix.
@@ -172,6 +174,8 @@ class ItemSimilarityRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, ignored here.
 
         Returns
         =======
@@ -195,7 +199,12 @@ class ItemSimilarityRecommender(BaseRecommender):
                     break
         return recs
 
-    def batch_recommend_items(self,dataset,max_items=10,return_scores=True,show_progress=False):
+    def batch_recommend_items(self,
+                              dataset,
+                              max_items=10,
+                              return_scores=True,
+                              show_progress=False,
+                              item_features=None):
         """
         Recommend new items for all users in the training dataset.  Assumes
         you've already called fit() to learn the similarity matrix.
@@ -210,6 +219,8 @@ class ItemSimilarityRecommender(BaseRecommender):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, ignored here.
 
         Returns
         =======
@@ -223,7 +234,13 @@ class ItemSimilarityRecommender(BaseRecommender):
             raise AttributeError('you must call fit() before trying to recommend items')
         return self._get_recommendations_from_predictions(r,dataset,0,r.shape[0],max_items,return_scores,show_progress)
 
-    def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
+    def range_recommend_items(self,
+                              dataset,
+                              user_start,
+                              user_end,
+                              max_items=10,
+                              return_scores=True,
+                              item_features=None):
         """
         Recommend new items for a range of users in the training dataset.
         Assumes you've already called fit() to learn the similarity matrix.
@@ -240,6 +257,8 @@ class ItemSimilarityRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, ignored here.
 
         Returns
         =======

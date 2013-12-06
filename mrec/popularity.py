@@ -35,16 +35,17 @@ class ItemPopularityRecommender(BaseRecommender):
         self.method = method
         self.thresh = thresh
 
-    def fit(self,dataset):
+    def fit(self,dataset,item_features=None):
         """
         Compute the most popular items using the method specified
         in the constructor.
 
         Parameters
         ----------
-
         dataset : scipy sparse matrix or mrec.sparse.fast_sparse_matrix
             The user-item matrix.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, ignored here.
         """
         if isinstance(dataset,fast_sparse_matrix):
             d = dataset.X.tocsc()
@@ -65,7 +66,7 @@ class ItemPopularityRecommender(BaseRecommender):
         popularity.sort(reverse=True)
         self.pop_items = [(i,c) for (c,i) in popularity]
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
         """
         Recommend new items for a user.  Assumes you've already called
         fit().
@@ -81,6 +82,8 @@ class ItemPopularityRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, ignored here.
 
         Returns
         -------

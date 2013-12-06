@@ -51,7 +51,7 @@ def savez(d,file):
 
     Parameters
     ----------
-    d : scipy sparse matrix
+    d : scipy.sparse.coo_matrix
         The sparse matrix to save.
     file : str or file
         Either the file name (string) or an open file (file-like object)

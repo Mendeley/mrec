@@ -1,3 +1,5 @@
+.. _quickstart:
+
 =========================
 Getting started with mrec
 =========================

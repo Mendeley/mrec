@@ -89,7 +89,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
         # ensure that memory layout avoids extra allocation in dot product
         self.U = np.asfortranarray(self.U)
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
         """
         Recommend up to max_items most highly recommended items for user u.
         Assumes you've already called fit() to learn the factors.
@@ -104,6 +104,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for each item in the dataset.
 
         Returns
         =======
@@ -111,20 +113,45 @@ class MatrixFactorizationRecommender(BaseRecommender):
             List of (idx,score) pairs if return_scores is True, else
             just a list of idxs.
         """
-        r = self.U[u].dot(self.V.T)
-        known_items = set(dataset[u].indices)
-        recs = []
-        for i in r.argsort()[::-1]:
-            if i not in known_items:
-                if return_scores:
-                    recs.append((i,r[i]))
-                else:
-                    recs.append(i)
-                if len(recs) >= max_items:
-                    break
-        return recs
+        r = self.predict_ratings(u,item_features=item_features)
+        return self._get_recommendations_from_predictions(r,dataset,u,u+1,max_items,return_scores)[0]
 
-    def batch_recommend_items(self,dataset,max_items=10,return_scores=True):
+    def predict_ratings(self,users=None,item_features=None):
+        """
+        Predict ratings/scores for all items for supplied users.
+        Assumes you've already called fit() to learn the factors.
+
+        Only call this if you really want predictions for all items.
+        To get the top-k recommended items for each user you should
+        call one of the recommend_items() instead.
+
+        Parameters
+        ==========
+        users : int or array-like
+            Index or indices of users for which to make predictions.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for each item in the dataset, ignored here.
+
+        Returns
+        =======
+        predictions : numpy.ndarray, shape = [len(users), num_items]
+            Predicted ratings for all items for each supplied user.
+        """
+        if isinstance(users,int):
+            users = [users]
+
+        if users is None:
+            U = self.U
+        else:
+            U = np.asfortranarray(self.U[users,:])
+        return U.dot(self.V.T)
+
+    def batch_recommend_items(self,
+                              dataset,
+                              max_items=10,
+                              return_scores=True,
+                              show_progress=False,
+                              item_features=None):
         """
         Recommend new items for all users in the training dataset.  Assumes
         you've already called fit() to learn the similarity matrix.
@@ -139,6 +166,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for each item in the dataset.
 
         Returns
         =======
@@ -146,10 +175,16 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        r = self.U.dot(self.V.T)
-        return self._get_recommendations_from_predictions(r,dataset,0,r.shape[0],max_items,return_scores)
+        r = self.predict_ratings(item_features=item_features)
+        return self._get_recommendations_from_predictions(r,dataset,0,r.shape[0],max_items,return_scores,show_progress)
 
-    def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
+    def range_recommend_items(self,
+                              dataset,
+                              user_start,
+                              user_end,
+                              max_items=10,
+                              return_scores=True,
+                              item_features=None):
         """
         Recommend new items for a range of users in the training dataset.
         Assumes you've already called fit() to learn the similarity matrix.
@@ -166,6 +201,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for each item in the dataset.
 
         Returns
         =======
@@ -173,10 +210,17 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        r = self.U[user_start:user_end,:].dot(self.V.T)
+        r = self.predict_ratings(xrange(user_start,user_end),item_features=item_features)
         return self._get_recommendations_from_predictions(r,dataset,user_start,user_end,max_items,return_scores)
 
-    def _get_recommendations_from_predictions(self,r,dataset,user_start,user_end,max_items,return_scores=True,show_progress=False):
+    def _get_recommendations_from_predictions(self,
+                                              r,
+                                              dataset,
+                                              user_start,
+                                              user_end,
+                                              max_items,
+                                              return_scores=True,
+                                              show_progress=False):
         """
         Select recommendations given predicted scores/ratings.
 

@@ -16,9 +16,10 @@ but there are still rather few examples around that show how to get it to work i
 
 Highlights:
 
-- a (relatively) efficient implementation of the SLIM item similarity method. [1]_
-- an implementation of Hu, Koren & Volinsky's WRMF weighted matrix factorization for implicit feedback. [2]_
-- a matrix factorization model that optimizes the Weighted Approximately Ranked Pairwise (WARP) ranking loss. [3]_
+- a (relatively) efficient implementation of the SLIM item similarity method [1]_.
+- an implementation of Hu, Koren & Volinsky's WRMF weighted matrix factorization for implicit feedback [2]_.
+- a matrix factorization model that optimizes the Weighted Approximately Ranked Pairwise (WARP) ranking loss [3]_.
+- a hybrid model optimizing the WARP loss for a ranking based jointly on a user-item matrix and on content features for each item.
 - utilities to train models and make recommendations in parallel using IPython.
 - utilities to prepare datasets and compute quality metrics.
 

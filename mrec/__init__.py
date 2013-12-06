@@ -10,6 +10,8 @@ except ImportError:
 from sparse import fast_sparse_matrix, loadtxt, loadz, savez
 from base_recommender import BaseRecommender
 
+__version__ = '0.3.0'
+
 def load_fast_sparse_matrix(input_format,filepath):
     """
     Load a fast_sparse_matrix from an input file of the specified format,
@@ -59,7 +61,7 @@ def load_sparse_matrix(input_format,filepath):
     elif input_format == 'mm':
         return mmread(filepath).tocsr()
     elif input_format == 'npz':
-        return loadz(filepath)
+        return loadz(filepath).tocsr()
     elif input_format == 'fsm':
         return fast_sparse_matrix.load(filepath).X
     raise ValueError('unknown input format: {0}'.format(input_format))
@@ -97,7 +99,7 @@ def save_sparse_matrix(data,fmt,filepath):
     elif fmt == 'mm':
         mmwrite(filepath,data)
     elif fmt == 'npz':
-        return savez(data,filepath)
+        savez(data.tocoo(),filepath)
     elif fmt == 'fsm':
         fast_sparse_matrix(data).save(filepath)
     else:

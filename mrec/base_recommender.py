@@ -23,7 +23,7 @@ class BaseRecommender(object):
     and the batch methods to recommend items.
     """
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True):
+    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
         """
         Recommend new items for a user.
 
@@ -37,6 +37,8 @@ class BaseRecommender(object):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Optionally supply features for each item in the dataset.
 
         Returns
         =======
@@ -45,6 +47,21 @@ class BaseRecommender(object):
             just a list of idxs.
         """
         raise NotImplementedError('you must implement recommend_items()')
+
+    def fit(self,train,item_features=None):
+        """
+        Train on supplied data. In general you will want to
+        implement this rather than computing recommendations on
+        the fly.
+
+        Parameters
+        ==========
+        train : scipy.sparse.csr_matrix or mrec.sparse.fast_sparse_matrix, shape = [num_users, num_items]
+            User-item matrix.
+        item_features : array_like, shape = [num_items, num_features]
+            Features for items in training set, required by some recommenders.
+        """
+        raise NotImplementedError('you should implement fit()')
 
     def save(self,filepath):
         """
@@ -63,7 +80,7 @@ class BaseRecommender(object):
         in client code.
         """
         if not filepath.endswith('.npz'):
-            raise ValueError('filepath must have ".npz" suffix')
+            raise ValueError('invalid filepath {0}, must have ".npz" suffix'.format(filepath))
 
         archive = self._create_archive()
         if archive:
@@ -123,7 +140,7 @@ class BaseRecommender(object):
         associated data into memory.
 
         Parameters
-        ----------
+        ==========
         filepath : str
             The filepath to read from.
         """
@@ -139,7 +156,12 @@ class BaseRecommender(object):
             return self.description
         return 'unspecified recommender: you should set self.description or implement __str__()'
 
-    def batch_recommend_items(self,dataset,max_items=10,return_scores=True,show_progress=False):
+    def batch_recommend_items(self,
+                              dataset,
+                              max_items=10,
+                              return_scores=True,
+                              show_progress=False,
+                              item_features=None):
         """
         Recommend new items for all users in the training dataset.
 
@@ -153,6 +175,8 @@ class BaseRecommender(object):
             If true return a score along with each recommended item.
         show_progress: bool
             If true print something to stdout to show progress.
+        item_features : array_like, shape = [num_items, num_features]
+            Optionally supply features for each item in the dataset.
 
         Returns
         =======
@@ -174,10 +198,15 @@ class BaseRecommender(object):
             print
         return recs
 
-    def range_recommend_items(self,dataset,user_start,user_end,max_items=10,return_scores=True):
+    def range_recommend_items(self,
+                              dataset,
+                              user_start,
+                              user_end,
+                              max_items=10,
+                              return_scores=True,
+                              item_features=None):
         """
         Recommend new items for a range of users in the training dataset.
-        Assumes you've already called fit() to learn the similarity matrix.
 
         Parameters
         ==========
@@ -191,6 +220,8 @@ class BaseRecommender(object):
             Maximum number of recommended items to return.
         return_scores : bool
             If true return a score along with each recommended item.
+        item_features : array_like, shape = [num_items, num_features]
+            Optionally supply features for each item in the dataset.
 
         Returns
         =======

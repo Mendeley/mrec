@@ -5,11 +5,13 @@ from setuptools import setup, find_packages, Extension
 from Cython.Distutils import build_ext
 import numpy
 
+import mrec
+
 with open('README.rst') as f:
     long_description = f.read()
 
 setup(packages=find_packages(),
-      version='0.2.4',
+      version=mrec.__version__,
       maintainer='Mark Levy',
       name='mrec',
       package_dir={'':'.'},
@@ -17,7 +19,7 @@ setup(packages=find_packages(),
       description='mrec recommender systems library',
       long_description=long_description,
       url='https://github.com/mendeley/mrec',
-      download_url='https://github.com/mendeley/mrec/tarball/master#egg=mrec-0.2.4',
+      download_url='https://github.com/mendeley/mrec/tarball/master#egg=mrec-'+mrec.__version__,
       classifiers=['Development Status :: 4 - Beta',
                    'Environment :: Console',
                    'License :: OSI Approved :: BSD License',
@@ -37,7 +39,7 @@ setup(packages=find_packages(),
           ]},
       cmdclass={'build_ext':build_ext},
       ext_modules=[Extension('warp_fast',
-                             sources=['mrec/mf/warp_fast.pyx'],
+                             sources=['mrec/mf/model/warp_fast.pyx'],
                              include_dirs=[numpy.get_include()]),
                   ]
 )

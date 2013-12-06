@@ -1,0 +1,106 @@
+#!/usr/bin/env python
+
+"""
+This script generates text features for movies in the movielens datasets from
+the IMDb plot.list file, which you can download from one of the official mirrors
+listed on http://www.imdb.com/interfaces#plain.
+
+Usage:
+    ./extract_movie_features <plot_list_file> <item_file> <outfile>
+
+Examples:
+    ./extract_movie_features plot.list ml-100k/u.item 100k.item.features.npz
+    ./extract_movie_features plot.list ml-10m/movies.dat 10m.item.features.npz
+"""
+
+import re
+from urllib import unquote_plus
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+from mrec import save_sparse_matrix
+
+def extract_plots(plot_list_file):
+
+    MV = re.compile('^MV: (.+)$')
+    PL = re.compile('^PL: (.+)$')
+
+    title2plot = dict()
+    title = None
+    plot = []
+
+    for line in open(plot_list_file):
+        line = line.strip()
+        mv = MV.match(line)
+        if mv:
+            if title is not None:
+                title2plot[title] = ' '.join(plot)
+                plot = []
+            title = mv.group(1)
+        else:
+            pl = PL.match(line)
+            if pl:
+                plot_line = pl.group(1)
+                try:
+                    # test that vectorizer will be able to handle line
+                    plot_line.decode('utf-8')
+                    plot.append(pl.group(1))
+                except:
+                    pass  # skip lines that will make the vectorizer barf
+    title2plot[title] = ' '.join(plot)
+    return title2plot
+
+def create_features(item_file,title_in_url,title2plot,outfile):
+
+    ITEM = re.compile('^([0-9]+)')
+
+    if title_in_url:
+        # ml-100k format
+        TITLE = re.compile(r'^.*\|.*\|.*\|.*\|http://us.imdb.com/.+?\?(.+?)\|')
+    else:
+        # ml-1m / ml-10m format
+        TITLE = re.compile(r'^.+::(.+?)::')
+
+    plots = []
+
+    for line in open(item_file):
+        item = int(ITEM.match(line).group(1))
+        # add empty plots for any missing movie ids
+        while len(plots) < item - 1:
+            plots.append('')
+        try:
+            title = TITLE.match(line).group(1)
+            if title_in_url:
+                title = unquote_plus(title)
+            plot = title2plot.get(title,None)
+            if plot is None:
+                plot = ''
+        except:
+            plot = ''
+        plots.append(plot)
+
+    v = TfidfVectorizer(min_df=20,max_df=0.05)
+    item_features = v.fit_transform(plots)
+    
+    # save features as numpy arrays
+    save_sparse_matrix(item_features,'npz',outfile)
+
+if __name__ == '__main__':
+    import sys
+
+    if len(sys.argv) != 4:
+        raise SystemExit(__doc__.strip())
+
+    plot_list_file = sys.argv[1]
+    item_file = sys.argv[2]
+    outfile = sys.argv[3]
+
+    if item_file.endswith('movies.dat'):
+        title_in_url = False
+    elif item_file.endswith('u.item'):
+        title_in_url = True
+    else:
+        raise SystemExit('unexpected input, should be a movielens movies.dat or u.item file')
+
+    title2plot = extract_plots(plot_list_file)
+    create_features(item_file,title_in_url,title2plot,outfile)

@@ -13,7 +13,7 @@ def run(task):
     from mrec import load_sparse_matrix, load_recommender
     from mrec.evaluation import Evaluator
 
-    modelfile,input_format,trainfile,test_input_format,testfile,featurefile,outdir,start,end,evaluator,generate = task
+    modelfile,input_format,trainfile,test_input_format,testfile,feature_format,featurefile,outdir,start,end,evaluator,generate = task
 
     # initialise the model
     model = load_recommender(modelfile)
@@ -25,7 +25,8 @@ def run(task):
         dataset = load_sparse_matrix(input_format,trainfile)
         out = open(outfile,'w')
         if featurefile is not None:
-            item_features = load_sparse_matrix('tsv',featurefile)
+            # currently runs much faster if features are loaded as a dense matrix
+            item_features = load_sparse_matrix(feature_format,featurefile).toarray()
             # strip features for any trailing items that don't appear in training set
             num_items = dataset.shape[1]
             item_features = item_features[:num_items,:]

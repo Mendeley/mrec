@@ -78,20 +78,14 @@ class WARP2MFRecommender(WARPMFRecommender):
             U = np.asfortranarray(self.U[users,:])
         return U.dot(self.V.T + item_features.dot(self.W).T)
 
-def main():
-    import sys
+def main(file_format,filepath,feature_format,feature_file,outfile):
     from mrec import load_sparse_matrix, save_recommender
     from mrec.sparse import fast_sparse_matrix
-
-    file_format = sys.argv[1]
-    filepath = sys.argv[2]
-    feature_file = sys.argv[3]
-    outfile = sys.argv[4]
 
     # load training set
     train = load_sparse_matrix(file_format,filepath)
     # load item features, assume they are tsv: item_id,feature_id,val
-    X = load_sparse_matrix('tsv',feature_file)
+    X = load_sparse_matrix(feature_format,feature_file).toarray()
     # strip features for any trailing items that don't appear in training set
     num_items = train.shape[1]
     X = X[:num_items,:]
@@ -102,4 +96,11 @@ def main():
     save_recommender(model,outfile)
 
 if __name__ == '__main__':
-    main()
+    import sys
+    file_format = sys.argv[1]
+    filepath = sys.argv[2]
+    feature_format = sys.argv[3]
+    feature_file = sys.argv[4]
+    outfile = sys.argv[5]
+
+    main(file_format,filepath,feature_format,feature_file,outfile)

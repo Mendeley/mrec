@@ -48,6 +48,7 @@ def process(view,opts,modelfile,trainfile,testfile,featurefile,outdir,evaluator)
                          trainfile,
                          opts.test_input_format,
                          testfile,
+                         opts.item_feature_format,
                          featurefile,
                          recsdir,
                          opts.mb_per_task,
@@ -98,6 +99,7 @@ def create_tasks(modelfile,
                  trainfile,
                  test_input_format,
                  testfile,
+                 item_feature_format,
                  featurefile,
                  outdir,
                  mb_per_task,
@@ -108,7 +110,7 @@ def create_tasks(modelfile,
     for start in xrange(0,num_users,users_per_task):
         end = min(num_users,start+users_per_task)
         generate = (start,end) not in done
-        tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,featurefile,outdir,start,end,evaluator,generate))
+        tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,item_feature_format,featurefile,outdir,start,end,evaluator,generate))
     logging.info('created {0} tasks, {1} users per task'.format(len(tasks),users_per_task))
     return tasks
 
@@ -175,6 +177,7 @@ def main():
     parser.add_option('--modeldir',dest='modeldir',help='directory containing trained models')
     parser.add_option('--outdir',dest='outdir',help='directory for output files')
     parser.add_option('--metrics',dest='metrics',default='main',help='which set of metrics to compute, main|hitrate (default: %default)')
+    parser.add_option('--item_feature_format',dest='item_feature_format',help='format of item features tsv | csv | mm (matrixmarket) | npz (numpy arrays)')
     parser.add_option('--item_features',dest='item_features',help='path to sparse item features in tsv format (item_id,feature_id,val)')
     parser.add_option('--overwrite',dest='overwrite',action='store_true',default=False,help='overwrite existing files in outdir (default: %default)')
     parser.add_option('--packer',dest='packer',default='json',help='packer for IPython.parallel (default: %default)')

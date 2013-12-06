@@ -30,7 +30,7 @@ class WARP2Decomposition(WARPDecomposition):
         Number of rows in the full matrix.
     num_cols : int
         Number of columns in the full matrix.
-    X : numpy.ndarray, shape = [num_cols, num_features]
+    X : array_like, shape = [num_cols, num_features]
         Features describing each column in the matrix.
     d : int
         The embedding dimension.
@@ -148,7 +148,7 @@ class WARP2(WARP):
         ==========
         train : scipy.sparse.csr_matrix
             Training matrix to be factorized.
-        X : numpy.ndarray.
+        X : array_like, shape = [num_cols, num_features]
             Item features.
         validation : dict or int
             Validation set to control early stopping, based on precision@30.

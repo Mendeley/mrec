@@ -52,6 +52,7 @@ def main():
     parser.add_option('--als_iters',dest='als_iters',type='int',default=15,help='number of als iterations (default: %default)')
     parser.add_option('--gamma',dest='gamma',type='float',default=0.01,help='warp learning rate (default: %default)')
     parser.add_option('--C',dest='C',type='float',default=100.0,help='warp regularization constant (default: %default)')
+    parser.add_option('--item_feature_format',dest='item_feature_format',help='format of item features tsv | csv | mm (matrixmarket) | npz (numpy arrays)')
     parser.add_option('--item_features',dest='item_features',help='path to sparse item features in tsv format (item_id,feature_id,val)')
     parser.add_option('--popularity_method',dest='popularity_method',default='count',help='how to compute popularity for baseline recommender: count | sum | avg | thresh (default: %default)')
     parser.add_option('--popularity_thresh',dest='popularity_thresh',type='float',default=0,help='ignore scores below this when computing popularity for baseline recommender (default: %default)')
@@ -127,7 +128,7 @@ def main():
         elif opts.model == 'warp':
             runner = WARPMFRunner()
             modelsdir = get_modelsdir(trainfile,opts.outdir)
-            runner.run(view,model,opts.input_format,trainfile,opts.item_features,opts.num_engines,modelsdir,opts.overwrite,modelfile)
+            runner.run(view,model,opts.input_format,trainfile,opts.item_feature_format,opts.item_features,opts.num_engines,modelsdir,opts.overwrite,modelfile)
         else:
             runner = ItemSimilarityRunner()
             simsdir = get_simsdir(trainfile,opts.outdir)

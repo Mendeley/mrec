@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>examples Package &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec.examples Package &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="next" title="item_similarity Package" href="mrec.item_similarity.html" />
-    <link rel="prev" title="evaluation Package" href="mrec.evaluation.html" /> 
+    <link rel="next" title="mrec.item_similarity Package" href="mrec.item_similarity.html" />
+    <link rel="prev" title="mrec.evaluation Package" href="mrec.evaluation.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.item_similarity.html" title="item_similarity Package"
+          <a href="mrec.item_similarity.html" title="mrec.item_similarity Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="mrec.evaluation.html" title="evaluation Package"
+          <a href="mrec.evaluation.html" title="mrec.evaluation Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -53,7 +53,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">examples Package</a><ul>
+<li><a class="reference internal" href="#">mrec.examples Package</a><ul>
 <li><a class="reference internal" href="#module-mrec.examples.train"><tt class="docutils literal"><span class="pre">train</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.examples.predict"><tt class="docutils literal"><span class="pre">predict</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.examples.evaluate"><tt class="docutils literal"><span class="pre">evaluate</span></tt> Module</a></li>
@@ -64,10 +64,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="mrec.evaluation.html"
-                        title="previous chapter">evaluation Package</a></p>
+                        title="previous chapter">mrec.evaluation Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="mrec.item_similarity.html"
-                        title="next chapter">item_similarity Package</a></p>
+                        title="next chapter">mrec.item_similarity Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.examples.txt"
@@ -94,8 +94,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="examples-package">
-<h1>examples Package<a class="headerlink" href="#examples-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mrec-examples-package">
+<h1>mrec.examples Package<a class="headerlink" href="#mrec-examples-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-mrec.examples.train">
 <span id="train-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">train</span></tt> Module<a class="headerlink" href="#module-mrec.examples.train" title="Permalink to this headline">¶</a></h2>
 <p>Train an item similarity model in parallel on an ipython cluster.
@@ -125,7 +125,7 @@ recommendations will be output and evaluated for each of them: this
 makes it easy to run a cross-validated evaluation.</p>
 <dl class="function">
 <dt id="mrec.examples.predict.create_tasks">
-<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">create_tasks</tt><big>(</big><em>modelfile</em>, <em>input_format</em>, <em>trainfile</em>, <em>test_input_format</em>, <em>testfile</em>, <em>outdir</em>, <em>mb_per_task</em>, <em>done</em>, <em>evaluator</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.create_tasks" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">create_tasks</tt><big>(</big><em>modelfile</em>, <em>input_format</em>, <em>trainfile</em>, <em>test_input_format</em>, <em>testfile</em>, <em>item_feature_format</em>, <em>featurefile</em>, <em>outdir</em>, <em>mb_per_task</em>, <em>done</em>, <em>evaluator</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.create_tasks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -150,7 +150,7 @@ makes it easy to run a cross-validated evaluation.</p>
 
 <dl class="function">
 <dt id="mrec.examples.predict.process">
-<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">process</tt><big>(</big><em>view</em>, <em>opts</em>, <em>modelfile</em>, <em>trainfile</em>, <em>testfile</em>, <em>outdir</em>, <em>evaluator</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.process" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrec.examples.predict.</tt><tt class="descname">process</tt><big>(</big><em>view</em>, <em>opts</em>, <em>modelfile</em>, <em>trainfile</em>, <em>testfile</em>, <em>featurefile</em>, <em>outdir</em>, <em>evaluator</em><big>)</big><a class="headerlink" href="#mrec.examples.predict.process" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -244,12 +244,12 @@ written to filenames based on the training file.</li>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.item_similarity.html" title="item_similarity Package"
+          <a href="mrec.item_similarity.html" title="mrec.item_similarity Package"
              >next</a> |</li>
         <li class="right" >
-          <a href="mrec.evaluation.html" title="evaluation Package"
+          <a href="mrec.evaluation.html" title="mrec.evaluation Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

@@ -1,0 +1,777 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrec.mf.model Package &mdash; mrec 0.3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
+    <link rel="up" title="mrec.mf Package" href="mrec.mf.html" />
+    <link rel="next" title="mrec.parallel Package" href="mrec.parallel.html" />
+    <link rel="prev" title="mrec.mf Package" href="mrec.mf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrec.parallel.html" title="mrec.parallel Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrec.mf.html" title="mrec.mf Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li>
+          <li><a href="mrec.html" >mrec Package</a> &raquo;</li>
+          <li><a href="mrec.mf.html" accesskey="U">mrec.mf Package</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mrec.mf.model Package</a><ul>
+<li><a class="reference internal" href="#module-mrec.mf.model.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.mf.model.warp2"><tt class="docutils literal"><span class="pre">warp2</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mrec.mf.html"
+                        title="previous chapter">mrec.mf Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mrec.parallel.html"
+                        title="next chapter">mrec.parallel Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mrec.mf.model.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mrec-mf-model-package">
+<h1>mrec.mf.model Package<a class="headerlink" href="#mrec-mf-model-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mrec.mf.model.warp">
+<span id="warp-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">warp</span></tt> Module<a class="headerlink" href="#module-mrec.mf.model.warp" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.mf.model.warp.WARP">
+<em class="property">class </em><tt class="descclassname">mrec.mf.model.warp.</tt><tt class="descname">WARP</tt><big>(</big><em>d</em>, <em>gamma</em>, <em>C</em>, <em>max_iters</em>, <em>validation_iters</em>, <em>batch_size=10</em>, <em>positive_thresh=1e-05</em>, <em>max_trials=50</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Learn low-dimensional embedding optimizing the WARP loss.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>d</strong> : int</p>
+<blockquote>
+<div><p>Embedding dimension.</p>
+</div></blockquote>
+<p><strong>gamma</strong> : float</p>
+<blockquote>
+<div><p>Learning rate.</p>
+</div></blockquote>
+<p><strong>C</strong> : float</p>
+<blockquote>
+<div><p>Regularization constant.</p>
+</div></blockquote>
+<p><strong>max_iters</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of SGD updates.</p>
+</div></blockquote>
+<p><strong>validation_iters</strong> : int</p>
+<blockquote>
+<div><p>Number of SGD updates between checks for stopping condition.</p>
+</div></blockquote>
+<p><strong>batch_size</strong> : int</p>
+<blockquote>
+<div><p>Mini batch size for SGD updates.</p>
+</div></blockquote>
+<p><strong>positive_thresh: float</strong> :</p>
+<blockquote>
+<div><p>Training entries below this are treated as zero.</p>
+</div></blockquote>
+<p><strong>max_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of attempts allowed to find a violating negative example during
+training updates. This means that in practice we optimize for ranks 1
+to max_trials-1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="43%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a href="#id1"><span class="problematic" id="id2">U_</span></a></td>
+<td>numpy.ndarray</td>
+<td>Row factors.</td>
+</tr>
+<tr class="row-even"><td><a href="#id3"><span class="problematic" id="id4">V_</span></a></td>
+<td>numpy.ndarray</td>
+<td>Column factors.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp.WARP.compute_updates" title="mrec.mf.model.warp.WARP.compute_updates"><tt class="xref py py-obj docutils literal"><span class="pre">compute_updates</span></tt></a>(train,&nbsp;decomposition,&nbsp;updates)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp.WARP.estimate_precision" title="mrec.mf.model.warp.WARP.estimate_precision"><tt class="xref py py-obj docutils literal"><span class="pre">estimate_precision</span></tt></a>(decomposition,&nbsp;train,&nbsp;...)</td>
+<td>Compute prec&#64;k for a sample of training rows.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp.WARP.estimate_warp_loss" title="mrec.mf.model.warp.WARP.estimate_warp_loss"><tt class="xref py py-obj docutils literal"><span class="pre">estimate_warp_loss</span></tt></a>(train,&nbsp;u,&nbsp;N)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp.WARP.fit" title="mrec.mf.model.warp.WARP.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train[,&nbsp;validation])</td>
+<td>Learn factors from training set.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp.WARP.precompute_warp_loss" title="mrec.mf.model.warp.WARP.precompute_warp_loss"><tt class="xref py py-obj docutils literal"><span class="pre">precompute_warp_loss</span></tt></a>(num_cols)</td>
+<td>Precompute WARP loss for each possible rank:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp.WARP.sample" title="mrec.mf.model.warp.WARP.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(train,&nbsp;decomposition)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARP.compute_updates">
+<tt class="descname">compute_updates</tt><big>(</big><em>train</em>, <em>decomposition</em>, <em>updates</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP.compute_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARP.estimate_precision">
+<tt class="descname">estimate_precision</tt><big>(</big><em>decomposition</em>, <em>train</em>, <em>validation</em>, <em>k=30</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP.estimate_precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute prec&#64;k for a sample of training rows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>decomposition</strong> : WARPDecomposition</p>
+<blockquote>
+<div><p>The current decomposition.</p>
+</div></blockquote>
+<p><strong>train</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>The training data.</p>
+</div></blockquote>
+<p><strong>k</strong> : int</p>
+<blockquote>
+<div><p>Measure precision&#64;k.</p>
+</div></blockquote>
+<p><strong>validation</strong> : dict or int</p>
+<blockquote>
+<div><p>Validation set over which we compute precision. Either supply
+a dict of row -&gt; list of hidden cols, or an integer n, in which
+case we simply evaluate against the training data for the first
+n rows.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>prec</strong> : float</p>
+<blockquote class="last">
+<div><p>Precision&#64;k computed over a sample of the training rows.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>At the moment this will underestimate the precision of real
+recommendations because we do not exclude training cols with zero
+ratings from the top-k predictions evaluated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARP.estimate_warp_loss">
+<tt class="descname">estimate_warp_loss</tt><big>(</big><em>train</em>, <em>u</em>, <em>N</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP.estimate_warp_loss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARP.fit">
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>validation=None</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn factors from training set. The dot product of the factors
+reconstructs the training matrix approximately, minimizing the
+WARP ranking loss relative to the original data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>Training matrix to be factorized.</p>
+</div></blockquote>
+<p><strong>validation</strong> : dict or int</p>
+<blockquote>
+<div><p>Validation set to control early stopping, based on <a class="reference external" href="mailto:precision&#37;&#52;&#48;30">precision<span>&#64;</span>30</a>.
+The dict should have the form row-&gt;[cols] where the values in cols
+are those we expected to be highly ranked in the reconstruction of
+row. If an int is supplied then instead we evaluate precision
+against the training data for the first validation rows.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
+<blockquote class="last">
+<div><p>This model itself.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARP.precompute_warp_loss">
+<tt class="descname">precompute_warp_loss</tt><big>(</big><em>num_cols</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP.precompute_warp_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precompute WARP loss for each possible rank:</p>
+<blockquote>
+<div>L(i) = sum_{0,i}{1/(i+1)}</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARP.sample">
+<tt class="descname">sample</tt><big>(</big><em>train</em>, <em>decomposition</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARP.sample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.mf.model.warp.WARPBatchUpdate">
+<em class="property">class </em><tt class="descclassname">mrec.mf.model.warp.</tt><tt class="descname">WARPBatchUpdate</tt><big>(</big><em>batch_size</em>, <em>d</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPBatchUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Collection of arrays to hold a batch of WARP sgd updates.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp.WARPBatchUpdate.clear" title="mrec.mf.model.warp.WARPBatchUpdate.clear"><tt class="xref py py-obj docutils literal"><span class="pre">clear</span></tt></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp.WARPBatchUpdate.set_update" title="mrec.mf.model.warp.WARPBatchUpdate.set_update"><tt class="xref py py-obj docutils literal"><span class="pre">set_update</span></tt></a>(ix,&nbsp;update)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARPBatchUpdate.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPBatchUpdate.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARPBatchUpdate.set_update">
+<tt class="descname">set_update</tt><big>(</big><em>ix</em>, <em>update</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPBatchUpdate.set_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.mf.model.warp.WARPDecomposition">
+<em class="property">class </em><tt class="descclassname">mrec.mf.model.warp.</tt><tt class="descname">WARPDecomposition</tt><big>(</big><em>num_rows</em>, <em>num_cols</em>, <em>d</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPDecomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Matrix embedding optimizing the WARP loss.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>num_rows</strong> : int</p>
+<blockquote>
+<div><p>Number of rows in the full matrix.</p>
+</div></blockquote>
+<p><strong>num_cols</strong> : int</p>
+<blockquote>
+<div><p>Number of columns in the full matrix.</p>
+</div></blockquote>
+<p><strong>d</strong> : int</p>
+<blockquote class="last">
+<div><p>The embedding dimension for the decomposition.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp.WARPDecomposition.apply_updates" title="mrec.mf.model.warp.WARPDecomposition.apply_updates"><tt class="xref py py-obj docutils literal"><span class="pre">apply_updates</span></tt></a>(updates,&nbsp;gamma,&nbsp;C)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp.WARPDecomposition.compute_gradient_step" title="mrec.mf.model.warp.WARPDecomposition.compute_gradient_step"><tt class="xref py py-obj docutils literal"><span class="pre">compute_gradient_step</span></tt></a>(u,&nbsp;i,&nbsp;j,&nbsp;L)</td>
+<td>Compute a gradient step from results of sampling.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp.WARPDecomposition.reconstruct" title="mrec.mf.model.warp.WARPDecomposition.reconstruct"><tt class="xref py py-obj docutils literal"><span class="pre">reconstruct</span></tt></a>(rows)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARPDecomposition.apply_updates">
+<tt class="descname">apply_updates</tt><big>(</big><em>updates</em>, <em>gamma</em>, <em>C</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPDecomposition.apply_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARPDecomposition.compute_gradient_step">
+<tt class="descname">compute_gradient_step</tt><big>(</big><em>u</em>, <em>i</em>, <em>j</em>, <em>L</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPDecomposition.compute_gradient_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a gradient step from results of sampling.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>u</strong> : int</p>
+<blockquote>
+<div><p>The sampled row.</p>
+</div></blockquote>
+<p><strong>i</strong> : int</p>
+<blockquote>
+<div><p>The sampled positive column.</p>
+</div></blockquote>
+<p><strong>j</strong> : int</p>
+<blockquote>
+<div><p>The sampled violating negative column i.e. U[u].V[j] is currently
+too large compared to U[u].V[i]</p>
+</div></blockquote>
+<p><strong>L</strong> : int</p>
+<blockquote>
+<div><p>The number of trials required to find a violating negative column.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>u</strong> : int</p>
+<blockquote>
+<div><p>As input.</p>
+</div></blockquote>
+<p><strong>i</strong> : int</p>
+<blockquote>
+<div><p>As input.</p>
+</div></blockquote>
+<p><strong>j</strong> : int</p>
+<blockquote>
+<div><p>As input.</p>
+</div></blockquote>
+<p><strong>dU</strong> : numpy.ndarray</p>
+<blockquote>
+<div><p>Gradient step for U[u].</p>
+</div></blockquote>
+<p><strong>dV_pos</strong> : numpy.ndarray</p>
+<blockquote>
+<div><p>Gradient step for V[i].</p>
+</div></blockquote>
+<p><strong>dV_neg</strong> : numpy.ndarray</p>
+<blockquote class="last">
+<div><p>Gradient step for V[j].</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp.WARPDecomposition.reconstruct">
+<tt class="descname">reconstruct</tt><big>(</big><em>rows</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp.WARPDecomposition.reconstruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mrec.mf.model.warp2">
+<span id="warp2-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">warp2</span></tt> Module<a class="headerlink" href="#module-mrec.mf.model.warp2" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mrec.mf.model.warp2.WARP2">
+<em class="property">class </em><tt class="descclassname">mrec.mf.model.warp2.</tt><tt class="descname">WARP2</tt><big>(</big><em>d</em>, <em>gamma</em>, <em>C</em>, <em>max_iters</em>, <em>validation_iters</em>, <em>batch_size=10</em>, <em>positive_thresh=1e-05</em>, <em>max_trials=50</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mrec.mf.model.warp.WARP" title="mrec.mf.model.warp.WARP"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.model.warp.WARP</span></tt></a></p>
+<p>Learn low-dimensional embedding optimizing the WARP loss.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>d</strong> : int</p>
+<blockquote>
+<div><p>Embedding dimension.</p>
+</div></blockquote>
+<p><strong>gamma</strong> : float</p>
+<blockquote>
+<div><p>Learning rate.</p>
+</div></blockquote>
+<p><strong>C</strong> : float</p>
+<blockquote>
+<div><p>Regularization constant.</p>
+</div></blockquote>
+<p><strong>max_iters</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of SGD updates.</p>
+</div></blockquote>
+<p><strong>validation_iters</strong> : int</p>
+<blockquote>
+<div><p>Number of SGD updates between checks for stopping condition.</p>
+</div></blockquote>
+<p><strong>batch_size</strong> : int</p>
+<blockquote>
+<div><p>Mini batch size for SGD updates.</p>
+</div></blockquote>
+<p><strong>positive_thresh: float</strong> :</p>
+<blockquote>
+<div><p>Training entries below this are treated as zero.</p>
+</div></blockquote>
+<p><strong>max_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of attempts allowed to find a violating negative example during
+training updates. This means that in practice we optimize for ranks 1
+to max_trials-1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="36%" />
+<col width="58%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a href="#id5"><span class="problematic" id="id6">U_</span></a></td>
+<td>numpy.ndarray</td>
+<td>Row factors.</td>
+</tr>
+<tr class="row-even"><td><a href="#id7"><span class="problematic" id="id8">V_</span></a></td>
+<td>numpy.ndarray</td>
+<td>Column factors.</td>
+</tr>
+<tr class="row-odd"><td><a href="#id9"><span class="problematic" id="id10">W_</span></a></td>
+<td>numpy.ndarray</td>
+<td>Item feature factors.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">compute_updates</span></tt>(train,&nbsp;decomposition,&nbsp;updates)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">estimate_precision</span></tt>(decomposition,&nbsp;train,&nbsp;...)</td>
+<td>Compute prec&#64;k for a sample of training rows.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">estimate_warp_loss</span></tt>(train,&nbsp;u,&nbsp;N)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2.fit" title="mrec.mf.model.warp2.WARP2.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train,&nbsp;X[,&nbsp;validation])</td>
+<td>Learn embedding from training set.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">precompute_warp_loss</span></tt>(num_cols)</td>
+<td>Precompute WARP loss for each possible rank:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2.sample" title="mrec.mf.model.warp2.WARP2.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(train,&nbsp;decomposition)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2.fit">
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>X</em>, <em>validation=None</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn embedding from training set. A suitable dot product of the
+factors reconstructs the training matrix approximately, minimizing
+the WARP ranking loss relative to the original data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix</p>
+<blockquote>
+<div><p>Training matrix to be factorized.</p>
+</div></blockquote>
+<p><strong>X</strong> : array_like, shape = [num_cols, num_features]</p>
+<blockquote>
+<div><p>Item features.</p>
+</div></blockquote>
+<p><strong>validation</strong> : dict or int</p>
+<blockquote>
+<div><p>Validation set to control early stopping, based on <a class="reference external" href="mailto:precision&#37;&#52;&#48;30">precision<span>&#64;</span>30</a>.
+The dict should have the form row-&gt;[cols] where the values in cols
+are those we expected to be highly ranked in the reconstruction of
+row. If an int is supplied then instead we evaluate precision
+against the training data for the first validation rows.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
+<blockquote class="last">
+<div><p>This model itself.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2.sample">
+<tt class="descname">sample</tt><big>(</big><em>train</em>, <em>decomposition</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2.sample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.mf.model.warp2.WARP2BatchUpdate">
+<em class="property">class </em><tt class="descclassname">mrec.mf.model.warp2.</tt><tt class="descname">WARP2BatchUpdate</tt><big>(</big><em>batch_size</em>, <em>num_features</em>, <em>d</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2BatchUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mrec.mf.model.warp.WARPBatchUpdate" title="mrec.mf.model.warp.WARPBatchUpdate"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.model.warp.WARPBatchUpdate</span></tt></a></p>
+<p>Collection of arrays to hold a batch of sgd updates.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2BatchUpdate.clear" title="mrec.mf.model.warp2.WARP2BatchUpdate.clear"><tt class="xref py py-obj docutils literal"><span class="pre">clear</span></tt></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2BatchUpdate.set_update" title="mrec.mf.model.warp2.WARP2BatchUpdate.set_update"><tt class="xref py py-obj docutils literal"><span class="pre">set_update</span></tt></a>(ix,&nbsp;update)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2BatchUpdate.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2BatchUpdate.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2BatchUpdate.set_update">
+<tt class="descname">set_update</tt><big>(</big><em>ix</em>, <em>update</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2BatchUpdate.set_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mrec.mf.model.warp2.WARP2Decomposition">
+<em class="property">class </em><tt class="descclassname">mrec.mf.model.warp2.</tt><tt class="descname">WARP2Decomposition</tt><big>(</big><em>num_rows</em>, <em>num_cols</em>, <em>X</em>, <em>d</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2Decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mrec.mf.model.warp.WARPDecomposition" title="mrec.mf.model.warp.WARPDecomposition"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.model.warp.WARPDecomposition</span></tt></a></p>
+<p>Joint matrix and feature embedding optimizing the WARP loss.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>num_rows</strong> : int</p>
+<blockquote>
+<div><p>Number of rows in the full matrix.</p>
+</div></blockquote>
+<p><strong>num_cols</strong> : int</p>
+<blockquote>
+<div><p>Number of columns in the full matrix.</p>
+</div></blockquote>
+<p><strong>X</strong> : array_like, shape = [num_cols, num_features]</p>
+<blockquote>
+<div><p>Features describing each column in the matrix.</p>
+</div></blockquote>
+<p><strong>d</strong> : int</p>
+<blockquote class="last">
+<div><p>The embedding dimension.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2Decomposition.apply_matrix_update" title="mrec.mf.model.warp2.WARP2Decomposition.apply_matrix_update"><tt class="xref py py-obj docutils literal"><span class="pre">apply_matrix_update</span></tt></a>(W,&nbsp;dW,&nbsp;gamma,&nbsp;C)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2Decomposition.apply_updates" title="mrec.mf.model.warp2.WARP2Decomposition.apply_updates"><tt class="xref py py-obj docutils literal"><span class="pre">apply_updates</span></tt></a>(updates,&nbsp;gamma,&nbsp;C)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2Decomposition.compute_gradient_step" title="mrec.mf.model.warp2.WARP2Decomposition.compute_gradient_step"><tt class="xref py py-obj docutils literal"><span class="pre">compute_gradient_step</span></tt></a>(u,&nbsp;i,&nbsp;j,&nbsp;L)</td>
+<td>Compute a gradient step from results of sampling.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.model.warp2.WARP2Decomposition.reconstruct" title="mrec.mf.model.warp2.WARP2Decomposition.reconstruct"><tt class="xref py py-obj docutils literal"><span class="pre">reconstruct</span></tt></a>(rows)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2Decomposition.apply_matrix_update">
+<tt class="descname">apply_matrix_update</tt><big>(</big><em>W</em>, <em>dW</em>, <em>gamma</em>, <em>C</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2Decomposition.apply_matrix_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2Decomposition.apply_updates">
+<tt class="descname">apply_updates</tt><big>(</big><em>updates</em>, <em>gamma</em>, <em>C</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2Decomposition.apply_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2Decomposition.compute_gradient_step">
+<tt class="descname">compute_gradient_step</tt><big>(</big><em>u</em>, <em>i</em>, <em>j</em>, <em>L</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2Decomposition.compute_gradient_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a gradient step from results of sampling.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>u</strong> : int</p>
+<blockquote>
+<div><p>The sampled row.</p>
+</div></blockquote>
+<p><strong>i</strong> : int</p>
+<blockquote>
+<div><p>The sampled positive column.</p>
+</div></blockquote>
+<p><strong>j</strong> : int</p>
+<blockquote>
+<div><p>The sampled violating negative column i.e. U[u].V[j] is currently
+too large compared to U[u].V[i]</p>
+</div></blockquote>
+<p><strong>L</strong> : int</p>
+<blockquote>
+<div><p>The number of trials required to find a violating negative column.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>u</strong> : int</p>
+<blockquote>
+<div><p>As input.</p>
+</div></blockquote>
+<p><strong>i</strong> : int</p>
+<blockquote>
+<div><p>As input.</p>
+</div></blockquote>
+<p><strong>j</strong> : int</p>
+<blockquote>
+<div><p>As input.</p>
+</div></blockquote>
+<p><strong>dU</strong> : numpy.ndarray</p>
+<blockquote>
+<div><p>Gradient step for U[u].</p>
+</div></blockquote>
+<p><strong>dV_pos</strong> : numpy.ndarray</p>
+<blockquote>
+<div><p>Gradient step for V[i].</p>
+</div></blockquote>
+<p><strong>dV_neg</strong> : numpy.ndarray</p>
+<blockquote>
+<div><p>Gradient step for V[j].</p>
+</div></blockquote>
+<p><strong>dW</strong> : numpy.ndarray</p>
+<blockquote class="last">
+<div><p>Gradient step for W.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.mf.model.warp2.WARP2Decomposition.reconstruct">
+<tt class="descname">reconstruct</tt><big>(</big><em>rows</em><big>)</big><a class="headerlink" href="#mrec.mf.model.warp2.WARP2Decomposition.reconstruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrec.parallel.html" title="mrec.parallel Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrec.mf.html" title="mrec.mf Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
+          <li><a href="api.html" >API documentation</a> &raquo;</li>
+          <li><a href="mrec.html" >mrec Package</a> &raquo;</li>
+          <li><a href="mrec.mf.html" >mrec.mf Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

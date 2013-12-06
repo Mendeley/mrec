@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>parallel Package &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec.parallel Package &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="prev" title="mf Package" href="mrec.mf.html" /> 
+    <link rel="prev" title="mrec.mf.model Package" href="mrec.mf.model.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,9 +38,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.mf.html" title="mf Package"
+          <a href="mrec.mf.model.html" title="mrec.mf.model Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -49,7 +49,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">parallel Package</a><ul>
+<li><a class="reference internal" href="#">mrec.parallel Package</a><ul>
 <li><a class="reference internal" href="#module-mrec.parallel.item_similarity"><tt class="docutils literal"><span class="pre">item_similarity</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.parallel.wrmf"><tt class="docutils literal"><span class="pre">wrmf</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.parallel.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
@@ -59,8 +59,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="mrec.mf.html"
-                        title="previous chapter">mf Package</a></p>
+  <p class="topless"><a href="mrec.mf.model.html"
+                        title="previous chapter">mrec.mf.model Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.parallel.txt"
@@ -87,8 +87,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="parallel-package">
-<h1>parallel Package<a class="headerlink" href="#parallel-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mrec-parallel-package">
+<h1>mrec.parallel Package<a class="headerlink" href="#mrec-parallel-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-mrec.parallel.item_similarity">
 <span id="item-similarity-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">item_similarity</span></tt> Module<a class="headerlink" href="#module-mrec.parallel.item_similarity" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -246,7 +246,7 @@ only filepaths and an empty model need to be passed.</p>
 </table>
 <dl class="method">
 <dt id="mrec.parallel.warp.WARPMFRunner.create_tasks">
-<tt class="descname">create_tasks</tt><big>(</big><em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>outdir</em>, <em>num_engines</em>, <em>done</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.create_tasks" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">create_tasks</tt><big>(</big><em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>feature_format</em>, <em>featurefile</em>, <em>outdir</em>, <em>num_engines</em>, <em>done</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.create_tasks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -261,7 +261,7 @@ only filepaths and an empty model need to be passed.</p>
 
 <dl class="method">
 <dt id="mrec.parallel.warp.WARPMFRunner.run">
-<tt class="descname">run</tt><big>(</big><em>view</em>, <em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>num_engines</em>, <em>workdir</em>, <em>overwrite</em>, <em>modelfile</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.run" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">run</tt><big>(</big><em>view</em>, <em>model</em>, <em>input_format</em>, <em>trainfile</em>, <em>feature_format</em>, <em>featurefile</em>, <em>num_engines</em>, <em>workdir</em>, <em>overwrite</em>, <em>modelfile</em><big>)</big><a class="headerlink" href="#mrec.parallel.warp.WARPMFRunner.run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -300,9 +300,9 @@ only filepaths and an empty model need to be passed.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.mf.html" title="mf Package"
+          <a href="mrec.mf.model.html" title="mrec.mf.model Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

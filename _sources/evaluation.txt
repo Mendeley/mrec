@@ -25,6 +25,9 @@ and to evaluate them::
       --train=TRAIN         glob specifying path(s) to training dataset(s)
                             IMPORTANT: must be in quotes if it includes the *
                             wildcard
+      --item_features=ITEM_FEATURES
+                            path to sparse item features in tsv format
+                            (item_id,feature_id,val)
       --modeldir=MODELDIR   directory containing trained models
       --outdir=OUTDIR       directory for output files
       --metrics=METRICS     which set of metrics to compute, main|hitrate
@@ -42,6 +45,9 @@ is able to exclude items that each user has already seen from their recommendati
 The corresponding test file used for evaluation is assumed to be in the same directory
 as the training file, and with a related filepath following the convention described
 in :ref:`filename_conventions-link`.
+
+You only need to supply a filepath with the ``--item_features`` option if you used the
+features during training.
 
 You can choose one of two sets of metrics, the `main` metrics which include Precision@k
 for various small values of `k` and Mean Reciprocal Rank, or `hitrate` which simply computes

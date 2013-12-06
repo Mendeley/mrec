@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>evaluation Package &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec.evaluation Package &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="next" title="examples Package" href="mrec.examples.html" />
+    <link rel="next" title="mrec.examples Package" href="mrec.examples.html" />
     <link rel="prev" title="mrec Package" href="mrec.html" /> 
   </head>
   <body>
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.examples.html" title="examples Package"
+          <a href="mrec.examples.html" title="mrec.examples Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="mrec.html" title="mrec Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -53,7 +53,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">evaluation Package</a><ul>
+<li><a class="reference internal" href="#">mrec.evaluation Package</a><ul>
 <li><a class="reference internal" href="#module-mrec.evaluation.preprocessing"><tt class="docutils literal"><span class="pre">preprocessing</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.evaluation.metrics"><tt class="docutils literal"><span class="pre">metrics</span></tt> Module</a></li>
 </ul>
@@ -65,7 +65,7 @@
                         title="previous chapter">mrec Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="mrec.examples.html"
-                        title="next chapter">examples Package</a></p>
+                        title="next chapter">mrec.examples Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.evaluation.txt"
@@ -92,8 +92,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="evaluation-package">
-<h1>evaluation Package<a class="headerlink" href="#evaluation-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mrec-evaluation-package">
+<h1>mrec.evaluation Package<a class="headerlink" href="#mrec-evaluation-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-mrec.evaluation.preprocessing">
 <span id="preprocessing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">preprocessing</span></tt> Module<a class="headerlink" href="#module-mrec.evaluation.preprocessing" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -392,12 +392,11 @@ predictions were all incorrect</p>
 <dd><p>This is the main entry point to run an evaluation.</p>
 <p>Supply functions to retrain model, to get a new split of data on
 each run, to get known items from the test set, and to compute the
-metrics you want:</p>
-<blockquote>
-<div>retrain(model,dataset) should retrain model
-get_split() should return train_data,test_users,test_data
-evaluation_func(model,users,test) should return a dict of metrics</div></blockquote>
-<p>A number of suitable functions are already available in the module.</p>
+metrics you want:
+- retrain(model,dataset) should retrain model
+- get_split() should return train_data,test_users,test_data
+- evaluation_func(model,users,test) should return a dict of metrics
+A number of suitable functions are already available in the module.</p>
 </dd></dl>
 
 <dl class="function">
@@ -424,12 +423,12 @@ evaluation_func(model,users,test) should return a dict of metrics</div></blockqu
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.examples.html" title="examples Package"
+          <a href="mrec.examples.html" title="mrec.examples Package"
              >next</a> |</li>
         <li class="right" >
           <a href="mrec.html" title="mrec Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>item_similarity Package &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec.item_similarity Package &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="next" title="mf Package" href="mrec.mf.html" />
-    <link rel="prev" title="examples Package" href="mrec.examples.html" /> 
+    <link rel="next" title="mrec.mf Package" href="mrec.mf.html" />
+    <link rel="prev" title="mrec.examples Package" href="mrec.examples.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.mf.html" title="mf Package"
+          <a href="mrec.mf.html" title="mrec.mf Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="mrec.examples.html" title="examples Package"
+          <a href="mrec.examples.html" title="mrec.examples Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -53,7 +53,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">item_similarity Package</a><ul>
+<li><a class="reference internal" href="#">mrec.item_similarity Package</a><ul>
 <li><a class="reference internal" href="#module-mrec.item_similarity.slim"><tt class="docutils literal"><span class="pre">slim</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.item_similarity.knn"><tt class="docutils literal"><span class="pre">knn</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.item_similarity.precomputed"><tt class="docutils literal"><span class="pre">precomputed</span></tt> Module</a></li>
@@ -64,10 +64,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="mrec.examples.html"
-                        title="previous chapter">examples Package</a></p>
+                        title="previous chapter">mrec.examples Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="mrec.mf.html"
-                        title="next chapter">mf Package</a></p>
+                        title="next chapter">mrec.mf Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.item_similarity.txt"
@@ -94,8 +94,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="item-similarity-package">
-<h1>item_similarity Package<a class="headerlink" href="#item-similarity-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mrec-item-similarity-package">
+<h1>mrec.item_similarity Package<a class="headerlink" href="#mrec-item-similarity-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-mrec.item_similarity.slim">
 <span id="slim-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">slim</span></tt> Module<a class="headerlink" href="#module-mrec.item_similarity.slim" title="Permalink to this headline">¶</a></h2>
 <p>Train a Sparse Linear Methods (SLIM) item similarity model using various
@@ -188,7 +188,7 @@ X. Ning and G. Karypis, ICDM 2011.
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.slim.SLIM.compute_similarities_from_vec" title="mrec.item_similarity.slim.SLIM.compute_similarities_from_vec"><tt class="xref py py-obj docutils literal"><span class="pre">compute_similarities_from_vec</span></tt></a>(dataset,&nbsp;a)</td>
 <td>Compute item similarity weights for out-of-dataset item vector.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset[,&nbsp;item_features])</td>
 <td>Learn the complete similarity matrix from a user-item matrix.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
@@ -254,7 +254,7 @@ intended to provide evaluation baselines.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">compute_similarities</span></tt>(dataset,&nbsp;j)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset[,&nbsp;item_features])</td>
 <td>Learn the complete similarity matrix from a user-item matrix.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
@@ -309,7 +309,7 @@ intended to provide evaluation baselines.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">compute_similarities</span></tt>(dataset,&nbsp;j)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset[,&nbsp;item_features])</td>
 <td>Learn the complete similarity matrix from a user-item matrix.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
@@ -376,7 +376,7 @@ implementation of the compute_all_similarities() method.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.knn.KNNRecommender.compute_similarities" title="mrec.item_similarity.knn.KNNRecommender.compute_similarities"><tt class="xref py py-obj docutils literal"><span class="pre">compute_similarities</span></tt></a>(dataset,&nbsp;j)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt>(dataset[,&nbsp;item_features])</td>
 <td>Learn the complete similarity matrix from a user-item matrix.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
@@ -476,7 +476,7 @@ and all the rows of A.</p>
 <tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.compute_similarities" title="mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.compute_similarities"><tt class="xref py py-obj docutils literal"><span class="pre">compute_similarities</span></tt></a>(j)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit" title="mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit" title="mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset[,&nbsp;item_features])</td>
 <td></td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
@@ -512,7 +512,7 @@ and all the rows of A.</p>
 
 <dl class="method">
 <dt id="mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>dataset</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.precomputed.PrecomputedItemSimilarityRecommender.fit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -546,7 +546,7 @@ need to supply the compute_similarities() method.</p>
 <tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.compute_similarities" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.compute_similarities"><tt class="xref py py-obj docutils literal"><span class="pre">compute_similarities</span></tt></a>(dataset,&nbsp;j)</td>
 <td>Compute pairwise similarity scores between the j-th item and every item in the dataset.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.fit" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.fit" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset[,&nbsp;item_features])</td>
 <td>Learn the complete similarity matrix from a user-item matrix.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.get_similar_items" title="mrec.item_similarity.recommender.ItemSimilarityRecommender.get_similar_items"><tt class="xref py py-obj docutils literal"><span class="pre">get_similar_items</span></tt></a>(j[,&nbsp;max_similar_items,&nbsp;...])</td>
@@ -574,7 +574,7 @@ need to supply the compute_similarities() method.</p>
 </table>
 <dl class="method">
 <dt id="mrec.item_similarity.recommender.ItemSimilarityRecommender.batch_recommend_items">
-<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>show_progress=False</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>show_progress=False</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for all users in the training dataset.  Assumes
 you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -596,6 +596,10 @@ you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <p><strong>show_progress: bool</strong> :</p>
 <blockquote>
 <div><p>If true print something to stdout to show progress.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, ignored here.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -641,16 +645,20 @@ every item in the dataset.</p>
 
 <dl class="method">
 <dt id="mrec.item_similarity.recommender.ItemSimilarityRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>dataset</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Learn the complete similarity matrix from a user-item matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy sparse matrix or mrec.sparse.fast_sparse_matrix</p>
-<blockquote class="last">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy sparse matrix or mrec.sparse.fast_sparse_matrix, shape = [num_users, num_items]</p>
+<blockquote>
 <div><p>The matrix of user-item counts, row i holds the counts for
 the i-th user.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote class="last">
+<div><p>Features for items in training set, ignored here.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -720,7 +728,7 @@ a tuple of the form (i,score).</p>
 
 <dl class="method">
 <dt id="mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items">
-<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for a range of users in the training dataset.
 Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -747,6 +755,10 @@ Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
 </div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, ignored here.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
@@ -762,7 +774,7 @@ else just a list of idxs.</p>
 
 <dl class="method">
 <dt id="mrec.item_similarity.recommender.ItemSimilarityRecommender.recommend_items">
-<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.item_similarity.recommender.ItemSimilarityRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for a user.  Assumes you&#8217;ve already called
 fit() to learn the similarity matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -784,6 +796,10 @@ fit() to learn the similarity matrix.</p>
 <p><strong>return_scores</strong> : bool</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, ignored here.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -819,12 +835,12 @@ just a list of idxs.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.mf.html" title="mf Package"
+          <a href="mrec.mf.html" title="mrec.mf Package"
              >next</a> |</li>
         <li class="right" >
-          <a href="mrec.examples.html" title="examples Package"
+          <a href="mrec.examples.html" title="mrec.examples Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

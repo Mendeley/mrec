@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Learning jointly from item features &mdash; mrec 0.3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
+    <link rel="next" title="Making and evaluating recommendations" href="evaluation.html" />
+    <link rel="prev" title="Training a recommender" href="training.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="evaluation.html" title="Making and evaluating recommendations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="training.html" title="Training a recommender"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="training.html"
+                        title="previous chapter">Training a recommender</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evaluation.html"
+                        title="next chapter">Making and evaluating recommendations</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/hybrid.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="learning-jointly-from-item-features">
+<span id="hybrid"></span><h1>Learning jointly from item features<a class="headerlink" href="#learning-jointly-from-item-features" title="Permalink to this headline">¶</a></h1>
+<p>In real world settings it&#8217;s common to have features describing each item as well as ratings or
+other counts expressing users historical interactions with items. As we expect that users might
+like items with similar features to those that they have liked in the past, it should be useful
+for a recommender to take item features into account. One way of doing this is to extend the
+matrix factorization approach, which represents each user and item with a low-dimensional vector,
+by learning to represent each feature in the same low-dimensional space. <tt class="docutils literal"><span class="pre">mrec</span></tt> includes
+an implementation of a <a class="reference internal" href="mrec.mf.model.html#mrec.mf.model.warp2.WARP2" title="mrec.mf.model.warp2.WARP2"><tt class="xref py py-class docutils literal"><span class="pre">joint</span> <span class="pre">model</span></tt></a> of this kind which optimizes
+the WARP ranking loss <a class="footnote-reference" href="#id2" id="id1">[1]</a>. This model learns an embedding matrix which maps the item features into
+the low-dimensional space. To predict the rating or preference score for an unseen item, it
+computes the dot product of the user factor and item factor in the usual way for a matrix
+factorization recommender, but then adds the dot product of the user factor and the
+low-dimensional mapping of its feature vector.</p>
+<p>As an example we&#8217;ll look again at the small movie ratings dataset that we previously worked with
+in <a class="reference internal" href="quickstart.html#quickstart"><em>Getting started with mrec</em></a>, but this time we&#8217;ll add some features based on movie plot descriptions
+from IMDb. To create the features, first download the plot.list.gz file from one of the <a class="reference external" href="http://www.imdb.com/interfaces#plain">official IMDb ftp sites</a>. This contains plot summaries for most of the movies
+in the MovieLens datasets. Once you&#8217;ve unzipped this file you can use the <tt class="docutils literal"><span class="pre">extract_movie_features</span></tt>
+script in the bin directory of the <tt class="docutils literal"><span class="pre">mrec</span></tt> source tree to create features and save them to file:</p>
+<div class="highlight-python"><pre>$ cd mrec
+$ ./bin/extract_movie_features plot.list ml-100k/u.item 100k.features.npz</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">extract_movie_features</span></tt> script isn&#8217;t installed automatically with <tt class="docutils literal"><span class="pre">mrec</span></tt> so
+you&#8217;ll need to <a class="reference external" href="https://github.com/mendeley/mrec">grab the source code</a> if you don&#8217;t
+already have it.</p>
+</div>
+<p>The resulting features are simply <a class="reference external" href="http://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf counts</a> of the words found in the plot summaries for each movie. You can load them like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mrec</span> <span class="kn">import</span> <span class="n">load_sparse_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">load_sparse_matrix</span><span class="p">(</span><span class="s">&#39;npz&#39;</span><span class="p">,</span><span class="s">&#39;100k.features.npz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and inspect the top few word counts for the first few items:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">tfidf</span><span class="p">,</span><span class="n">word</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">indices</span><span class="p">),</span><span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;{0}</span><span class="se">\t</span><span class="s">{1}</span><span class="se">\t</span><span class="s">{2:.3f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">word</span><span class="p">,</span><span class="n">tfidf</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">0   500 0.440</span>
+<span class="go">0   549 0.340</span>
+<span class="go">0   4   0.242</span>
+<span class="go">1   311 0.412</span>
+<span class="go">1   564 0.335</span>
+<span class="go">1   549 0.243</span>
+<span class="go">2   117 0.430</span>
+<span class="go">2   286 0.427</span>
+<span class="go">2   670 0.220</span>
+</pre></div>
+</div>
+<p>Now we can train a recommender in the usual way, specifying the features with the <tt class="docutils literal"><span class="pre">item_features</span></tt>
+and <tt class="docutils literal"><span class="pre">item_feature_format</span></tt> options:</p>
+<div class="highlight-python"><pre>$ mrec_train -n4 --input_format tsv --train u.data.train.0 --outdir models --model warp --item_features 100k.features.npz --item_feature_format npz</pre>
+</div>
+<p>Once this has finished (it will take a few minutes even on a single split of this small dataset)
+you can use the recommender to make and evaluate predictions:</p>
+<div class="highlight-python"><pre>$ mrec_predict --input_format tsv --test_input_format tsv --train u.data.train.0 --modeldir models --outdir recs --item_features 100k.features.npz --item_feature_format npz</pre>
+</div>
+<p>After a few seconds you&#8217;ll get the results as usual:</p>
+<div class="highlight-python"><pre>WARP2MF(d=80,gamma=0.01,C=100.0)
+mrr            0.6008 +/- 0.0000
+prec@5         0.3650 +/- 0.0000
+prec@10        0.3221 +/- 0.0000
+prec@15        0.2915 +/- 0.0000
+prec@20        0.2699 +/- 0.0000</pre>
+</div>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Weston, J., Bengio, S., &amp; Usunier, N. (2010). Large scale image annotation: learning to rank with joint word-image embeddings. Machine learning, 81(1), 21-35.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="evaluation.html" title="Making and evaluating recommendations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="training.html" title="Training a recommender"
+             >previous</a> |</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mendeley Ltd..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

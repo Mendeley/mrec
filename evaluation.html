@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Making and evaluating recommendations &mdash; mrec 0.2.4 documentation</title>
+    <title>Making and evaluating recommendations &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="next" title="Running mrec on Amazon Web Services" href="aws.html" />
-    <link rel="prev" title="Training a recommender" href="training.html" /> 
+    <link rel="prev" title="Learning jointly from item features" href="hybrid.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,9 +41,9 @@
           <a href="aws.html" title="Running mrec on Amazon Web Services"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="training.html" title="Training a recommender"
+          <a href="hybrid.html" title="Learning jointly from item features"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -57,8 +57,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="training.html"
-                        title="previous chapter">Training a recommender</a></p>
+  <p class="topless"><a href="hybrid.html"
+                        title="previous chapter">Learning jointly from item features</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="aws.html"
                         title="next chapter">Running mrec on Amazon Web Services</a></p>
@@ -110,6 +110,9 @@ Options:
   --train=TRAIN         glob specifying path(s) to training dataset(s)
                         IMPORTANT: must be in quotes if it includes the *
                         wildcard
+  --item_features=ITEM_FEATURES
+                        path to sparse item features in tsv format
+                        (item_id,feature_id,val)
   --modeldir=MODELDIR   directory containing trained models
   --outdir=OUTDIR       directory for output files
   --metrics=METRICS     which set of metrics to compute, main|hitrate
@@ -127,6 +130,8 @@ is able to exclude items that each user has already seen from their recommendati
 The corresponding test file used for evaluation is assumed to be in the same directory
 as the training file, and with a related filepath following the convention described
 in <a class="reference internal" href="preparation.html#filename-conventions-link"><em>Filename conventions</em></a>.</p>
+<p>You only need to supply a filepath with the <tt class="docutils literal"><span class="pre">--item_features</span></tt> option if you used the
+features during training.</p>
 <p>You can choose one of two sets of metrics, the <cite>main</cite> metrics which include Precision&#64;k
 for various small values of <cite>k</cite> and Mean Reciprocal Rank, or <cite>hitrate</cite> which simply computes
 the <a class="reference external" href="mailto:HitRate&#37;&#52;&#48;10">HitRate<span>&#64;</span>10</a>.  <cite>hitrate</cite> is only appropriate if your test set contains a single item for
@@ -189,9 +194,9 @@ Options:
           <a href="aws.html" title="Running mrec on Amazon Web Services"
              >next</a> |</li>
         <li class="right" >
-          <a href="training.html" title="Training a recommender"
+          <a href="hybrid.html" title="Learning jointly from item features"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

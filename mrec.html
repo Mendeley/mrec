@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrec Package &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec Package &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="api.html" />
-    <link rel="next" title="evaluation Package" href="mrec.evaluation.html" />
+    <link rel="next" title="mrec.evaluation Package" href="mrec.evaluation.html" />
     <link rel="prev" title="API documentation" href="api.html" /> 
   </head>
   <body>
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.evaluation.html" title="evaluation Package"
+          <a href="mrec.evaluation.html" title="mrec.evaluation Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="api.html" title="API documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>
@@ -55,7 +55,7 @@
 <li><a class="reference internal" href="#">mrec Package</a><ul>
 <li><a class="reference internal" href="#module-mrec.sparse"><tt class="docutils literal"><span class="pre">sparse</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.popularity"><tt class="docutils literal"><span class="pre">popularity</span></tt> Module</a></li>
-<li><a class="reference internal" href="#reranking-recommender-module"><tt class="docutils literal"><span class="pre">reranking_recommender</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.reranking_recommender"><tt class="docutils literal"><span class="pre">reranking_recommender</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.base_recommender"><tt class="docutils literal"><span class="pre">base_recommender</span></tt> Module</a></li>
 <li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 </ul>
@@ -69,7 +69,7 @@
                         title="previous chapter">API documentation</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="mrec.evaluation.html"
-                        title="next chapter">evaluation Package</a></p>
+                        title="next chapter">mrec.evaluation Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.txt"
@@ -434,7 +434,7 @@ fast_sparse_matrix holding 0-indexed matrices.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>d</strong> : scipy sparse matrix</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>d</strong> : scipy.sparse.coo_matrix</p>
 <blockquote>
 <div><p>The sparse matrix to save.</p>
 </div></blockquote>
@@ -493,7 +493,7 @@ popularity.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.popularity.ItemPopularityRecommender.fit" title="mrec.popularity.ItemPopularityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.popularity.ItemPopularityRecommender.fit" title="mrec.popularity.ItemPopularityRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(dataset[,&nbsp;item_features])</td>
 <td>Compute the most popular items using the method specified in the constructor.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
@@ -515,7 +515,7 @@ popularity.</p>
 </table>
 <dl class="method">
 <dt id="mrec.popularity.ItemPopularityRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>dataset</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the most popular items using the method specified
 in the constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -523,8 +523,12 @@ in the constructor.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy sparse matrix or mrec.sparse.fast_sparse_matrix</p>
-<blockquote class="last">
+<blockquote>
 <div><p>The user-item matrix.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote class="last">
+<div><p>Features for items in training set, ignored here.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -534,7 +538,7 @@ in the constructor.</p>
 
 <dl class="method">
 <dt id="mrec.popularity.ItemPopularityRecommender.recommend_items">
-<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.popularity.ItemPopularityRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for a user.  Assumes you&#8217;ve already called
 fit().</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -558,6 +562,10 @@ compatibility with other recommenders).</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
 </div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, ignored here.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list</p>
@@ -574,9 +582,9 @@ just a list of idxs.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="reranking-recommender-module">
-<h2><tt class="xref py py-mod docutils literal"><span class="pre">reranking_recommender</span></tt> Module<a class="headerlink" href="#reranking-recommender-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-mrec.reranking_recommender"></span><p>Recommender that gets candidates using an item similarity model
+<div class="section" id="module-mrec.reranking_recommender">
+<span id="reranking-recommender-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">reranking_recommender</span></tt> Module<a class="headerlink" href="#module-mrec.reranking_recommender" title="Permalink to this headline">¶</a></h2>
+<p>Recommender that gets candidates using an item similarity model
 and then reranks them using a matrix factorization model.</p>
 <dl class="class">
 <dt id="mrec.reranking_recommender.RerankingRecommender">
@@ -616,7 +624,7 @@ are then reranked based on their latent factors.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.reranking_recommender.RerankingRecommender.batch_recommend_items" title="mrec.reranking_recommender.RerankingRecommender.batch_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt></a>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.reranking_recommender.RerankingRecommender.fit" title="mrec.reranking_recommender.RerankingRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.reranking_recommender.RerankingRecommender.fit" title="mrec.reranking_recommender.RerankingRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train[,&nbsp;item_features])</td>
 <td>Fit both models to the training data.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
@@ -641,7 +649,7 @@ are then reranked based on their latent factors.</p>
 </table>
 <dl class="method">
 <dt id="mrec.reranking_recommender.RerankingRecommender.batch_recommend_items">
-<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for all users in the training dataset.  Assumes
 you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -664,6 +672,10 @@ you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <blockquote>
 <div><p>If true print something to stdout to show progress.</p>
 </div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, required by some recommenders.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
@@ -679,12 +691,24 @@ else just a list of idxs.</p>
 
 <dl class="method">
 <dt id="mrec.reranking_recommender.RerankingRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit both models to the training data.</p>
-<dl class="docutils">
-<dt>train <span class="classifier-delimiter">:</span> <span class="classifier">scipy.sparse.csr_matrix</span></dt>
-<dd>The training user-item matrix.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix, shape = [num_users, num_items]</p>
+<blockquote>
+<div><p>The training user-item matrix.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote class="last">
+<div><p>Features for items in training set, required by some recommenders.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>You are not obliged to call this, alternatively you can pass
 ready trained models to the RerankingRecommender constructor.</p>
@@ -692,7 +716,7 @@ ready trained models to the RerankingRecommender constructor.</p>
 
 <dl class="method">
 <dt id="mrec.reranking_recommender.RerankingRecommender.range_recommend_items">
-<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for a range of users in the training dataset.
 Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -719,6 +743,10 @@ Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
 </div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, required by some recommenders.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
@@ -734,7 +762,7 @@ else just a list of idxs.</p>
 
 <dl class="method">
 <dt id="mrec.reranking_recommender.RerankingRecommender.recommend_items">
-<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.reranking_recommender.RerankingRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -755,6 +783,10 @@ else just a list of idxs.</p>
 <p><strong>return_scores</strong> : bool</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Features for items in training set, required by some recommenders.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -842,26 +874,29 @@ and the batch methods to recommend items.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.batch_recommend_items" title="mrec.base_recommender.BaseRecommender.batch_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt></a>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.load" title="mrec.base_recommender.BaseRecommender.load"><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt></a>(filepath)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.fit" title="mrec.base_recommender.BaseRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train[,&nbsp;item_features])</td>
+<td>Train on supplied data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.load" title="mrec.base_recommender.BaseRecommender.load"><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt></a>(filepath)</td>
 <td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.range_recommend_items" title="mrec.base_recommender.BaseRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.range_recommend_items" title="mrec.base_recommender.BaseRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.read_recommender_description" title="mrec.base_recommender.BaseRecommender.read_recommender_description"><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt></a>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.read_recommender_description" title="mrec.base_recommender.BaseRecommender.read_recommender_description"><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt></a>(filepath)</td>
 <td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.recommend_items" title="mrec.base_recommender.BaseRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.recommend_items" title="mrec.base_recommender.BaseRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for a user.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.save" title="mrec.base_recommender.BaseRecommender.save"><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt></a>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.base_recommender.BaseRecommender.save" title="mrec.base_recommender.BaseRecommender.save"><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt></a>(filepath)</td>
 <td>Serialize model to file.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="mrec.base_recommender.BaseRecommender.batch_recommend_items">
-<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>show_progress=False</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>show_progress=False</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for all users in the training dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -883,6 +918,10 @@ and the batch methods to recommend items.</p>
 <blockquote>
 <div><p>If true print something to stdout to show progress.</p>
 </div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Optionally supply features for each item in the dataset.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
@@ -897,6 +936,30 @@ else just a list of idxs.</p>
 <p class="rubric">Notes</p>
 <p>This provides a default implementation, you will be able to optimize
 this for most recommenders.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrec.base_recommender.BaseRecommender.fit">
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train on supplied data. In general you will want to
+implement this rather than computing recommendations on
+the fly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix or mrec.sparse.fast_sparse_matrix, shape = [num_users, num_items]</p>
+<blockquote>
+<div><p>User-item matrix.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote class="last">
+<div><p>Features for items in training set, required by some recommenders.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -920,9 +983,8 @@ save().</p>
 
 <dl class="method">
 <dt id="mrec.base_recommender.BaseRecommender.range_recommend_items">
-<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recommend new items for a range of users in the training dataset.
-Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
+<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recommend new items for a range of users in the training dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -946,6 +1008,10 @@ Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
 <p><strong>return_scores</strong> : bool</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Optionally supply features for each item in the dataset.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -985,7 +1051,7 @@ associated data into memory.</p>
 
 <dl class="method">
 <dt id="mrec.base_recommender.BaseRecommender.recommend_items">
-<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.base_recommender.BaseRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recommend new items for a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1006,6 +1072,10 @@ associated data into memory.</p>
 <p><strong>return_scores</strong> : bool</p>
 <blockquote>
 <div><p>If true return a score along with each recommended item.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote>
+<div><p>Optionally supply features for each item in the dataset.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1050,32 +1120,40 @@ in client code.</p>
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="mrec.evaluation.html">evaluation Package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mrec.evaluation.html">mrec.evaluation Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mrec.evaluation.html#module-mrec.evaluation.preprocessing"><tt class="docutils literal"><span class="pre">preprocessing</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.evaluation.html#module-mrec.evaluation.metrics"><tt class="docutils literal"><span class="pre">metrics</span></tt> Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mrec.examples.html">examples Package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mrec.examples.html">mrec.examples Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.train"><tt class="docutils literal"><span class="pre">train</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.predict"><tt class="docutils literal"><span class="pre">predict</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.evaluate"><tt class="docutils literal"><span class="pre">evaluate</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.examples.html#module-mrec.examples.filename_conventions"><tt class="docutils literal"><span class="pre">filename_conventions</span></tt> Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mrec.item_similarity.html">item_similarity Package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mrec.item_similarity.html">mrec.item_similarity Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.slim"><tt class="docutils literal"><span class="pre">slim</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.knn"><tt class="docutils literal"><span class="pre">knn</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.precomputed"><tt class="docutils literal"><span class="pre">precomputed</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.item_similarity.html#module-mrec.item_similarity.recommender"><tt class="docutils literal"><span class="pre">recommender</span></tt> Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mrec.mf.html">mf Package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mrec.mf.html">mrec.mf Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mrec.mf.html#module-mrec.mf.wrmf"><tt class="docutils literal"><span class="pre">wrmf</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.mf.html#module-mrec.mf.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mrec.mf.html#module-mrec.mf.recommender"><tt class="docutils literal"><span class="pre">recommender</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.mf.html#module-mrec.mf.warp2"><tt class="docutils literal"><span class="pre">warp2</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.mf.html#recommender-module"><tt class="docutils literal"><span class="pre">recommender</span></tt> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mrec.mf.model.html">mrec.mf.model Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mrec.mf.model.html#module-mrec.mf.model.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mrec.mf.model.html#module-mrec.mf.model.warp2"><tt class="docutils literal"><span class="pre">warp2</span></tt> Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mrec.parallel.html">parallel Package</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mrec.parallel.html">mrec.parallel Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mrec.parallel.html#module-mrec.parallel.item_similarity"><tt class="docutils literal"><span class="pre">item_similarity</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.parallel.html#module-mrec.parallel.wrmf"><tt class="docutils literal"><span class="pre">wrmf</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrec.parallel.html#module-mrec.parallel.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
@@ -1103,12 +1181,12 @@ in client code.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.evaluation.html" title="evaluation Package"
+          <a href="mrec.evaluation.html" title="mrec.evaluation Package"
              >next</a> |</li>
         <li class="right" >
           <a href="api.html" title="API documentation"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>

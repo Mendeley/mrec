@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrec recommender systems library &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec recommender systems library &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="#" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="#" />
     <link rel="next" title="Getting started with mrec" href="quickstart.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="quickstart.html" title="Getting started with mrec"
              accesskey="N">next</a> |</li>
-        <li><a href="#">mrec 0.2.4 documentation</a> &raquo;</li> 
+        <li><a href="#">mrec 0.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -98,9 +98,10 @@ or on a cluster.  The combination of IPython and scientific Python libraries is 
 but there are still rather few examples around that show how to get it to work in practice.</p>
 <p>Highlights:</p>
 <ul class="simple">
-<li>a (relatively) efficient implementation of the SLIM item similarity method. <a class="footnote-reference" href="#id5" id="id1">[1]</a></li>
-<li>an implementation of Hu, Koren &amp; Volinsky&#8217;s WRMF weighted matrix factorization for implicit feedback. <a class="footnote-reference" href="#id6" id="id2">[2]</a></li>
-<li>a matrix factorization model that optimizes the Weighted Approximately Ranked Pairwise (WARP) ranking loss. <a class="footnote-reference" href="#id7" id="id3">[3]</a></li>
+<li>a (relatively) efficient implementation of the SLIM item similarity method <a class="footnote-reference" href="#id5" id="id1">[1]</a>.</li>
+<li>an implementation of Hu, Koren &amp; Volinsky&#8217;s WRMF weighted matrix factorization for implicit feedback <a class="footnote-reference" href="#id6" id="id2">[2]</a>.</li>
+<li>a matrix factorization model that optimizes the Weighted Approximately Ranked Pairwise (WARP) ranking loss <a class="footnote-reference" href="#id7" id="id3">[3]</a>.</li>
+<li>a hybrid model optimizing the WARP loss for a ranking based jointly on a user-item matrix and on content features for each item.</li>
 <li>utilities to train models and make recommendations in parallel using IPython.</li>
 <li>utilities to prepare datasets and compute quality metrics.</li>
 </ul>
@@ -137,6 +138,7 @@ use <cite>mrec</cite> in your research.</p>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Getting started with mrec</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preparation.html">Preparing training data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Training a recommender</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hybrid.html">Learning jointly from item features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="evaluation.html">Making and evaluating recommendations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="aws.html">Running mrec on Amazon Web Services</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
@@ -163,7 +165,7 @@ use <cite>mrec</cite> in your research.</p>
         <li class="right" >
           <a href="quickstart.html" title="Getting started with mrec"
              >next</a> |</li>
-        <li><a href="#">mrec 0.2.4 documentation</a> &raquo;</li> 
+        <li><a href="#">mrec 0.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

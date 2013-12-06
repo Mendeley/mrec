@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mf Package &mdash; mrec 0.2.4 documentation</title>
+    <title>mrec.mf Package &mdash; mrec 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.4',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mrec 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="mrec 0.3.0 documentation" href="index.html" />
     <link rel="up" title="mrec Package" href="mrec.html" />
-    <link rel="next" title="parallel Package" href="mrec.parallel.html" />
-    <link rel="prev" title="item_similarity Package" href="mrec.item_similarity.html" /> 
+    <link rel="next" title="mrec.mf.model Package" href="mrec.mf.model.html" />
+    <link rel="prev" title="mrec.item_similarity Package" href="mrec.item_similarity.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.parallel.html" title="parallel Package"
+          <a href="mrec.mf.model.html" title="mrec.mf.model Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="mrec.item_similarity.html" title="item_similarity Package"
+          <a href="mrec.item_similarity.html" title="mrec.item_similarity Package"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" accesskey="U">mrec Package</a> &raquo;</li> 
       </ul>
@@ -53,20 +53,23 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">mf Package</a><ul>
+<li><a class="reference internal" href="#">mrec.mf Package</a><ul>
 <li><a class="reference internal" href="#module-mrec.mf.wrmf"><tt class="docutils literal"><span class="pre">wrmf</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-mrec.mf.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-mrec.mf.recommender"><tt class="docutils literal"><span class="pre">recommender</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-mrec.mf.warp2"><tt class="docutils literal"><span class="pre">warp2</span></tt> Module</a></li>
+<li><a class="reference internal" href="#recommender-module"><tt class="docutils literal"><span class="pre">recommender</span></tt> Module</a><ul>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="mrec.item_similarity.html"
-                        title="previous chapter">item_similarity Package</a></p>
+                        title="previous chapter">mrec.item_similarity Package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="mrec.parallel.html"
-                        title="next chapter">parallel Package</a></p>
+  <p class="topless"><a href="mrec.mf.model.html"
+                        title="next chapter">mrec.mf.model Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/mrec.mf.txt"
@@ -93,8 +96,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="mf-package">
-<h1>mf Package<a class="headerlink" href="#mf-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mrec-mf-package">
+<h1>mrec.mf Package<a class="headerlink" href="#mrec-mf-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-mrec.mf.wrmf">
 <span id="wrmf-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">wrmf</span></tt> Module<a class="headerlink" href="#module-mrec.mf.wrmf" title="Permalink to this headline">¶</a></h2>
 <p>Weighted Regularize Matrix Factorization by alternating least squares.</p>
@@ -106,7 +109,7 @@ R. Pan et al., One-class collaborative filtering, ICDM 2008.
 <dl class="class">
 <dt id="mrec.mf.wrmf.WRMFRecommender">
 <em class="property">class </em><tt class="descclassname">mrec.mf.wrmf.</tt><tt class="descname">WRMFRecommender</tt><big>(</big><em>d</em>, <em>alpha=1</em>, <em>lbda=0.015</em>, <em>num_iters=15</em><big>)</big><a class="headerlink" href="#mrec.mf.wrmf.WRMFRecommender" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender" title="mrec.mf.recommender.MatrixFactorizationRecommender"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.recommender.MatrixFactorizationRecommender</span></tt></a></p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.recommender.MatrixFactorizationRecommender</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -141,7 +144,7 @@ R. Pan et al., One-class collaborative filtering, ICDM 2008.
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.fit" title="mrec.mf.wrmf.WRMFRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.fit" title="mrec.mf.wrmf.WRMFRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train[,&nbsp;item_features])</td>
 <td>Learn factors from training set.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.init_factors" title="mrec.mf.wrmf.WRMFRecommender.init_factors"><tt class="xref py py-obj docutils literal"><span class="pre">init_factors</span></tt></a>(num_factors[,&nbsp;assign_values])</td>
@@ -153,26 +156,29 @@ R. Pan et al., One-class collaborative filtering, ICDM 2008.
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
 <td>Load precomputed user and item factors from file.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">predict_ratings</span></tt>([users,&nbsp;item_features])</td>
+<td>Predict ratings/scores for all items for supplied users.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
 <td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend up to max_items most highly recommended items for user u.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
 <td>Serialize model to file.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.update" title="mrec.mf.wrmf.WRMFRecommender.update"><tt class="xref py py-obj docutils literal"><span class="pre">update</span></tt></a>(indices,&nbsp;H,&nbsp;HH)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.wrmf.WRMFRecommender.update" title="mrec.mf.wrmf.WRMFRecommender.update"><tt class="xref py py-obj docutils literal"><span class="pre">update</span></tt></a>(indices,&nbsp;H,&nbsp;HH)</td>
 <td>Update latent factors for a single user or item.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="mrec.mf.wrmf.WRMFRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.mf.wrmf.WRMFRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.mf.wrmf.WRMFRecommender.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Learn factors from training set. User and item factors are
 fitted alternately.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -180,8 +186,12 @@ fitted alternately.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix or mrec.sparse.fast_sparse_matrix</p>
-<blockquote class="last">
+<blockquote>
 <div><p>User-item matrix.</p>
+</div></blockquote>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
+<blockquote class="last">
+<div><p>Features for each item in the dataset, ignored here.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -213,7 +223,7 @@ fitted alternately.</p>
 <dl class="class">
 <dt id="mrec.mf.warp.WARPMFRecommender">
 <em class="property">class </em><tt class="descclassname">mrec.mf.warp.</tt><tt class="descname">WARPMFRecommender</tt><big>(</big><em>d</em>, <em>gamma</em>, <em>C</em>, <em>batch_size=10</em>, <em>positive_thresh=1e-05</em>, <em>max_trials=50</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender" title="mrec.mf.recommender.MatrixFactorizationRecommender"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.recommender.MatrixFactorizationRecommender</span></tt></a></p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.recommender.MatrixFactorizationRecommender</span></tt></p>
 <p>Learn matrix factorization optimizing the WARP loss.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -258,16 +268,10 @@ In practice it means that we optimize for ranks 1 to max_trials-1.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="mrec.mf.warp.WARPMFRecommender.create_validation_set"><tt class="xref py py-obj docutils literal"><span class="pre">create_validation_set</span></tt></a>(train,&nbsp;...)</td>
-<td>Hide and return half of the known items for validation users.</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="mrec.mf.warp.WARPMFRecommender.create_validation_set"><tt class="xref py py-obj docutils literal"><span class="pre">create_validation_set</span></tt></a>(train)</td>
+<td>Hide and return half of the known items for a sample of users, and estimate the number of sgd iterations to run.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.estimate_precision" title="mrec.mf.warp.WARPMFRecommender.estimate_precision"><tt class="xref py py-obj docutils literal"><span class="pre">estimate_precision</span></tt></a>(train,&nbsp;validation_set[,&nbsp;k])</td>
-<td>Compute prec&#64;k for a sample of training users.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.estimate_warp_loss" title="mrec.mf.warp.WARPMFRecommender.estimate_warp_loss"><tt class="xref py py-obj docutils literal"><span class="pre">estimate_warp_loss</span></tt></a>(train,&nbsp;u,&nbsp;N)</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.fit" title="mrec.mf.warp.WARPMFRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.fit" title="mrec.mf.warp.WARPMFRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train[,&nbsp;item_features])</td>
 <td>Learn factors from training set.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
@@ -276,8 +280,8 @@ In practice it means that we optimize for ranks 1 to max_trials-1.</p>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
 <td>Load precomputed user and item factors from file.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender.mini_batch" title="mrec.mf.warp.WARPMFRecommender.mini_batch"><tt class="xref py py-obj docutils literal"><span class="pre">mini_batch</span></tt></a>(train)</td>
-<td></td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">predict_ratings</span></tt>([users,&nbsp;item_features])</td>
+<td>Predict ratings/scores for all items for supplied users.</td>
 </tr>
 <tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
@@ -295,57 +299,40 @@ In practice it means that we optimize for ranks 1 to max_trials-1.</p>
 </table>
 <dl class="method">
 <dt id="mrec.mf.warp.WARPMFRecommender.create_validation_set">
-<tt class="descname">create_validation_set</tt><big>(</big><em>train</em>, <em>num_validation_users</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Hide and return half of the known items for validation users.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="mrec.mf.warp.WARPMFRecommender.estimate_precision">
-<tt class="descname">estimate_precision</tt><big>(</big><em>train</em>, <em>validation_set</em>, <em>k=30</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.estimate_precision" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute prec&#64;k for a sample of training users.</p>
+<tt class="descname">create_validation_set</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.create_validation_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hide and return half of the known items for a sample of users,
+and estimate the number of sgd iterations to run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix</p>
 <blockquote>
-<div><p>The training data.</p>
-</div></blockquote>
-<p><strong>k</strong> : int</p>
-<blockquote>
-<div><p>Measure precision&#64;k.</p>
-</div></blockquote>
-<p><strong>validation_set</strong> : dict or int</p>
-<blockquote>
-<div><p>Validation set over which we compute precision. Either supply
-a dict of user -&gt; list of hidden items, or an integer n, in which
-case we simply evaluate against the training data for the first
-n users.</p>
+<div><p>User-item matrix.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>prec</strong> : float</p>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>max_iters</strong> : int</p>
+<blockquote>
+<div><p>Total number of sgd iterations to run.</p>
+</div></blockquote>
+<p><strong>validation_iters</strong> : int</p>
+<blockquote>
+<div><p>Check progress after this many iterations.</p>
+</div></blockquote>
+<p><strong>validation</strong> : dict</p>
 <blockquote class="last">
-<div><p>Precision&#64;k computed over a sample of the training users.</p>
+<div><p>Validation set.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>At the moment this will underestimate the precision of real
-recommendations because we do not exclude training items with zero
-ratings from the top-k predictions evaluated.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mrec.mf.warp.WARPMFRecommender.estimate_warp_loss">
-<tt class="descname">estimate_warp_loss</tt><big>(</big><em>train</em>, <em>u</em>, <em>N</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.estimate_warp_loss" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="mrec.mf.warp.WARPMFRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Learn factors from training set.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -355,21 +342,15 @@ ratings from the top-k predictions evaluated.</p>
 <blockquote>
 <div><p>User-item matrix.</p>
 </div></blockquote>
-<p><strong>sampler</strong> : mrec.mf.warp.Sampler (default: None)</p>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
 <blockquote class="last">
-<div><p>Sampler to provide rating pairs, if None a UniformUserSampler(train)
-will be used.</p>
+<div><p>Features for each item in the dataset, ignored here.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
-
-<dl class="method">
-<dt id="mrec.mf.warp.WARPMFRecommender.mini_batch">
-<tt class="descname">mini_batch</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.mf.warp.WARPMFRecommender.mini_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -379,15 +360,47 @@ will be used.</p>
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-mrec.mf.recommender">
-<span id="recommender-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">recommender</span></tt> Module<a class="headerlink" href="#module-mrec.mf.recommender" title="Permalink to this headline">¶</a></h2>
-<p>Base class for recommenders that work
-by matrix factorization.</p>
+<div class="section" id="module-mrec.mf.warp2">
+<span id="warp2-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">warp2</span></tt> Module<a class="headerlink" href="#module-mrec.mf.warp2" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="mrec.mf.recommender.MatrixFactorizationRecommender">
-<em class="property">class </em><tt class="descclassname">mrec.mf.recommender.</tt><tt class="descname">MatrixFactorizationRecommender</tt><a class="headerlink" href="#mrec.mf.recommender.MatrixFactorizationRecommender" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="mrec.html#mrec.base_recommender.BaseRecommender" title="mrec.base_recommender.BaseRecommender"><tt class="xref py py-class docutils literal"><span class="pre">mrec.base_recommender.BaseRecommender</span></tt></a></p>
-<p>Base class for matrix factorization recommenders.</p>
+<dt id="mrec.mf.warp2.WARP2MFRecommender">
+<em class="property">class </em><tt class="descclassname">mrec.mf.warp2.</tt><tt class="descname">WARP2MFRecommender</tt><big>(</big><em>d</em>, <em>gamma</em>, <em>C</em>, <em>batch_size=10</em>, <em>positive_thresh=1e-05</em>, <em>max_trials=50</em><big>)</big><a class="headerlink" href="#mrec.mf.warp2.WARP2MFRecommender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mrec.mf.warp.WARPMFRecommender" title="mrec.mf.warp.WARPMFRecommender"><tt class="xref py py-class docutils literal"><span class="pre">mrec.mf.warp.WARPMFRecommender</span></tt></a></p>
+<p>Learn matrix factorization optimizing the WARP loss
+with item features as well as user-item training data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>d</strong> : int</p>
+<blockquote>
+<div><p>Dimensionality of factors.</p>
+</div></blockquote>
+<p><strong>gamma</strong> : float</p>
+<blockquote>
+<div><p>Learning rate.</p>
+</div></blockquote>
+<p><strong>C</strong> : float</p>
+<blockquote>
+<div><p>Regularization constant.</p>
+</div></blockquote>
+<p><strong>batch_size</strong> : int</p>
+<blockquote>
+<div><p>Mini batch size for SGD updates.</p>
+</div></blockquote>
+<p><strong>positive_thresh: float</strong> :</p>
+<blockquote>
+<div><p>Consider an item to be &#8220;positive&#8221; i.e. liked if its rating is at least this.</p>
+</div></blockquote>
+<p><strong>max_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of attempts allowed to find a violating negative example during updates.
+In practice it means that we optimize for ranks 1 to max_trials-1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -395,25 +408,31 @@ by matrix factorization.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.batch_recommend_items" title="mrec.mf.recommender.MatrixFactorizationRecommender.batch_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt></a>(dataset[,&nbsp;max_items,&nbsp;...])</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_recommend_items</span></tt>(dataset[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend new items for all users in the training dataset.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.fit" title="mrec.mf.recommender.MatrixFactorizationRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train)</td>
-<td>Learn user and item factors from training dataset.</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">create_validation_set</span></tt>(train)</td>
+<td>Hide and return half of the known items for a sample of users, and estimate the number of sgd iterations to run.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.warp2.WARP2MFRecommender.fit" title="mrec.mf.warp2.WARP2MFRecommender.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(train[,&nbsp;item_features])</td>
+<td>Learn factors from training set and item features.</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt>(filepath)</td>
 <td>Load a recommender model from file after it has been serialized with save().</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.load_factors" title="mrec.mf.recommender.MatrixFactorizationRecommender.load_factors"><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt></a>(user_factor_filepath,&nbsp;...)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">load_factors</span></tt>(user_factor_filepath,&nbsp;...)</td>
 <td>Load precomputed user and item factors from file.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items" title="mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt></a>(dataset,&nbsp;user_start,&nbsp;...)</td>
+<tr class="row-even"><td><a class="reference internal" href="#mrec.mf.warp2.WARP2MFRecommender.predict_ratings" title="mrec.mf.warp2.WARP2MFRecommender.predict_ratings"><tt class="xref py py-obj docutils literal"><span class="pre">predict_ratings</span></tt></a>([users,&nbsp;item_features])</td>
+<td>Predict ratings/scores for all items for supplied users.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">range_recommend_items</span></tt>(dataset,&nbsp;user_start,&nbsp;...)</td>
 <td>Recommend new items for a range of users in the training dataset.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">read_recommender_description</span></tt>(filepath)</td>
 <td>Read a recommender model description from file after it has been saved by save(), without loading any additional associated data into memory.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items" title="mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items"><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt></a>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">recommend_items</span></tt>(dataset,&nbsp;u[,&nbsp;max_items,&nbsp;...])</td>
 <td>Recommend up to max_items most highly recommended items for user u.</td>
 </tr>
 <tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">save</span></tt>(filepath)</td>
@@ -422,36 +441,20 @@ by matrix factorization.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="mrec.mf.recommender.MatrixFactorizationRecommender.batch_recommend_items">
-<tt class="descname">batch_recommend_items</tt><big>(</big><em>dataset</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.mf.recommender.MatrixFactorizationRecommender.batch_recommend_items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recommend new items for all users in the training dataset.  Assumes
-you&#8217;ve already called fit() to learn the similarity matrix.</p>
+<dt id="mrec.mf.warp2.WARP2MFRecommender.fit">
+<tt class="descname">fit</tt><big>(</big><em>train</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.mf.warp2.WARP2MFRecommender.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn factors from training set and item features.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy.sparse.csr_matrix</p>
 <blockquote>
-<div><p>User-item matrix containing known items.</p>
+<div><p>User-item matrix.</p>
 </div></blockquote>
-<p><strong>max_items</strong> : int</p>
-<blockquote>
-<div><p>Maximum number of recommended items to return.</p>
-</div></blockquote>
-<p><strong>return_scores</strong> : bool</p>
-<blockquote>
-<div><p>If true return a score along with each recommended item.</p>
-</div></blockquote>
-<p><strong>show_progress: bool</strong> :</p>
-<blockquote>
-<div><p>If true print something to stdout to show progress.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
 <blockquote class="last">
-<div><p>Each entry is a list of (idx,score) pairs if return_scores is True,
-else just a list of idxs.</p>
+<div><p>Features for each item in the dataset.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -460,125 +463,30 @@ else just a list of idxs.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mrec.mf.recommender.MatrixFactorizationRecommender.fit">
-<tt class="descname">fit</tt><big>(</big><em>train</em><big>)</big><a class="headerlink" href="#mrec.mf.recommender.MatrixFactorizationRecommender.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learn user and item factors from training dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>train</strong> : scipy sparse matrix</p>
-<blockquote class="last">
-<div><p>The user-item matrix.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="mrec.mf.recommender.MatrixFactorizationRecommender.load_factors">
-<tt class="descname">load_factors</tt><big>(</big><em>user_factor_filepath</em>, <em>item_factor_filepath</em>, <em>fmt</em><big>)</big><a class="headerlink" href="#mrec.mf.recommender.MatrixFactorizationRecommender.load_factors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load precomputed user and item factors from file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>user_factor_filepath</strong> : str</p>
-<blockquote>
-<div><p>Filepath to tsv file holding externally computed user factors. Can be
-TSV, Matrix Market or numpy array serialized with numpy.save().</p>
-</div></blockquote>
-<p><strong>item_factor_filepath</strong> : str</p>
-<blockquote>
-<div><p>Filepath to TSV file holding externally computed item factors. Can be
-TSV, Matrix Market or numpy array serialized with numpy.save().</p>
-</div></blockquote>
-<p><strong>fmt</strong> : str: npy, mm or tsv</p>
-<blockquote class="last">
-<div><p>File format: numpy array, Matrix Market or TSV.  Each line of TSV input
-should contain all of the factors for a single user or item.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items">
-<tt class="descname">range_recommend_items</tt><big>(</big><em>dataset</em>, <em>user_start</em>, <em>user_end</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.mf.recommender.MatrixFactorizationRecommender.range_recommend_items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recommend new items for a range of users in the training dataset.
-Assumes you&#8217;ve already called fit() to learn the similarity matrix.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
-<blockquote>
-<div><p>User-item matrix containing known items.</p>
-</div></blockquote>
-<p><strong>user_start</strong> : int</p>
-<blockquote>
-<div><p>Index of first user in the range to recommend.</p>
-</div></blockquote>
-<p><strong>user_end</strong> : int</p>
-<blockquote>
-<div><p>Index one beyond last user in the range to recommend.</p>
-</div></blockquote>
-<p><strong>max_items</strong> : int</p>
-<blockquote>
-<div><p>Maximum number of recommended items to return.</p>
-</div></blockquote>
-<p><strong>return_scores</strong> : bool</p>
-<blockquote>
-<div><p>If true return a score along with each recommended item.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list of lists</p>
-<blockquote class="last">
-<div><p>Each entry is a list of (idx,score) pairs if return_scores is True,
-else just a list of idxs.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items">
-<tt class="descname">recommend_items</tt><big>(</big><em>dataset</em>, <em>u</em>, <em>max_items=10</em>, <em>return_scores=True</em><big>)</big><a class="headerlink" href="#mrec.mf.recommender.MatrixFactorizationRecommender.recommend_items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recommend up to max_items most highly recommended items for user u.
+<dt id="mrec.mf.warp2.WARP2MFRecommender.predict_ratings">
+<tt class="descname">predict_ratings</tt><big>(</big><em>users=None</em>, <em>item_features=None</em><big>)</big><a class="headerlink" href="#mrec.mf.warp2.WARP2MFRecommender.predict_ratings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict ratings/scores for all items for supplied users.
 Assumes you&#8217;ve already called fit() to learn the factors.</p>
+<p>Only call this if you really want predictions for all items.
+To get the top-k recommended items for each user you should
+call one of the recommend_items() instead.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dataset</strong> : scipy.sparse.csr_matrix</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>users</strong> : int or array-like</p>
 <blockquote>
-<div><p>User-item matrix containing known items.</p>
+<div><p>Index or indices of users for which to make predictions.</p>
 </div></blockquote>
-<p><strong>u</strong> : int</p>
+<p><strong>item_features</strong> : array_like, shape = [num_items, num_features]</p>
 <blockquote>
-<div><p>Index of user for which to make recommendations.</p>
-</div></blockquote>
-<p><strong>max_items</strong> : int</p>
-<blockquote>
-<div><p>Maximum number of recommended items to return.</p>
-</div></blockquote>
-<p><strong>return_scores</strong> : bool</p>
-<blockquote>
-<div><p>If true return a score along with each recommended item.</p>
+<div><p>Features for each item in the dataset.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>recs</strong> : list</p>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>predictions</strong> : numpy.ndarray, shape = [len(users), num_items]</p>
 <blockquote class="last">
-<div><p>List of (idx,score) pairs if return_scores is True, else
-just a list of idxs.</p>
+<div><p>Predicted ratings for all items for each supplied user.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -588,6 +496,24 @@ just a list of idxs.</p>
 
 </dd></dl>
 
+<dl class="function">
+<dt id="mrec.mf.warp2.main">
+<tt class="descclassname">mrec.mf.warp2.</tt><tt class="descname">main</tt><big>(</big><em>file_format</em>, <em>filepath</em>, <em>feature_format</em>, <em>feature_file</em>, <em>outfile</em><big>)</big><a class="headerlink" href="#mrec.mf.warp2.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="recommender-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">recommender</span></tt> Module<a class="headerlink" href="#recommender-module" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mrec.mf.model.html">mrec.mf.model Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrec.mf.model.html#module-mrec.mf.model.warp"><tt class="docutils literal"><span class="pre">warp</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrec.mf.model.html#module-mrec.mf.model.warp2"><tt class="docutils literal"><span class="pre">warp2</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -607,12 +533,12 @@ just a list of idxs.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="mrec.parallel.html" title="parallel Package"
+          <a href="mrec.mf.model.html" title="mrec.mf.model Package"
              >next</a> |</li>
         <li class="right" >
-          <a href="mrec.item_similarity.html" title="item_similarity Package"
+          <a href="mrec.item_similarity.html" title="mrec.item_similarity Package"
              >previous</a> |</li>
-        <li><a href="index.html">mrec 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">mrec 0.3.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API documentation</a> &raquo;</li>
           <li><a href="mrec.html" >mrec Package</a> &raquo;</li> 
       </ul>

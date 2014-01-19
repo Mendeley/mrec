@@ -154,7 +154,7 @@ Make some recommendations and evaluate them
 Now we have some trained models you can run the ``mrec_predict`` script to generate recommendations
 and more importantly to evaluate them::
 
-    $ mrec_predict -n4 --input_format tsv --test_input_format tsv --train "splits/u.data.train.*" --modeldir models --outdir recs
+    $ mrec_predict --input_format tsv --test_input_format tsv --train "splits/u.data.train.*" --modeldir models --outdir recs
 
 This will run for a few seconds printing out some progress information before showing the evaluation results::
 

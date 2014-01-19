@@ -16,6 +16,7 @@ class ItemSimilarityRunner(object):
         dataset = load_sparse_matrix(input_format,trainfile)
         num_users,num_items = dataset.shape
         del dataset
+        logging.info('%d users and %d items', num_users, num_items)
 
         logging.info('creating sims directory {0}...'.format(simsdir))
         subprocess.check_call(['mkdir','-p',simsdir])
@@ -30,10 +31,16 @@ class ItemSimilarityRunner(object):
         logging.info('creating tasks...')
         tasks = self.create_tasks(model,input_format,trainfile,simsdir,num_items,num_engines,max_sims,done)
 
-        logging.info('running in parallel across ipython engines...')
-        async_job = view.map_async(process,tasks,retries=2)
-        # wait for tasks to complete
-        results = async_job.get()
+        if num_engines > 0:
+            logging.info('running %d tasks in parallel across ipython'
+                         ' engines...', len(tasks))
+            async_job = view.map_async(process,tasks,retries=2)
+            # wait for tasks to complete
+            results = async_job.get()
+        else:
+            # Sequential run to make it easier for debugging
+            logging.info('training similarity model sequentially')
+            results = [process(task) for task in tasks]
 
         logging.info('checking output files...')
         done = self.find_done(simsdir)
@@ -46,6 +53,8 @@ class ItemSimilarityRunner(object):
             subprocess.check_call(cmd,stdout=open(simsfile,'w'))
             logging.info('removing partial output files...')
             rmtree(simsdir)
+            logging.info('loading %d items in %s model from %s',
+                         num_items, type(model).__name__, simsfile)
             model.load_similarity_matrix(simsfile,num_items)
             save_recommender(model,modelfile)
             logging.info('done')
@@ -65,6 +74,9 @@ class ItemSimilarityRunner(object):
         return done
 
     def create_tasks(self,model,input_format,trainfile,outdir,num_items,num_engines,max_similar_items,done):
+        if num_engines == 0:
+            # special marker for sequential run
+            num_engines = 1
         items_per_engine = int(math.ceil(float(num_items)/num_engines))
         tasks = []
         for start in xrange(0,num_items,items_per_engine):
@@ -88,7 +100,8 @@ def process(task):
     # initialise the model
     dataset = load_fast_sparse_matrix(input_format,trainfile)
     if hasattr(model,'similarity_matrix'):
-        # clear out any existing similarity matrix
+        # clear out any existing similarity matrix to trigger recomputation of
+        # the item-item similarities from the users' ratings.
         model.similarity_matrix = None
 
     # write sims directly to file as we compute them

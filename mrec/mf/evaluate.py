@@ -3,7 +3,10 @@ def retrain_recommender(model,dataset):
 
 if __name__ == '__main__':
 
-    from sklearn.grid_search import IterGrid
+    try:
+        from sklearn.grid_search import ParameterGrid
+    except ImportError:
+        from sklearn.grid_search import IterGrid as ParameterGrid
     from optparse import OptionParser
     from warp import WARPMFRecommender
 
@@ -21,7 +24,7 @@ if __name__ == '__main__':
 
     print 'doing a grid search for regularization parameters...'
     params = {'d':[100],'gamma':[0.01],'C':[100],'max_iter':[100000],'validation_iters':[500]}
-    models = [WARPMFRecommender(**a) for a in IterGrid(params)]
+    models = [WARPMFRecommender(**a) for a in ParameterGrid(params)]
 
     for train in glob:
         # get test

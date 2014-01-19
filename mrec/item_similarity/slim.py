@@ -13,9 +13,17 @@ See:
 
 from sklearn.linear_model import SGDRegressor, ElasticNet
 from sklearn.preprocessing import binarize
+import sklearn
 import numpy as np
 
 from recommender import ItemSimilarityRecommender
+
+
+def parse_version(version_string):
+    if '-' in version_string:
+        version_string = version_string.split('-', 1)[0]
+    return tuple(map(int, version_string.split('.')))
+
 
 class NNFeatureSelectingSGDRegressor(object):
     """
@@ -61,14 +69,18 @@ class SLIM(ItemSimilarityRecommender):
         :fs_sgd: NNFeatureSelectingSGDRegressor
     """
     def __init__(self,
-                 l1_reg=0.01,
-                 l2_reg=0.001,
+                 l1_reg=0.001,
+                 l2_reg=0.0001,
                  fit_intercept=False,
                  ignore_negative_weights=False,
                  num_selected_features=200,
                  model='sgd'):
         alpha = l1_reg+l2_reg
         l1_ratio = l1_reg/alpha
+        if parse_version(sklearn.__version__) <= (0, 14, 1):
+            # Backward compat: in old versions of scikit-learn l1_ratio had
+            # the opposite sign...
+            l1_ratio = (1 - l1_ratio)
         if model == 'sgd':
             self.model = SGDRegressor(penalty='elasticnet',fit_intercept=fit_intercept,alpha=alpha,l1_ratio=l1_ratio)
         elif model == 'elasticnet':
@@ -85,7 +97,7 @@ class SLIM(ItemSimilarityRecommender):
         # zero out the j-th column of the input so we get w[j] = 0
         a = dataset.fast_get_col(j)
         dataset.fast_update_col(j,np.zeros(a.nnz))
-        self.model.fit(dataset.X,a.toarray())
+        self.model.fit(dataset.X,a.toarray().ravel())
         # reinstate the j-th column
         dataset.fast_update_col(j,a.data)
         w = self.model.coef_

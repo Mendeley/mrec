@@ -8,7 +8,10 @@ from math import log10
 import logging
 from operator import itemgetter
 from optparse import OptionParser
-from sklearn.grid_search import IterGrid
+try:
+    from sklearn.grid_search import ParameterGrid
+except ImportError:
+    from sklearn.grid_search import IterGrid as ParameterGrid
 from IPython.parallel import Client
 
 from mrec import load_fast_sparse_matrix
@@ -69,7 +72,7 @@ def main():
 
     logging.info('preparing tasks for a grid search of these values:')
     logging.info(params)
-    tasks = [(args,dataset,opts.min_sims,sample_items) for args in IterGrid(params)]
+    tasks = [(args,dataset,opts.min_sims,sample_items) for args in ParameterGrid(params)]
 
     c = Client(packer=opts.packer)
     view = c.load_balanced_view()

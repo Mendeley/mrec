@@ -142,9 +142,13 @@ class JaccardKNNRecommender(KNNRecommender):
 
         for idx, row in enumerate(self._cached_bool):
             union = (row + ba).sum()
-            count = bsum + row.sum()
-            intersection = count-union
-            sims.append(float(intersection) / union)
+            # if, somehow, we have two empty vectors...
+            if union == 0:
+                sims.append(0)
+            else:
+                count = bsum + row.sum()
+                intersection = count-union
+                sims.append(float(intersection) / union)
         return np.asarray(sims)
 
     def __str__(self):

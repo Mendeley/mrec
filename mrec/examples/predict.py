@@ -29,7 +29,6 @@ from filename_conventions import *
 
 ONE_MB = 2 ** 20
 
-def process(view,opts,modelfile,trainfile,testfile,featurefile,outdir,evaluator):
 
 def process(view, opts, modelfile, trainfile, testfile, featurefile, outdir, evaluator):
 
@@ -110,7 +109,7 @@ def create_tasks(modelfile,
                  outdir,
                  mb_per_task,
                  done,
-                 evaluator):    
+                 evaluator):
     users_per_task, num_users = estimate_users_per_task(
         mb_per_task, input_format, trainfile, modelfile)
     tasks = []

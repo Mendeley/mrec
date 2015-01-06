@@ -31,8 +31,7 @@ def main():
                      'hitrate':compute_hit_rate}
 
     (opts,args) = parser.parse_args()
-    if not opts.input_format or not opts.train or not opts.recsdir \
-            or opts.metrics not in metrics_funcs:
+    if not opts.input_format or not opts.train or not opts.recsdir or opts.metrics not in metrics_funcs:
         parser.print_help()
         raise SystemExit
 

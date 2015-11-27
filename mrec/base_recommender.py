@@ -88,7 +88,7 @@ class BaseRecommender(object):
         if archive:
             np.savez(filepath,**archive)
         else:
-            pickle.dump(self,open(filepath,'w'))
+            pickle.dump(self,open(filepath,'wb'))
 
     def _create_archive(self):
         """
@@ -119,7 +119,7 @@ class BaseRecommender(object):
         if isinstance(r,BaseRecommender):
             model = r
         else:
-            model = np.loads(str(r['model']))
+            model = np.loads(r['model'])
             model._load_archive(r)  # restore any fields serialized separately
         return model
 
@@ -150,7 +150,7 @@ class BaseRecommender(object):
         if isinstance(r,BaseRecommender):
             model = r
         else:
-            model = np.loads(str(r['model']))
+            model = np.loads(r['model'])
         return str(model)
 
     def __str__(self):

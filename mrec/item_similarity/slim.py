@@ -122,7 +122,7 @@ if __name__ == '__main__':
     # use SLIM like this:
 
     import random
-    from io import StringIO
+    from io import BytesIO
     from mrec import load_fast_sparse_matrix
 
     random.seed(0)
@@ -142,7 +142,7 @@ if __name__ == '__main__':
 3	4	1
 """
     print(data)
-    dataset = load_fast_sparse_matrix('mm', StringIO(data))
+    dataset = load_fast_sparse_matrix('mm', BytesIO(data.encode('ascii')))
     num_users,num_items = dataset.shape
 
     model = SLIM()

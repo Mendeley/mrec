@@ -2,7 +2,7 @@
 Trivial unpersonalized item popularity recommender
 intended to provide a baseline for evaluations.
 """
-
+from six.moves import xrange
 import numpy as np
 
 from base_recommender import BaseRecommender

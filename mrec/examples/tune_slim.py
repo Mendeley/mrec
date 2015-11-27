@@ -4,6 +4,7 @@ constants for SLIM by looking at model sparsity.
 """
 from __future__ import print_function
 
+from six.moves import xrange
 import random
 from math import log10
 import logging

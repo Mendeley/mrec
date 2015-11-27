@@ -10,6 +10,7 @@ Yue Shi, Martha Larson, Alexandros Karatzoglou, Nuria Oliver, Linas Baltrunas, A
 ACM RecSys 2012
 """
 from __future__ import print_function
+from six.moves import xrange
 from math import exp, log
 import random
 import numpy as np

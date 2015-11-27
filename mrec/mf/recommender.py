@@ -3,6 +3,7 @@ Base class for recommenders that work
 by matrix factorization.
 """
 from __future__ import print_function
+from six.moves import xrange
 
 try:
     import cPickle as pickle

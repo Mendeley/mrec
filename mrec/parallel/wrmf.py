@@ -5,6 +5,7 @@ import subprocess
 from shutil import rmtree
 import math
 import numpy as np
+from six.moves import xrange
 
 from mrec import load_sparse_matrix, save_recommender
 

@@ -4,6 +4,7 @@ Metrics to evaluate recommendations:
 * with prec@k and MRR
 """
 from __future__ import print_function
+from six.moves import xrange
 import numpy as np
 from scipy import stats
 from collections import defaultdict

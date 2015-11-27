@@ -1,3 +1,4 @@
+from six.moves import xrange
 import random
 import numpy as np
 from scipy.sparse import coo_matrix

@@ -19,6 +19,7 @@ import subprocess
 from shutil import rmtree
 import logging
 from collections import defaultdict
+from six.moves import xrange
 
 from mrec import load_sparse_matrix, read_recommender_description, load_recommender
 from mrec.parallel import predict

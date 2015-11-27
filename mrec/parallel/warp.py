@@ -5,6 +5,7 @@ import subprocess
 from shutil import rmtree
 import logging
 import numpy as np
+from six.moves import xrange
 
 from mrec import save_recommender, load_recommender
 

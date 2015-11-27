@@ -2,6 +2,7 @@
 Base class for item similarity recommenders.
 """
 from __future__ import print_function
+from six.moves import xrange
 try:
     import cPickle as pickle
 except ImportError:

@@ -4,6 +4,7 @@ intended to provide evaluation baselines.
 """
 from __future__ import absolute_import, print_function
 
+from six.moves import xrange
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from recommender import ItemSimilarityRecommender

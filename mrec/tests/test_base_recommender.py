@@ -1,3 +1,4 @@
+from six.moves import xrange
 try:
     import cPickle as pickle
 except ImportError:

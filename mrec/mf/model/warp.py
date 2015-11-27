@@ -1,6 +1,7 @@
 from __future__ import print_function
 import numpy as np
 import random
+from six.moves import xrange
 try:
     from itertools import izip as zip
 except ImportError:

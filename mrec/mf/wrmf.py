@@ -8,6 +8,7 @@ R. Pan et al., One-class collaborative filtering, ICDM 2008.
 http://www.hpl.hp.com/techreports/2008/HPL-2008-48R1.pdf
 """
 from __future__ import print_function
+from six.moves import xrange
 
 import numpy as np
 from scipy.sparse import csr_matrix

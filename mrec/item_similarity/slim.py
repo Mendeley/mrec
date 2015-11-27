@@ -11,6 +11,7 @@ See:
     http://glaros.dtc.umn.edu/gkhome/fetch/papers/SLIM2011icdm.pdf
 """
 from __future__ import print_function
+from six.moves import xrange
 from sklearn.linear_model import SGDRegressor, ElasticNet
 from sklearn.preprocessing import binarize
 import sklearn

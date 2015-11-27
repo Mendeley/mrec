@@ -1,4 +1,5 @@
 from __future__ import print_function
+from six.moves import xrange
 import tempfile
 import os
 from sklearn.utils.testing import assert_equal

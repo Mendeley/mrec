@@ -3,6 +3,7 @@ try:
     import cPickle as pickle
 except ImportError:
     import pickle
+from six.moves import xrange
 import numpy as np
 from scipy.sparse import csr_matrix
 

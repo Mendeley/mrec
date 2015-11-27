@@ -2,6 +2,7 @@
 Prediction task to run on an ipython engine.
 """
 from __future__ import print_function
+from six.moves import xrange
 
 def run(task):
 

@@ -6,6 +6,7 @@ import os
 import subprocess
 from shutil import rmtree
 import logging
+from six.moves import xrange
 
 from mrec import load_sparse_matrix, save_recommender
 

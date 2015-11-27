@@ -1,7 +1,7 @@
 """
 Sparse data structures and convenience methods to load sparse matrices from file.
 """
-
+from six.moves import xrange
 import random
 import numpy as np
 from scipy.sparse import csr_matrix, coo_matrix

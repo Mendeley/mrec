@@ -17,7 +17,7 @@ from sklearn.preprocessing import binarize
 import sklearn
 import numpy as np
 
-from .recommender import ItemSimilarityRecommender
+from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 
 def parse_version(version_string):

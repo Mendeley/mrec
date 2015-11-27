@@ -11,6 +11,7 @@ See:
     http://glaros.dtc.umn.edu/gkhome/fetch/papers/SLIM2011icdm.pdf
 """
 from __future__ import print_function, absolute_import
+from distutils.version import LooseVersion
 from six.moves import xrange
 from sklearn.linear_model import SGDRegressor, ElasticNet
 from sklearn.preprocessing import binarize
@@ -18,12 +19,6 @@ import sklearn
 import numpy as np
 
 from mrec.item_similarity.recommender import ItemSimilarityRecommender
-
-
-def parse_version(version_string):
-    if '-' in version_string:
-        version_string = version_string.split('-', 1)[0]
-    return tuple(map(int, version_string.split('.')))
 
 
 class NNFeatureSelectingSGDRegressor(object):
@@ -78,7 +73,7 @@ class SLIM(ItemSimilarityRecommender):
                  model='sgd'):
         alpha = l1_reg+l2_reg
         l1_ratio = l1_reg/alpha
-        if parse_version(sklearn.__version__) <= (0, 14, 1):
+        if LooseVersion(sklearn.__version__) <= LooseVersion('0.14.1'):
             # Backward compat: in old versions of scikit-learn l1_ratio had
             # the opposite sign...
             l1_ratio = (1 - l1_ratio)

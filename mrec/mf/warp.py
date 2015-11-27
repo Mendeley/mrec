@@ -5,8 +5,8 @@ from six.moves import xrange
 
 from mrec.evaluation import metrics
 
-from recommender import MatrixFactorizationRecommender
-from model.warp import WARP
+from .recommender import MatrixFactorizationRecommender
+from .model.warp import WARP
 
 class WARPMFRecommender(MatrixFactorizationRecommender):
     """

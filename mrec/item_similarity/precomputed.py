@@ -1,8 +1,8 @@
 """
 Make recommendations from a precomputed item similarity matrix.
 """
-
-from recommender import ItemSimilarityRecommender
+from __future__ import absolute_import
+from .recommender import ItemSimilarityRecommender
 
 class PrecomputedItemSimilarityRecommender(ItemSimilarityRecommender):
     """

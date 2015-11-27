@@ -10,14 +10,14 @@ See:
     X. Ning and G. Karypis, ICDM 2011.
     http://glaros.dtc.umn.edu/gkhome/fetch/papers/SLIM2011icdm.pdf
 """
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 from six.moves import xrange
 from sklearn.linear_model import SGDRegressor, ElasticNet
 from sklearn.preprocessing import binarize
 import sklearn
 import numpy as np
 
-from recommender import ItemSimilarityRecommender
+from .recommender import ItemSimilarityRecommender
 
 
 def parse_version(version_string):

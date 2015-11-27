@@ -7,6 +7,7 @@ http://research.yahoo.net/files/HuKorenVolinsky-ICDM08.pdf
 R. Pan et al., One-class collaborative filtering, ICDM 2008.
 http://www.hpl.hp.com/techreports/2008/HPL-2008-48R1.pdf
 """
+from __future__ import print_function
 
 import numpy as np
 from scipy.sparse import csr_matrix
@@ -62,7 +63,7 @@ class WRMFRecommender(MatrixFactorizationRecommender):
         self.U = self.init_factors(num_users,False)  # don't need values, will compute them
         self.V = self.init_factors(num_items)
         for it in xrange(self.num_iters):
-            print 'iteration',it
+            print('iteration',it)
             # fit user factors
             VV = self.V.T.dot(self.V)
             for u in xrange(num_users):

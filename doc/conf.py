@@ -11,6 +11,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from __future__ import print_function
+
 import sys, os
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -51,10 +53,10 @@ import pkg_resources
 try:
     release = pkg_resources.get_distribution('mrec').version
 except pkg_resources.DistributionNotFound:
-    print 'To build the documentation, The distribution information of mrec'
-    print 'has to be available.  Either install the package into your'
-    print 'development environment or run "python setup.py develop" to setup'
-    print 'the metadata.'
+    print('To build the documentation, The distribution information of mrec')
+    print('has to be available.  Either install the package into your')
+    print('development environment or run "python setup.py develop" to setup')
+    print('the metadata.')
     sys.exit(1)
 del pkg_resources
 version = '.'.join(release.split('.')[:2])

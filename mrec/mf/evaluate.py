@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 def retrain_recommender(model,dataset):
     model.fit(dataset.X)
 
@@ -22,7 +24,7 @@ if __name__ == '__main__':
         parser.print_help()
         raise SystemExit
 
-    print 'doing a grid search for regularization parameters...'
+    print('doing a grid search for regularization parameters...')
     params = {'d':[100],'gamma':[0.01],'C':[100],'max_iter':[100000],'validation_iters':[500]}
     models = [WARPMFRecommender(**a) for a in ParameterGrid(params)]
 

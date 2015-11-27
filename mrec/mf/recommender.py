@@ -2,6 +2,7 @@
 Base class for recommenders that work
 by matrix factorization.
 """
+from __future__ import print_function
 
 try:
     import cPickle as pickle
@@ -251,12 +252,12 @@ class MatrixFactorizationRecommender(BaseRecommender):
         for u in xrange(user_start,user_end):
             ux = u - user_start
             if show_progress and ux%1000 == 0:
-               print ux,'..',
+               print(ux,'..',)
             ru = r[ux]
             if return_scores:
                 recs[ux] = [(i,ru[i]) for i in ru.argsort()[::-1] if ru[i] > 0][:max_items]
             else:
                 recs[ux] = [i for i in ru.argsort()[::-1] if ru[i] > 0][:max_items]
         if show_progress:
-            print
+            print()
         return recs

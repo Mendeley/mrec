@@ -3,7 +3,7 @@ Metrics to evaluate recommendations:
 * with hit rate, following e.g. Karypis lab SLIM and FISM papers
 * with prec@k and MRR
 """
-
+from __future__ import print_function
 import numpy as np
 from scipy import stats
 from collections import defaultdict
@@ -63,7 +63,7 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
             retrain(model,train)
             run_metrics = evaluation_func(model,train,users,test)
             for m,val in run_metrics.iteritems():
-                print m,val
+                print(m, val)
                 metrics[i][m].append(val)
     return metrics
 
@@ -99,15 +99,15 @@ def print_report(models,metrics):
     Call this to print out the metrics returned by run_evaluation().
     """
     for model,results in zip(models,metrics):
-        print model
+        print(model)
         if hasattr(model,'similarity_matrix'):
             nnz = model.similarity_matrix.nnz
             num_items = model.similarity_matrix.shape[0]
             density = float(model.similarity_matrix.nnz)/num_items**2
-            print 'similarity matrix nnz = {0} (density {1:.3f})'.format(nnz,density)
+            print('similarity matrix nnz = {0} (density {1:.3f})'.format(nnz,density))
         for m in sort_metrics_by_name(results.keys()):
             vals = results[m]
-            print '{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),np.mean(vals),stats.sem(vals,ddof=0))
+            print('{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),np.mean(vals),stats.sem(vals,ddof=0)))
 
 def evaluate(model,train,users,get_known_items,compute_metrics):
     avg_metrics = defaultdict(float)

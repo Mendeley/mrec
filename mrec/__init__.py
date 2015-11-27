@@ -1,3 +1,4 @@
+from __future__ import absolute_import, print_function
 try:
     from itertools import izip as zip
 except ImportError:
@@ -10,8 +11,8 @@ try:
 except ImportError:
     import pickle
 
-from sparse import fast_sparse_matrix, loadtxt, loadz, savez
-from base_recommender import BaseRecommender
+from .sparse import fast_sparse_matrix, loadtxt, loadz, savez
+from .base_recommender import BaseRecommender
 
 __version__ = '0.3.1'
 
@@ -93,12 +94,12 @@ def save_sparse_matrix(data,fmt,filepath):
         m = data.tocoo()
         with open(filepath,'w') as out:
             for u,i,v in zip(m.row,m.col,m.data):
-                print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,v)
+                print('{0}\t{1}\t{2}'.format(u+1,i+1,v), file=out)
     elif fmt == 'csv':
         m = data.tocoo()
         with open(filepath,'w') as out:
             for u,i,v in zip(m.row,m.col,m.data):
-                print >>out,'{0},{1},{2}'.format(u+1,i+1,v)
+                print('{0},{1},{2}'.format(u+1,i+1,v), file=out)
     elif fmt == 'mm':
         mmwrite(filepath,data)
     elif fmt == 'npz':

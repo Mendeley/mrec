@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 class Processor(object):
 
     def __init__(self,splitter,parser,min_items_per_user,preprocess=None):
@@ -8,7 +10,7 @@ class Processor(object):
 
     def output(self,user,vals,outfile):
         for v,c in vals:
-            print >>outfile,'{0}\t{1}\t{2}'.format(user,v,c)
+            print('{0}\t{1}\t{2}'.format(user,v,c), file=outfile)
 
     def handle(self,user,vals):
         if len(vals) >= self.min_items_per_user:

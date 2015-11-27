@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import random
 
@@ -81,9 +82,9 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         # and reasonable number of validation cycles
         max_iters = 30*validation_iters
 
-        print num_validation_users,'validation users'
-        print validation_iters,'validation iters'
-        print max_iters,'max_iters'
+        print(num_validation_users,'validation users')
+        print(validation_iters,'validation iters')
+        print(max_iters,'max_iters')
 
         validation = dict()
         for u in xrange(num_validation_users):

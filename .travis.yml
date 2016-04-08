@@ -4,3 +4,12 @@ sudo: false
 
 python:
   - "2.7"
+
+before_install:
+  - pip install pytest
+
+# This is a library, not an application.
+# So do not have a requirements.txt
+install: python setup.py install
+
+script: py.test

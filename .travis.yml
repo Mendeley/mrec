@@ -4,9 +4,10 @@ python:
   - "2.7"
 
 before_install:
-  # Setup.py references cython so install that first
-  - pip install cython
-  - pip install pytest
+  # Setup.py references some of its dependencies
+  # before we get to the install_requires line
+  # so install them first
+  - pip install cython scipy
 
 # This is a library, not an application.
 # So do not have a requirements.txt

@@ -1,16 +1,11 @@
 language: python
 
-sudo: false
-
 python:
   - "2.7"
 
-addons:
-  apt:
-    packages:
-    - python-dev 
-
 before_install:
+  # Setup.py references cython so install that first
+  - pip install cython
   - pip install pytest
 
 # This is a library, not an application.

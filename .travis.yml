@@ -7,7 +7,8 @@ before_install:
   # Setup.py references some of its dependencies
   # before we get to the install_requires line
   # so install them first
-  - pip install cython numpy scipy
+  - sudo apt-get install python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose
+  - pip install cython
 
 # This is a library, not an application.
 # So do not have a requirements.txt

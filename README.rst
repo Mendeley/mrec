@@ -2,6 +2,8 @@
 mrec recommender systems library
 ================================
 
+.. image:: https://img.shields.io/pypi/v/mrec.svg
+  :target: https://pypi.python.org/pypi/mrec/
 .. image:: https://travis-ci.org/Mendeley/mrec.svg?branch=master
   :target: https://travis-ci.org/Mendeley/mrec
 
@@ -44,16 +46,18 @@ To use mrec in your Python project:
 Contributing
 ------------
 
-To set up this project in order to work on it:
+To set up the project on your own development machine, follow these steps.
 
-1. Either install the native libraries (libblas, liblapack, gfortran) used by mrec for your OS, or install the complete Scipy development package.
-2. Run ``pip install cython numpy scipy``, because these Python dependencies are referenced in setup.py before the 'install_requires' line.
-3. Run ``python setup.py install``, to obtain the other Python dependencies.
+To install the dependencies:
 
-To run the tests you can either:
+1. Install Cython, Numpy and Scipy. This is the difficult step. On Windows or OS X you could install one of the Scipy distributions. On Linuxes you could install libblas, liblapack, gfortran from your OS package manager, then run ``pip install cython numpy scipy``.
+2. Run ``python setup.py install`` to obtain the other Python dependencies.
+
+To run the tests:
 
 - Run ``py.test``
-- or use ``tox`` if you have a virtualenv
+
+For more specific project build instructions, please see the .travis.yml config file at the top of this Git repo, which specifies how Travis CI auto-builds and tests our project.
 
 If you have fixed a bug or added a neat new feature, feel free to submit a pull request to us on GitHub.
 

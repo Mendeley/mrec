@@ -7,7 +7,7 @@ before_install:
   # Setup.py references some of its dependencies
   # before we get to the install_requires line
   # so install them first
-  - sudo apt-get install build-dep python-numpy python-scipy libblas-dev liblapack-dev gfortran
+  - sudo apt-get build-dep python-numpy python-scipy libblas-dev liblapack-dev gfortran
   - pip install cython
   - pip install numpy
   - pip install scipy

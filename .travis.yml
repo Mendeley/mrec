@@ -3,12 +3,22 @@ language: python
 python:
   - "2.7"
 
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - libblas-dev
+    - liblapack-dev
+    - gfortran
+
 before_install:
   # Setup.py references some of its dependencies
   # before we get to the install_requires line
   # so install them first
-  - sudo apt-get build-dep python-numpy python-scipy libblas-dev liblapack-dev gfortran
   - pip install cython
+  - pip install numpy
+  - pip install scipy
 
 # This is a library, not an application.
 # So we do not have a requirements.txt

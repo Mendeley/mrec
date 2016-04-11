@@ -1,0 +1,32 @@
+language: python
+
+python:
+  - "2.7"
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - libblas-dev
+    - liblapack-dev
+    - gfortran
+
+cache:
+  - pip
+  - apt
+
+before_install:
+  # Setup.py references some of its dependencies
+  # before we get to the install_requires line
+  # so install them first.
+  # Note: scipy takes a terribly long time to install
+  - pip install cython
+  - pip install numpy
+  - travis_wait pip install scipy
+
+# This is a library, not an application.
+# So we do not have a requirements.txt
+install: python setup.py install
+
+script: py.test

@@ -4,7 +4,10 @@ intended to provide evaluation baselines.
 """
 
 import numpy as np
+import scipy.sparse
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.utils.extmath import safe_sparse_dot
+
 from recommender import ItemSimilarityRecommender
 
 class KNNRecommender(ItemSimilarityRecommender):
@@ -73,6 +76,83 @@ class CosineKNNRecommender(KNNRecommender):
 
     def __str__(self):
         return 'CosineKNNRecommender(k={0})'.format(self.k)
+
+class AdjustedCosineKNNRecommender(KNNRecommender):
+    """
+    Similarity between two items is the adjusted cosine similarity:
+    this is the cosine similarity between mean-centered vectors over the
+    subset of users who have rated both items.
+
+    See Sarwar et al, 'Item-Based Collaborative Filtering Recommendation Algorithms' (WWW '10).
+    """
+
+
+    def compute_all_similarities(self, A, a):
+
+        # have we been training using this recommender before?
+        _cached_deltas = getattr(self, '_cached_deltas', None)
+
+        if _cached_deltas is None:
+            # First, we need to normalize ratings in A --
+            # divide through the set ratings by the mean rating of rated items.
+            #
+            # First, we need the mean - the sum over the count.
+            #
+            mean = A.sum(axis=1) / A.astype(bool).sum(axis=1).astype(float)
+            #
+            # we now want a sparse matrix where zero elements in the original matrix
+            # are still zero, and non-zero elements are equal to the user mean.
+            # we can get this by multiplying a diagonal matrix (as mean) against a
+            # binarized version of the original matrix
+            #
+            # Why the diagonal matrix? Because this is a sparse matrix, normal broadcasting rules
+            # don't apply, so we have to do the matrix multiplication explicitly.
+            #
+            dim = max(mean.shape)
+            diag = scipy.sparse.lil_matrix((dim, dim))
+            diag.setdiag(np.asarray(mean.flatten())[0])
+            delta_A = diag * A.astype(bool).astype(float)
+            self._cached_deltas = delta_A
+
+        # now, finally, we can get the mean-centered values:
+        norm_A = A - self._cached_deltas
+        return cosine_similarity(norm_A.T, a.T).flatten()
+
+    def __str__(self):
+        return 'AdjustedCosineKNNRecommender(k={0})'.format(self.k)
+
+class JaccardKNNRecommender(KNNRecommender):
+    """
+    Similarity between two items is the Jaccard similarity (intersection/union) between
+    vectors of booleans, binarized as (zero, greater_than_zero).
+
+    This is fiercely slow. In production, you likely don't want to be using this.
+    """
+    def compute_all_similarities(self,A,a):
+        _cached_bool = getattr(self, '_cached_bool', None)
+        _counts = getattr(self, '_counts', None)
+
+        if _cached_bool == None:
+            _cached_bool = A.astype(bool).T
+            self._cached_bool = _cached_bool
+
+        sims = []
+        ba = a.astype(bool).T
+        bsum = ba.sum()
+
+        for idx, row in enumerate(self._cached_bool):
+            union = (row + ba).sum()
+            # if, somehow, we have two empty vectors...
+            if union == 0:
+                sims.append(0)
+            else:
+                count = bsum + row.sum()
+                intersection = count-union
+                sims.append(float(intersection) / union)
+        return np.asarray(sims)
+
+    def __str__(self):
+        return 'JaccardKNNRecommender(k={0})'.format(self.k)
 
 if __name__ == '__main__':
 

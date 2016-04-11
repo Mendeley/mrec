@@ -70,8 +70,8 @@ For a SLIM recommender you probably want to specify::
 
 For a k-nearest neighbour recommender you just need to supply::
 
-      --metric=METRIC       metric for knn recommender: cosine | dot (default:
-                        cosine)
+      --metric=METRIC       metric for knn recommender: cosine | dot |
+                            adjusted_cosine | jaccard (default: cosine)
 
 In this case ``max_sims`` is simply passed to the constructor
 of the ``KNNRecommender`` as the value of ``k``.

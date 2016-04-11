@@ -23,7 +23,8 @@ def main():
 
     from mrec import load_fast_sparse_matrix, save_recommender
     from mrec.item_similarity.slim import SLIM
-    from mrec.item_similarity.knn import CosineKNNRecommender, DotProductKNNRecommender
+    from mrec.item_similarity.knn import (CosineKNNRecommender, DotProductKNNRecommender,
+                                          AdjustedCosineKNNRecommender, JaccardKNNRecommender)
     from mrec.mf.wrmf import WRMFRecommender
     from mrec.mf.warp import WARPMFRecommender
     from mrec.mf.warp2 import WARP2MFRecommender
@@ -45,7 +46,7 @@ def main():
     parser.add_option('--learner',dest='learner',default='sgd',help='underlying learner for SLIM learner: sgd | elasticnet | fs_sgd (default: %default)')
     parser.add_option('--l1_reg',dest='l1_reg',type='float',default=0.001,help='l1 regularization constant (default: %default)')
     parser.add_option('--l2_reg',dest='l2_reg',type='float',default=0.0001,help='l2 regularization constant (default: %default)')
-    parser.add_option('--metric',dest='metric',default='cosine',help='metric for knn recommender: cosine | dot (default: %default)')
+    parser.add_option('--metric',dest='metric',default='cosine',help='metric for knn recommender: cosine | dot | adjusted_cosine | jaccard (default: %default)')
     parser.add_option('--num_factors',dest='num_factors',type='int',default=80,help='number of latent factors (default: %default)')
     parser.add_option('--alpha',dest='alpha',type='float',default=1.0,help='wrmf confidence constant (default: %default)')
     parser.add_option('--lbda',dest='lbda',type='float',default=0.015,help='wrmf regularization constant (default: %default)')
@@ -103,6 +104,10 @@ def main():
             model = CosineKNNRecommender(k=opts.max_sims)
         elif opts.metric == 'dot':
             model = DotProductKNNRecommender(k=opts.max_sims)
+        elif opts.metric == 'adjusted_cosine':
+            model = AdjustedCosineKNNRecommender(k=opts.max_sims)
+        elif opts.metric == 'jaccard':
+            model = JaccardKNNRecommender(k=opts.max_sims)
         else:
             parser.print_help()
             raise SystemExit('unknown metric: {0}'.format(opts.metric))

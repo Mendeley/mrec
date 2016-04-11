@@ -9,8 +9,6 @@ before_install:
   # so install them first
   - sudo apt-get build-dep python-numpy python-scipy libblas-dev liblapack-dev gfortran
   - pip install cython
-  - pip install numpy
-  - pip install scipy
 
 # This is a library, not an application.
 # So we do not have a requirements.txt

@@ -12,6 +12,10 @@ addons:
     - liblapack-dev
     - gfortran
 
+cache:
+  - pip
+  - apt
+
 before_install:
   # Setup.py references some of its dependencies
   # before we get to the install_requires line

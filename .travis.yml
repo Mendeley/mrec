@@ -19,10 +19,11 @@ cache:
 before_install:
   # Setup.py references some of its dependencies
   # before we get to the install_requires line
-  # so install them first
+  # so install them first.
+  # Note: scipy takes a terribly long time to install
   - pip install cython
   - pip install numpy
-  - pip install scipy
+  - travis_wait 30 pip install scipy
 
 # This is a library, not an application.
 # So we do not have a requirements.txt

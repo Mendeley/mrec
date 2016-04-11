@@ -23,7 +23,7 @@ before_install:
   # Note: scipy takes a terribly long time to install
   - pip install cython
   - pip install numpy
-  - travis_wait 30 pip install scipy
+  - travis_wait pip install scipy
 
 # This is a library, not an application.
 # So we do not have a requirements.txt

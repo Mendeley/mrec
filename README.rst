@@ -2,6 +2,9 @@
 mrec recommender systems library
 ================================
 
+.. image:: https://travis-ci.org/Mendeley/mrec.svg?branch=master
+  :target: https://travis-ci.org/Mendeley/mrec
+
 Introduction
 ------------
 `mrec` is a Python package developed at `Mendeley <http://www.mendeley.com>`_ to support recommender systems development and evaluation.  The package currently focuses on item similarity and other methods that work well on implicit feedback, and on experimental evaluation.
@@ -29,6 +32,30 @@ The source code is available at https://github.com/mendeley/mrec.
 
 `mrec` implements the SLIM recommender described in [1]_.  Please cite this paper if you 
 use `mrec` in your research.
+
+Usage
+-----
+
+To use mrec in your Python project:
+
+1. Set up a virtualenv for your project... or don't.
+2. Run ``pip install mrec``
+
+Contributing
+------------
+
+To set up this project in order to work on it:
+
+1. Either install the native libraries (libblas, liblapack, gfortran) used by mrec for your OS, or install the complete Scipy development package.
+2. Run ``pip install cython numpy scipy``, because these Python dependencies are referenced in setup.py before the 'install_requires' line.
+3. Run ``python setup.py install``, to obtain the other Python dependencies.
+
+To run the tests you can either:
+
+- Run ``py.test``
+- or use ``tox`` if you have a virtualenv
+
+If you have fixed a bug or added a neat new feature, feel free to submit a pull request to us on GitHub.
 
 References
 ----------

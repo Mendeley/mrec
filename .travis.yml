@@ -25,6 +25,8 @@ before_install:
   - pip install cython
   - pip install numpy
   - travis_wait pip install scipy
+  # setup.py import mrec and install
+  - pip install six>=1.9
 
 # This is a library, not an application.
 # So we do not have a requirements.txt

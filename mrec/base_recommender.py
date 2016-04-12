@@ -1,7 +1,9 @@
+from __future__ import print_function
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
+from six.moves import xrange
 import numpy as np
 from scipy.sparse import csr_matrix
 
@@ -86,7 +88,7 @@ class BaseRecommender(object):
         if archive:
             np.savez(filepath,**archive)
         else:
-            pickle.dump(self,open(filepath,'w'))
+            pickle.dump(self,open(filepath,'wb'))
 
     def _create_archive(self):
         """
@@ -117,7 +119,7 @@ class BaseRecommender(object):
         if isinstance(r,BaseRecommender):
             model = r
         else:
-            model = np.loads(str(r['model']))
+            model = np.loads(r['model'])
             model._load_archive(r)  # restore any fields serialized separately
         return model
 
@@ -148,7 +150,7 @@ class BaseRecommender(object):
         if isinstance(r,BaseRecommender):
             model = r
         else:
-            model = np.loads(str(r['model']))
+            model = np.loads(r['model'])
         return str(model)
 
     def __str__(self):
@@ -192,10 +194,10 @@ class BaseRecommender(object):
         recs = []
         for u in xrange(self.num_users):
             if show_progress and u%1000 == 0:
-               print u,'..',
+               print(u, '..',)
             recs.append(self.recommend_items(dataset,u,max_items,return_scores))
         if show_progress:
-            print
+            print()
         return recs
 
     def range_recommend_items(self,

@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 import numpy as np
 
-from warp import WARPMFRecommender
-from model.warp2 import WARP2
+from .warp import WARPMFRecommender
+from .model.warp2 import WARP2
 
 class WARP2MFRecommender(WARPMFRecommender):
     """

@@ -10,19 +10,15 @@ See:
     X. Ning and G. Karypis, ICDM 2011.
     http://glaros.dtc.umn.edu/gkhome/fetch/papers/SLIM2011icdm.pdf
 """
-
+from __future__ import print_function, absolute_import
+from distutils.version import LooseVersion
+from six.moves import xrange
 from sklearn.linear_model import SGDRegressor, ElasticNet
 from sklearn.preprocessing import binarize
 import sklearn
 import numpy as np
 
-from recommender import ItemSimilarityRecommender
-
-
-def parse_version(version_string):
-    if '-' in version_string:
-        version_string = version_string.split('-', 1)[0]
-    return tuple(map(int, version_string.split('.')))
+from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 
 class NNFeatureSelectingSGDRegressor(object):
@@ -77,7 +73,7 @@ class SLIM(ItemSimilarityRecommender):
                  model='sgd'):
         alpha = l1_reg+l2_reg
         l1_ratio = l1_reg/alpha
-        if parse_version(sklearn.__version__) <= (0, 14, 1):
+        if LooseVersion(sklearn.__version__) <= LooseVersion('0.14.1'):
             # Backward compat: in old versions of scikit-learn l1_ratio had
             # the opposite sign...
             l1_ratio = (1 - l1_ratio)
@@ -121,12 +117,12 @@ if __name__ == '__main__':
     # use SLIM like this:
 
     import random
-    import StringIO
+    from io import BytesIO
     from mrec import load_fast_sparse_matrix
 
     random.seed(0)
 
-    print 'loading test data...'
+    print('loading test data...')
     data = """\
 %%MatrixMarket matrix coordinate real general
 3 5 9
@@ -140,8 +136,8 @@ if __name__ == '__main__':
 3	3	1
 3	4	1
 """
-    print data
-    dataset = load_fast_sparse_matrix('mm',StringIO.StringIO(data))
+    print(data)
+    dataset = load_fast_sparse_matrix('mm', BytesIO(data.encode('ascii')))
     num_users,num_items = dataset.shape
 
     model = SLIM()
@@ -150,32 +146,32 @@ if __name__ == '__main__':
 
     def output(i,j,val):
         # convert back to 1-indexed
-        print '{0}\t{1}\t{2:.3f}'.format(i+1,j+1,val)
+        print('{0}\t{1}\t{2:.3f}'.format(i+1,j+1,val))
 
-    print 'computing some item similarities...'
-    print 'item\tsim\tweight'
+    print('computing some item similarities...')
+    print('item\tsim\tweight')
     # if we want we can compute these individually without calling fit()
     for i in random.sample(xrange(num_items),num_samples):
         for j,weight in model.get_similar_items(i,max_similar_items=10,dataset=dataset):
             output(i,j,weight)
 
-    print 'learning entire similarity matrix...'
+    print('learning entire similarity matrix...')
     # usually we'll call train() on the entire dataset
     model = SLIM()
     model.fit(dataset)
-    print 'making some recommendations...'
-    print 'user\trec\tscore'
+    print('making some recommendations...')
+    print('user\trec\tscore')
     for u in random.sample(xrange(num_users),num_samples):
         for i,score in model.recommend_items(dataset.X,u,max_items=10):
             output(u,i,score)
 
-    print 'making batch recommendations...'
+    print('making batch recommendations...')
     recs = model.batch_recommend_items(dataset.X)
     for u in xrange(num_users):
         for i,score in recs[u]:
             output(u,i,score)
 
-    print 'making range recommendations...'
+    print('making range recommendations...')
     for start,end in [(0,2),(2,3)]:
         recs = model.range_recommend_items(dataset.X,start,end)
         for u in xrange(start,end):

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import math
 import glob
 import re
@@ -5,6 +6,7 @@ import os
 import subprocess
 from shutil import rmtree
 import logging
+from six.moves import xrange
 
 from mrec import load_sparse_matrix, save_recommender
 
@@ -110,7 +112,7 @@ def process(task):
     for j in xrange(start,end):
         w = model.get_similar_items(j,max_similar_items=max_similar_items,dataset=dataset)
         for k,v in w:
-            print >>out,'{0}\t{1}\t{2}'.format(j+1,k+1,v)  # write as 1-indexed
+            print('{0}\t{1}\t{2}'.format(j+1,k+1,v), file=out)  # write as 1-indexed
     out.close()
 
     # record success

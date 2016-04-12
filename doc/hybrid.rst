@@ -39,7 +39,7 @@ The resulting features are simply `tf-idf counts <http://en.wikipedia.org/wiki/T
 
 and inspect the top few word counts for the first few items::
 
-    >>> for i in xrange(3):
+    >>> for i in range(3):
     ...     for tfidf,word in sorted(zip(features[i].data,features[i].indices),reverse=True)[:3]:
     ...         print '{0}\t{1}\t{2:.3f}'.format(i,word,tfidf)
     ...

@@ -2,8 +2,8 @@ import numpy as np
 import scipy
 import random
 
-from warp import WARPBatchUpdate, WARPDecomposition, WARP
-from warp_fast import warp2_sample
+from .warp import WARPBatchUpdate, WARPDecomposition, WARP
+from .warp_fast import warp2_sample
 
 class WARP2BatchUpdate(WARPBatchUpdate):
     """Collection of arrays to hold a batch of sgd updates."""

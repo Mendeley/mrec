@@ -1,3 +1,4 @@
+from six.moves import xrange
 from sklearn.utils.testing import assert_equal
 from sklearn.utils.testing import assert_raises
 

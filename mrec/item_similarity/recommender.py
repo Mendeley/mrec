@@ -1,13 +1,17 @@
 """
 Base class for item similarity recommenders.
 """
-
+from __future__ import print_function
+from six.moves import xrange
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 import numpy as np
-from itertools import izip
+try:
+    from itertools import izip as zip
+except ImportError:
+    pass
 from operator import itemgetter
 from scipy.sparse import csr_matrix, coo_matrix
 
@@ -304,12 +308,12 @@ class ItemSimilarityRecommender(BaseRecommender):
         for u in xrange(user_start,user_end):
             ux = u - user_start
             if show_progress and ux%1000 == 0:
-               print ux,'..',
+               print(ux, '..',)
             ru = r[ux,:]
             if return_scores:
-                recs[ux] = [(i,v) for v,i in sorted(izip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
+                recs[ux] = [(i,v) for v,i in sorted(zip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
             else:
-                recs[ux] = [i for v,i in sorted(izip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
+                recs[ux] = [i for v,i in sorted(zip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
         if show_progress:
-            print
+            print()
         return recs

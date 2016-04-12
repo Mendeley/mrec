@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 def retrain_recommender(model,dataset):
     model.fit(dataset.X)
 
@@ -8,7 +10,7 @@ if __name__ == '__main__':
     except ImportError:
         from sklearn.grid_search import IterGrid as ParameterGrid
     from optparse import OptionParser
-    from warp import WARPMFRecommender
+    from .warp import WARPMFRecommender
 
     from mrec.evaluation.metrics import *
 
@@ -22,7 +24,7 @@ if __name__ == '__main__':
         parser.print_help()
         raise SystemExit
 
-    print 'doing a grid search for regularization parameters...'
+    print('doing a grid search for regularization parameters...')
     params = {'d':[100],'gamma':[0.01],'C':[100],'max_iter':[100000],'validation_iters':[500]}
     models = [WARPMFRecommender(**a) for a in ParameterGrid(params)]
 
@@ -31,6 +33,7 @@ if __name__ == '__main__':
         # load em both up
         # put them into something that returns train,test.keys(),test in a generator()
         # test is a dict id->[id,id,...]
+        pass
 
     if opts.main_split_dir:
         generate_main_metrics = generate_metrics(get_known_items_from_dict,compute_main_metrics)

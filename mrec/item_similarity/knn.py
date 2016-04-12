@@ -2,10 +2,12 @@
 Brute-force k-nearest neighbour recommenders
 intended to provide evaluation baselines.
 """
+from __future__ import absolute_import, print_function
 
+from six.moves import xrange
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from recommender import ItemSimilarityRecommender
+from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 class KNNRecommender(ItemSimilarityRecommender):
     """
@@ -79,12 +81,12 @@ if __name__ == '__main__':
     # use knn models like this:
 
     import random
-    import StringIO
+    from io import BytesIO
     from mrec import load_fast_sparse_matrix
 
     random.seed(0)
 
-    print 'loading test data...'
+    print('loading test data...')
     data = """\
 %%MatrixMarket matrix coordinate real general
 3 5 9
@@ -98,8 +100,8 @@ if __name__ == '__main__':
 3	3	1
 3	4	1
 """
-    print data
-    dataset = load_fast_sparse_matrix('mm',StringIO.StringIO(data))
+    print(data)
+    dataset = load_fast_sparse_matrix('mm', BytesIO(data.encode('ascii')))
     num_users,num_items = dataset.shape
 
     model = CosineKNNRecommender(k=2)
@@ -108,32 +110,32 @@ if __name__ == '__main__':
 
     def output(i,j,val):
         # convert back to 1-indexed
-        print '{0}\t{1}\t{2:.3f}'.format(i+1,j+1,val)
+        print('{0}\t{1}\t{2:.3f}'.format(i+1,j+1,val))
 
-    print 'computing some item similarities...'
-    print 'item\tsim\tweight'
+    print('computing some item similarities...')
+    print('item\tsim\tweight')
     # if we want we can compute these individually without calling fit()
     for i in random.sample(xrange(num_items),num_samples):
         for j,weight in model.get_similar_items(i,max_similar_items=2,dataset=dataset):
             output(i,j,weight)
 
-    print 'learning entire similarity matrix...'
+    print('learning entire similarity matrix...')
     # more usually we just call train() on the entire dataset
     model = CosineKNNRecommender(k=2)
     model.fit(dataset)
-    print 'making some recommendations...'
-    print 'user\trec\tscore'
+    print('making some recommendations...')
+    print('user\trec\tscore')
     for u in random.sample(xrange(num_users),num_samples):
         for i,score in model.recommend_items(dataset.X,u,max_items=10):
             output(u,i,score)
 
-    print 'making batch recommendations...'
+    print('making batch recommendations...')
     recs = model.batch_recommend_items(dataset.X)
     for u in xrange(num_users):
         for i,score in recs[u]:
             output(u,i,score)
 
-    print 'making range recommendations...'
+    print('making range recommendations...')
     for start,end in [(0,2),(2,3)]:
         recs = model.range_recommend_items(dataset.X,start,end)
         for u in xrange(start,end):

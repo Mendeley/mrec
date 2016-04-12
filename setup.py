@@ -31,7 +31,8 @@ setup(packages=find_packages(),
                         'scikit-learn',
                         'ipython <= 4.0.0',
                         'cython',
-                        'psutil'],
+                        'psutil',
+                        'six>=1.9'],
       entry_points={
           'console_scripts':[
               'mrec_prepare = mrec.examples.prepare:main',

@@ -2,11 +2,12 @@
 Trivial unpersonalized item popularity recommender
 intended to provide a baseline for evaluations.
 """
-
+from __future__ import absolute_import
+from six.moves import xrange
 import numpy as np
 
-from base_recommender import BaseRecommender
-from sparse import fast_sparse_matrix
+from .base_recommender import BaseRecommender
+from .sparse import fast_sparse_matrix
 
 class ItemPopularityRecommender(BaseRecommender):
     """

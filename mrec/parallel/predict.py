@@ -1,6 +1,8 @@
 """
 Prediction task to run on an ipython engine.
 """
+from __future__ import print_function
+from six.moves import xrange
 
 def run(task):
 
@@ -35,7 +37,7 @@ def run(task):
             recs = model.range_recommend_items(dataset,start,end,max_items=20,return_scores=True)
         for u,items in zip(xrange(start,end),recs):
             for i,w in items:
-                print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,w)  # write as 1-indexed
+                print('{0}\t{1}\t{2}'.format(u+1,i+1,w), file=out)  # write as 1-indexed
         out.close()
 
         # record success

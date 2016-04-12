@@ -3,7 +3,8 @@ Metrics to evaluate recommendations:
 * with hit rate, following e.g. Karypis lab SLIM and FISM papers
 * with prec@k and MRR
 """
-
+from __future__ import print_function
+from six.moves import xrange
 import numpy as np
 from scipy import stats
 from collections import defaultdict
@@ -62,8 +63,8 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
         for i,model in enumerate(models):
             retrain(model,train)
             run_metrics = evaluation_func(model,train,users,test)
-            for m,val in run_metrics.iteritems():
-                print m,val
+            for m,val in run_metrics.items():
+                print(m, val)
                 metrics[i][m].append(val)
     return metrics
 
@@ -83,10 +84,10 @@ def sort_metrics_by_name(names):
             prefix2val[name].append(val)
         else:
             prefix2val[name] = []
-    for name,vals in prefix2val.iteritems():
+    for name,vals in prefix2val.items():
         prefix2val[name] = sorted(vals)
     ret = []
-    for name,vals in sorted(prefix2val.iteritems()):
+    for name,vals in sorted(prefix2val.items()):
         if vals:
             for val in vals:
                 ret.append('{0}@{1}'.format(name,val))
@@ -99,15 +100,15 @@ def print_report(models,metrics):
     Call this to print out the metrics returned by run_evaluation().
     """
     for model,results in zip(models,metrics):
-        print model
+        print(model)
         if hasattr(model,'similarity_matrix'):
             nnz = model.similarity_matrix.nnz
             num_items = model.similarity_matrix.shape[0]
             density = float(model.similarity_matrix.nnz)/num_items**2
-            print 'similarity matrix nnz = {0} (density {1:.3f})'.format(nnz,density)
+            print('similarity matrix nnz = {0} (density {1:.3f})'.format(nnz,density))
         for m in sort_metrics_by_name(results.keys()):
             vals = results[m]
-            print '{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),np.mean(vals),stats.sem(vals,ddof=0))
+            print('{0}{1:.4f} +/- {2:.4f}'.format(m.ljust(15),np.mean(vals),stats.sem(vals,ddof=0)))
 
 def evaluate(model,train,users,get_known_items,compute_metrics):
     avg_metrics = defaultdict(float)
@@ -116,7 +117,7 @@ def evaluate(model,train,users,get_known_items,compute_metrics):
         recommended = [r for r,_ in model.recommend_items(train,u,max_items=20)]
         metrics = compute_metrics(recommended,get_known_items(u))
         if metrics:
-            for m,val in metrics.iteritems():
+            for m,val in metrics.items():
                 avg_metrics[m] += val
             count += 1
     for m in avg_metrics:

@@ -19,6 +19,7 @@ import subprocess
 from shutil import rmtree
 import logging
 from collections import defaultdict
+from six.moves import xrange
 
 from mrec import load_sparse_matrix, read_recommender_description, load_recommender
 from mrec.parallel import predict
@@ -82,7 +83,7 @@ def process(view,opts,modelfile,trainfile,testfile,featurefile,outdir,evaluator)
         tot_count = 0
         for results in processed:
             for cum_metrics,count in results:
-                for m,val in cum_metrics.iteritems():
+                for m,val in cum_metrics.items():
                     avg_metrics[m] += val
                 tot_count += count
         for m in avg_metrics:

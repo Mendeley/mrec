@@ -132,6 +132,14 @@ def compute_main_metrics(recommended,known):
             'prec@10':prec(recommended,known,10),
             'prec@15':prec(recommended,known,15),
             'prec@20':prec(recommended,known,20),
+            'nDCG@5':ndcg(recommended, known, 5),
+            'nDCG@10':ndcg(recommended, known, 10),
+            'nDCG@15':ndcg(recommended, known, 15),
+            'nDCG@20':ndcg(recommended, known, 20),
+            'MAP@5': ap(recommended, known, 5),
+            'MAP@10': ap(recommended, known, 10),
+            'MAP@15': ap(recommended, known, 15),
+            'MAP@20': ap(recommended, known, 20),
             'mrr':rr(recommended,known)}
 
 def compute_hit_rate(recommended,known):
@@ -170,6 +178,35 @@ def prec(predicted,true,k,ignore_missing=False):
     if len(predicted) < k and ignore_missing:
         num_predicted = len(predicted)
     return float(correct)/num_predicted
+
+def ap(predicted, true, k, ignore_missing=False):
+    """
+    Compute average precision@k.
+
+    Parameters
+    ==========
+
+    predicted : array like
+        Predicted items.
+    true : array like
+        True items.
+    k : int
+        Measure mean average precision@k.
+    ignore_missing : boolean (default: False)
+        If True then measure precision only up to rank len(predicted)
+        even if this is less than k, otherwise assume that the missing
+        predictions were all incorrect.
+    """
+    if len(predicted) == 0:
+        return 0.0
+
+    score = 0.0
+    for index, item in enumerate(predicted[:k]):
+        if item in true:
+            precision_at_index = prec(predicted, true, index+1)
+            change_in_recall = max(1.0/(index+1), 1.0/len(true))
+            score +=  precision_at_index*change_in_recall
+    return score
 
 def hit_rate(predicted,true,k):
     """
@@ -217,3 +254,40 @@ def rr(predicted,true):
         if x in true:
             return 1.0/(i+1)
     return 0
+
+def ndcg(predicted, true, k):
+    """
+    Compute normalized discounted cumulative gain of predicted items. We're assuming
+    binary relevance: 1 if document is in the withheld set, else 0.
+
+    nDCG = DCG / ideal DCG (DCG where every document is relevant).
+    
+    Definition of DCG from: http://doi.acm.org/10.1145/1102351.1102363
+
+    Parameters
+    ==========
+    predicted : array-like
+        Predicted items.
+    true : array-like
+        True items
+    k : int
+        Measure nDCG at k.
+
+    Returns
+    =======
+    gmr :  float
+        Geometric mean of positions of withheld items among the predictions.
+    """
+    if len(predicted) == 0:
+        return 0.0
+
+    dcg = 0.0
+    idcg = 0.0
+    # we're indexing from zero, not one
+    # so we need to add an extra 1 here...
+    for i, x in enumerate(predicted[:k]):
+        v = (1.0 / np.log2(i+2))
+        if x in true:
+            dcg += v
+        idcg += v
+    return dcg / idcg

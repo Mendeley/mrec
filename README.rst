@@ -32,7 +32,7 @@ Documentation for mrec can be found at http://mendeley.github.io/mrec.
 
 The source code is available at https://github.com/mendeley/mrec.
 
-`mrec` implements the SLIM recommender described in [1]_.  Please cite this paper if you 
+`mrec` implements the SLIM recommender described in [1]_.  Please cite this paper if you
 use `mrec` in your research.
 
 Usage
@@ -50,7 +50,7 @@ To set up the project on your own development machine, follow these steps.
 
 To install the dependencies:
 
-1. Install Cython, Numpy and Scipy. This is the difficult step. On Windows or OS X you could install one of the Scipy distributions. On Linuxes you could install libblas, liblapack, gfortran from your OS package manager, then run ``pip install cython numpy scipy``.
+1. Install Cython, Numpy, Scipy, psutil and pyzmq. This is the difficult step. On Windows or OS X you could install one of the Scipy distributions. On Linuxes you could install libblas, liblapack, gfortran from your OS package manager, then run ``pip install cython numpy scipy``.
 2. Run ``python setup.py install`` to obtain the other Python dependencies.
 
 To run the tests:

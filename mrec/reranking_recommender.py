@@ -3,10 +3,8 @@ Recommender that gets candidates using an item similarity model
 and then reranks them using a matrix factorization model.
 """
 
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+import pickle
+
 import numpy as np
 
 from mrec.base_recommender import BaseRecommender

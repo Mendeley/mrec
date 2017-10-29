@@ -3,10 +3,8 @@ Base class for recommenders that work
 by matrix factorization.
 """
 
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+import pickle
+
 import numpy as np
 
 from mrec.base_recommender import BaseRecommender

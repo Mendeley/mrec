@@ -2,10 +2,7 @@
 Base class for item similarity recommenders.
 """
 
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+import pickle
 from operator import itemgetter
 
 import numpy as np

@@ -1,7 +1,5 @@
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+import pickle
+
 import numpy as np
 from scipy.sparse import csr_matrix
 

@@ -4,10 +4,7 @@ def retrain_recommender(model, dataset):
 
 if __name__ == '__main__':
 
-    try:
-        from sklearn.grid_search import ParameterGrid
-    except ImportError:
-        from sklearn.grid_search import IterGrid as ParameterGrid
+    from sklearn.model_selection import ParameterGrid
     from optparse import OptionParser
     from mrec.mf.warp import WARPMFRecommender
 

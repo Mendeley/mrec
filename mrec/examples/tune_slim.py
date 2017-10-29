@@ -9,11 +9,8 @@ from math import log10
 from operator import itemgetter
 from optparse import OptionParser
 
-try:
-    from sklearn.grid_search import ParameterGrid
-except ImportError:
-    from sklearn.grid_search import IterGrid as ParameterGrid
 from ipyparallel import Client
+from sklearn.model_selection import ParameterGrid
 
 from mrec import load_fast_sparse_matrix
 

@@ -62,7 +62,7 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
         for i,model in enumerate(models):
             retrain(model,train)
             run_metrics = evaluation_func(model,train,users,test)
-            for m,val in run_metrics.iteritems():
+            for m,val in run_metrics.items():
                 print(m,val)
                 metrics[i][m].append(val)
     return metrics
@@ -83,10 +83,10 @@ def sort_metrics_by_name(names):
             prefix2val[name].append(val)
         else:
             prefix2val[name] = []
-    for name,vals in prefix2val.iteritems():
+    for name,vals in prefix2val.items():
         prefix2val[name] = sorted(vals)
     ret = []
-    for name,vals in sorted(prefix2val.iteritems()):
+    for name,vals in sorted(prefix2val.items()):
         if vals:
             for val in vals:
                 ret.append('{0}@{1}'.format(name,val))

@@ -82,7 +82,7 @@ def process(view,opts,modelfile,trainfile,testfile,featurefile,outdir,evaluator)
         tot_count = 0
         for results in processed:
             for cum_metrics,count in results:
-                for m,val in cum_metrics.iteritems():
+                for m,val in cum_metrics.items():
                     avg_metrics[m] += val
                 tot_count += count
         for m in avg_metrics:
@@ -142,7 +142,7 @@ def estimate_users_per_task(mb_per_task,input_format,trainfile,modelfile):
     if mb_per_task <= required_mb_per_task:
         raise RuntimeError('requires at least {0}MB per task, increase --mb_per_task if you can'.format(required_mb_per_task))
 
-    return users_per_task,num_users
+    return int(users_per_task), int(num_users)
 
 def get_dataset_size(input_format,datafile):
     logging.info('loading dataset to get size...')

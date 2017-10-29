@@ -18,7 +18,7 @@ class Evaluator(object):
     def _add_metrics(self,predicted,actual):
         metrics = self.compute_metrics(predicted,actual)
         if metrics:
-            for m,val in metrics.iteritems():
+            for m,val in metrics.items():
                 self.cum_metrics[m] += val
             self.count += 1
 

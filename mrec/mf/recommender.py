@@ -8,9 +8,9 @@ try:
 except ImportError:
     import pickle
 import numpy as np
-from scipy.sparse import csr_matrix
 
 from mrec.base_recommender import BaseRecommender
+
 
 class MatrixFactorizationRecommender(BaseRecommender):
     """
@@ -29,13 +29,13 @@ class MatrixFactorizationRecommender(BaseRecommender):
         """
         # pickle the model without its factors
         # then use numpy to save the factors efficiently
-        tmp = (self.U,self.V)
+        tmp = (self.U, self.V)
         self.U = self.V = None
         m = pickle.dumps(self)
-        self.U,self.V = tmp
-        return {'model':m,'U':self.U,'V':self.V}
+        self.U, self.V = tmp
+        return {'model': m, 'U': self.U, 'V': self.V}
 
-    def _load_archive(self,archive):
+    def _load_archive(self, archive):
         """
         Load fields from a numpy archive.
         """
@@ -43,11 +43,11 @@ class MatrixFactorizationRecommender(BaseRecommender):
         self.V = archive['V']
 
     def __str__(self):
-        if hasattr(self,'description'):
+        if hasattr(self, 'description'):
             return self.description
         return 'MatrixFactorizationRecommender'
 
-    def fit(self,train):
+    def fit(self, train):
         """
         Learn user and item factors from training dataset.
 
@@ -58,7 +58,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
         """
         pass
 
-    def load_factors(self,user_factor_filepath,item_factor_filepath,fmt):
+    def load_factors(self, user_factor_filepath, item_factor_filepath, fmt):
         """
         Load precomputed user and item factors from file.
 
@@ -88,7 +88,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
         # ensure that memory layout avoids extra allocation in dot product
         self.U = np.asfortranarray(self.U)
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
+    def recommend_items(self, dataset, u, max_items=10, return_scores=True, item_features=None):
         """
         Recommend up to max_items most highly recommended items for user u.
         Assumes you've already called fit() to learn the factors.
@@ -112,10 +112,10 @@ class MatrixFactorizationRecommender(BaseRecommender):
             List of (idx,score) pairs if return_scores is True, else
             just a list of idxs.
         """
-        r = self.predict_ratings(u,item_features=item_features)
-        return self._get_recommendations_from_predictions(r,dataset,u,u+1,max_items,return_scores)[0]
+        r = self.predict_ratings(u, item_features=item_features)
+        return self._get_recommendations_from_predictions(r, dataset, u, u + 1, max_items, return_scores)[0]
 
-    def predict_ratings(self,users=None,item_features=None):
+    def predict_ratings(self, users=None, item_features=None):
         """
         Predict ratings/scores for all items for supplied users.
         Assumes you've already called fit() to learn the factors.
@@ -136,13 +136,13 @@ class MatrixFactorizationRecommender(BaseRecommender):
         predictions : numpy.ndarray, shape = [len(users), num_items]
             Predicted ratings for all items for each supplied user.
         """
-        if isinstance(users,int):
+        if isinstance(users, int):
             users = [users]
 
         if users is None:
             U = self.U
         else:
-            U = np.asfortranarray(self.U[users,:])
+            U = np.asfortranarray(self.U[users, :])
         return U.dot(self.V.T)
 
     def batch_recommend_items(self,
@@ -175,7 +175,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             else just a list of idxs.
         """
         r = self.predict_ratings(item_features=item_features)
-        return self._get_recommendations_from_predictions(r,dataset,0,r.shape[0],max_items,return_scores,show_progress)
+        return self._get_recommendations_from_predictions(r, dataset, 0, r.shape[0], max_items, return_scores,
+                                                          show_progress)
 
     def range_recommend_items(self,
                               dataset,
@@ -209,8 +210,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        r = self.predict_ratings(range(user_start,user_end),item_features=item_features)
-        return self._get_recommendations_from_predictions(r,dataset,user_start,user_end,max_items,return_scores)
+        r = self.predict_ratings(range(user_start, user_end), item_features=item_features)
+        return self._get_recommendations_from_predictions(r, dataset, user_start, user_end, max_items, return_scores)
 
     def _get_recommendations_from_predictions(self,
                                               r,
@@ -246,15 +247,15 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        r = np.array(self._zero_known_item_scores(r,dataset[user_start:user_end,:]))
-        recs = [[] for u in range(user_start,user_end)]
-        for u in range(user_start,user_end):
+        r = np.array(self._zero_known_item_scores(r, dataset[user_start:user_end, :]))
+        recs = [[] for u in range(user_start, user_end)]
+        for u in range(user_start, user_end):
             ux = u - user_start
-            if show_progress and ux%1000 == 0:
-                print(ux,'..',)
+            if show_progress and ux % 1000 == 0:
+                print(ux, '..', )
             ru = r[ux]
             if return_scores:
-                recs[ux] = [(i,ru[i]) for i in ru.argsort()[::-1] if ru[i] > 0][:max_items]
+                recs[ux] = [(i, ru[i]) for i in ru.argsort()[::-1] if ru[i] > 0][:max_items]
             else:
                 recs[ux] = [i for i in ru.argsort()[::-1] if ru[i] > 0][:max_items]
         if show_progress:

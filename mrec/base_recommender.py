@@ -5,6 +5,7 @@ except ImportError:
 import numpy as np
 from scipy.sparse import csr_matrix
 
+
 class BaseRecommender(object):
     """
     Minimal interface to be implemented by recommenders, along with
@@ -23,7 +24,7 @@ class BaseRecommender(object):
     and the batch methods to recommend items.
     """
 
-    def recommend_items(self,dataset,u,max_items=10,return_scores=True,item_features=None):
+    def recommend_items(self, dataset, u, max_items=10, return_scores=True, item_features=None):
         """
         Recommend new items for a user.
 
@@ -48,7 +49,7 @@ class BaseRecommender(object):
         """
         raise NotImplementedError('you must implement recommend_items()')
 
-    def fit(self,train,item_features=None):
+    def fit(self, train, item_features=None):
         """
         Train on supplied data. In general you will want to
         implement this rather than computing recommendations on
@@ -63,7 +64,7 @@ class BaseRecommender(object):
         """
         raise NotImplementedError('you should implement fit()')
 
-    def save(self,filepath):
+    def save(self, filepath):
         """
         Serialize model to file.
 
@@ -84,9 +85,9 @@ class BaseRecommender(object):
 
         archive = self._create_archive()
         if archive:
-            np.savez(filepath,**archive)
+            np.savez(filepath, **archive)
         else:
-            pickle.dump(self,open(filepath,'wb'))
+            pickle.dump(self, open(filepath, 'wb'))
 
     def _create_archive(self):
         """
@@ -114,7 +115,7 @@ class BaseRecommender(object):
             The filepath to read from.
         """
         r = np.load(filepath)
-        if isinstance(r,BaseRecommender):
+        if isinstance(r, BaseRecommender):
             model = r
         else:
             model = np.loads(r['model'])
@@ -144,15 +145,15 @@ class BaseRecommender(object):
         filepath : str
             The filepath to read from.
         """
-        r = np.load(filepath,mmap_mode='r')
-        if isinstance(r,BaseRecommender):
+        r = np.load(filepath, mmap_mode='r')
+        if isinstance(r, BaseRecommender):
             model = r
         else:
             model = np.loads(r['model'])
         return str(model)
 
     def __str__(self):
-        if hasattr(self,'description'):
+        if hasattr(self, 'description'):
             return self.description
         return 'unspecified recommender: you should set self.description or implement __str__()'
 
@@ -191,9 +192,9 @@ class BaseRecommender(object):
         """
         recs = []
         for u in range(self.num_users):
-            if show_progress and u%1000 == 0:
-                print(u,'..',)
-            recs.append(self.recommend_items(dataset,u,max_items,return_scores))
+            if show_progress and u % 1000 == 0:
+                print(u, '..', )
+            recs.append(self.recommend_items(dataset, u, max_items, return_scores))
         if show_progress:
             print()
         return recs
@@ -234,9 +235,9 @@ class BaseRecommender(object):
         This provides a default implementation, you will be able to optimize
         this for most recommenders.
         """
-        return [self.recommend_items(dataset,u,max_items,return_scores) for u in range(user_start,user_end)]
+        return [self.recommend_items(dataset, u, max_items, return_scores) for u in range(user_start, user_end)]
 
-    def _zero_known_item_scores(self,r,train):
+    def _zero_known_item_scores(self, r, train):
         """
         Helper function to set predicted scores/ratings for training items
         to zero or less, to avoid recommending already known items.
@@ -255,7 +256,7 @@ class BaseRecommender(object):
             in train.
         """
         col = train.indices
-        if isinstance(r,csr_matrix):
+        if isinstance(r, csr_matrix):
             max_score = r.data.max()
         else:
             max_score = r.max()
@@ -265,8 +266,7 @@ class BaseRecommender(object):
         #   u,i for which train[u,i] has been explicitly set to zero
         row = np.zeros(col.shape)
         for u in range(train.shape[0]):
-            start,end = train.indptr[u],train.indptr[u+1]
+            start, end = train.indptr[u], train.indptr[u + 1]
             if end > start:
                 row[start:end] = u
-        return r - csr_matrix((data,(row,col)),shape=r.shape)
-
+        return r - csr_matrix((data, (row, col)), shape=r.shape)

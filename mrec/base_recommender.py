@@ -86,7 +86,7 @@ class BaseRecommender(object):
         if archive:
             np.savez(filepath,**archive)
         else:
-            pickle.dump(self,open(filepath,'w'))
+            pickle.dump(self,open(filepath,'wb'))
 
     def _create_archive(self):
         """

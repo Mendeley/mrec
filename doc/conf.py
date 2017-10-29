@@ -51,10 +51,10 @@ import pkg_resources
 try:
     release = pkg_resources.get_distribution('mrec').version
 except pkg_resources.DistributionNotFound:
-    print 'To build the documentation, The distribution information of mrec'
-    print 'has to be available.  Either install the package into your'
-    print 'development environment or run "python setup.py develop" to setup'
-    print 'the metadata.'
+    print('To build the documentation, The distribution information of mrec')
+    print('has to be available.  Either install the package into your')
+    print('development environment or run "python setup.py develop" to setup')
+    print('the metadata.')
     sys.exit(1)
 del pkg_resources
 version = '.'.join(release.split('.')[:2])

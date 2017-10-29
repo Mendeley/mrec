@@ -16,7 +16,7 @@ def test_loadtxt():
     f,path = tempfile.mkstemp(suffix='.npz')
     with open(path,'w') as f:
         for i,j,v in zip(X.row,X.col,X.data):
-            print >>f,'{0}\t{1}\t{2}'.format(i+1,j+1,v)
+            print('{0}\t{1}\t{2}'.format(i+1,j+1,v), file=f)
     Y = loadtxt(path)
     os.remove(path)
     assert_sparse_matrix_equal(X,Y)

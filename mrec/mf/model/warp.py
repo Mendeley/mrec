@@ -191,13 +191,13 @@ class WARP(object):
         tot_trials = 0
         for it in xrange(self.max_iters):
             if it % self.validation_iters == 0:
-                print 'tot_trials',tot_trials
+                print('tot_trials',tot_trials)
                 tot_trials = 0
                 prec = self.estimate_precision(decomposition,train,validation)
                 precs.append(prec)
-                print '{0}: validation precision = {1:.3f}'.format(it,precs[-1])
+                print('{0}: validation precision = {1:.3f}'.format(it,precs[-1]))
                 if len(precs) > 3 and precs[-1] < precs[-2] and precs[-2] < precs[-3]:
-                    print 'validation precision got worse twice, terminating'
+                    print('validation precision got worse twice, terminating')
                     break
             tot_trials += self.compute_updates(train,decomposition,updates)
             decomposition.apply_updates(updates,self.gamma,self.C)

@@ -18,8 +18,8 @@ def tsv2mtx(infile,outfile):
         nnz += 1
     headerfile = outfile+'.header'
     with open(headerfile,'w') as header:
-        print >>header,'%%MatrixMarket matrix coordinate real general'
-        print >>header,'{0} {1} {2}'.format(num_users,num_items,nnz)
+        print('%%MatrixMarket matrix coordinate real general', file=header)
+        print('{0} {1} {2}'.format(num_users,num_items,nnz), file=header)
     subprocess.check_call(['cat',headerfile,infile],stdout=open(outfile,'w'))
     subprocess.check_call(['rm',headerfile])
 

@@ -303,12 +303,12 @@ class ItemSimilarityRecommender(BaseRecommender):
         for u in xrange(user_start,user_end):
             ux = u - user_start
             if show_progress and ux%1000 == 0:
-               print ux,'..',
+                print(ux,'..',)
             ru = r[ux,:]
             if return_scores:
                 recs[ux] = [(i,v) for v,i in sorted(zip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
             else:
                 recs[ux] = [i for v,i in sorted(zip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
         if show_progress:
-            print
+            print()
         return recs

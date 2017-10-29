@@ -62,7 +62,7 @@ class WRMFRecommender(MatrixFactorizationRecommender):
         self.U = self.init_factors(num_users,False)  # don't need values, will compute them
         self.V = self.init_factors(num_items)
         for it in xrange(self.num_iters):
-            print 'iteration',it
+            print('iteration',it)
             # fit user factors
             VV = self.V.T.dot(self.V)
             for u in xrange(num_users):

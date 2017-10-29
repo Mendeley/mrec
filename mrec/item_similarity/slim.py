@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
     random.seed(0)
 
-    print 'loading test data...'
+    print('loading test data...')
     data = """\
 %%MatrixMarket matrix coordinate real general
 3 5 9
@@ -140,7 +140,7 @@ if __name__ == '__main__':
 3	3	1
 3	4	1
 """
-    print data
+    print(data)
     dataset = load_fast_sparse_matrix('mm',StringIO.StringIO(data))
     num_users,num_items = dataset.shape
 
@@ -150,32 +150,32 @@ if __name__ == '__main__':
 
     def output(i,j,val):
         # convert back to 1-indexed
-        print '{0}\t{1}\t{2:.3f}'.format(i+1,j+1,val)
+        print('{0}\t{1}\t{2:.3f}'.format(i+1,j+1,val))
 
-    print 'computing some item similarities...'
-    print 'item\tsim\tweight'
+    print('computing some item similarities...')
+    print('item\tsim\tweight')
     # if we want we can compute these individually without calling fit()
     for i in random.sample(xrange(num_items),num_samples):
         for j,weight in model.get_similar_items(i,max_similar_items=10,dataset=dataset):
             output(i,j,weight)
 
-    print 'learning entire similarity matrix...'
+    print('learning entire similarity matrix...')
     # usually we'll call train() on the entire dataset
     model = SLIM()
     model.fit(dataset)
-    print 'making some recommendations...'
-    print 'user\trec\tscore'
+    print('making some recommendations...')
+    print('user\trec\tscore')
     for u in random.sample(xrange(num_users),num_samples):
         for i,score in model.recommend_items(dataset.X,u,max_items=10):
             output(u,i,score)
 
-    print 'making batch recommendations...'
+    print('making batch recommendations...')
     recs = model.batch_recommend_items(dataset.X)
     for u in xrange(num_users):
         for i,score in recs[u]:
             output(u,i,score)
 
-    print 'making range recommendations...'
+    print('making range recommendations...')
     for start,end in [(0,2),(2,3)]:
         recs = model.range_recommend_items(dataset.X,start,end)
         for u in xrange(start,end):

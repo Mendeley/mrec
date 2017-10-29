@@ -91,12 +91,12 @@ def main():
     if candidates:
         best = min(candidates,key=itemgetter(1))
 
-        print 'best parameter setting: {0}'.format(best[0])
-        print 'mean # positive similarity weights per item = {0:.3}'.format(best[1])
-        print 'proportion of items with fewer than {0} positive similarity weights = {1:.3}'.format(opts.min_sims,best[2])
-        print 'mean # negative similarity weights per item = {0:.3}'.format(best[3])
+        print('best parameter setting: {0}'.format(best[0]))
+        print('mean # positive similarity weights per item = {0:.3}'.format(best[1]))
+        print('proportion of items with fewer than {0} positive similarity weights = {1:.3}'.format(opts.min_sims,best[2]))
+        print('mean # negative similarity weights per item = {0:.3}'.format(best[3]))
     else:
-        print 'no parameter settings satisfied the conditions, try increasing --min_sims, --max_sims or --max_sparse'
+        print('no parameter settings satisfied the conditions, try increasing --min_sims, --max_sims or --max_sparse')
 
 if __name__ == '__main__':
     main()

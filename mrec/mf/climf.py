@@ -42,8 +42,8 @@ class CLiMFRecommender(MatrixFactorizationRecommender):
         # TODO: create a validation set
 
         for iter in xrange(self.max_iters):
-            print 'iteration {0}:'.format(iter+1)
-            print 'objective = {0:.4f}'.format(self.objective(data))
+            print('iteration {0}:'.format(iter+1))
+            print('objective = {0:.4f}'.format(self.objective(data)))
             self.update(data)
             # TODO: compute MRR on validation set, terminate if appropriate
 
@@ -137,8 +137,8 @@ class CLiMFRecommender(MatrixFactorizationRecommender):
                     found = True
                     break
             if not found:
-                print 'fail, no relevant items predicted for test user {0}'.format(i+1)
-                print 'known items: {0}'.format(items)
+                print('fail, no relevant items predicted for test user {0}'.format(i+1))
+                print('known items: {0}'.format(items))
         assert(len(mrr) == len(test_users))
         return np.mean(mrr)
 

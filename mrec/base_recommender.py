@@ -192,10 +192,10 @@ class BaseRecommender(object):
         recs = []
         for u in xrange(self.num_users):
             if show_progress and u%1000 == 0:
-               print u,'..',
+                print(u,'..',)
             recs.append(self.recommend_items(dataset,u,max_items,return_scores))
         if show_progress:
-            print
+            print()
         return recs
 
     def range_recommend_items(self,

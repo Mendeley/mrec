@@ -244,7 +244,7 @@ def main():
 
     description = ' AND '.join(descriptions)
     if len(descriptions) > 1:
-        logging.warn('You are aggregating metrics from different models! {}'.format(description))
+        logging.warning('You are aggregating metrics from different models! {}'.format(description))
 
     print_report([description], [all_metrics])
 

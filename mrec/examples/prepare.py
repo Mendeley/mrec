@@ -95,7 +95,7 @@ def main():
         processor.create_split(open(infile), open(trainfile, 'w'), open(testfile, 'w'))
 
         too_few_items = processor.get_too_few_items()
-        if (too_few_items):
+        if too_few_items:
             logging.info('skipped {0} users with less than {1} ratings'.format(too_few_items, opts.min_items_per_user))
 
     logging.info('cleaning up...')

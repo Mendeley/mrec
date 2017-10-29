@@ -54,7 +54,7 @@ class SplitCreator(object):
     sample_before_thresholding : bool (default: False)
         If True then consider any item seen by the user for
         inclusion in the test group, even though only items
-        with positive scrore will be selected. If the input
+        with positive score will be selected. If the input
         includes items with zero scores this means that the
         test set may be smaller than the requested size for
         some users, even though they have apparently seen

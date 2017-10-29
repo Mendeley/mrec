@@ -42,8 +42,8 @@ class CLiMFRecommender(MatrixFactorizationRecommender):
         self.V = 0.01 * np.random.random_sample((data.shape[1], self.d))
         # TODO: create a validation set
 
-        for iter in range(self.max_iters):
-            print('iteration {0}:'.format(iter + 1))
+        for some_iter in range(self.max_iters):
+            print('iteration {0}:'.format(some_iter + 1))
             print('objective = {0:.4f}'.format(self.objective(data)))
             self.update(data)
             # TODO: compute MRR on validation set, terminate if appropriate

@@ -2,7 +2,7 @@ import numpy as np
 import scipy
 import random
 
-from warp import WARPBatchUpdate, WARPDecomposition, WARP
+from mrec.mf.model.warp import WARPBatchUpdate, WARPDecomposition, WARP
 from warp_fast import warp2_sample
 
 class WARP2BatchUpdate(WARPBatchUpdate):

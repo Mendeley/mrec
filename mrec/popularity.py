@@ -5,8 +5,8 @@ intended to provide a baseline for evaluations.
 
 import numpy as np
 
-from base_recommender import BaseRecommender
-from sparse import fast_sparse_matrix
+from mrec.base_recommender import BaseRecommender
+from mrec.sparse import fast_sparse_matrix
 
 class ItemPopularityRecommender(BaseRecommender):
     """

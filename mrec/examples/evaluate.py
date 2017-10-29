@@ -16,7 +16,7 @@ def main():
     from mrec.evaluation.metrics import compute_main_metrics, compute_hit_rate
     from mrec.evaluation import Evaluator
     from mrec.evaluation.metrics import print_report
-    from filename_conventions import get_testfile, get_recsfile
+    from mrec.examples.filename_conventions import get_testfile, get_recsfile
 
     logging.basicConfig(level=logging.INFO,format='[%(asctime)s] %(levelname)s: %(message)s')
 

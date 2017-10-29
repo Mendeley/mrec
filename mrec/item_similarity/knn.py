@@ -5,7 +5,7 @@ intended to provide evaluation baselines.
 
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from recommender import ItemSimilarityRecommender
+from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 class KNNRecommender(ItemSimilarityRecommender):
     """

@@ -25,7 +25,7 @@ from mrec.parallel import predict
 from mrec.mf.recommender import MatrixFactorizationRecommender
 from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
-from filename_conventions import *
+from mrec.examples.filename_conventions import *
 
 ONE_MB = 2**20
 

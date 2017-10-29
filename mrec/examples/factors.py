@@ -14,7 +14,7 @@ def main():
 
     from mrec import save_recommender
     from mrec.mf.recommender import MatrixFactorizationRecommender
-    from filename_conventions import get_modelfile
+    from mrec.examples.filename_conventions import get_modelfile
 
     logging.basicConfig(level=logging.INFO,format='[%(asctime)s] %(levelname)s: %(message)s')
 

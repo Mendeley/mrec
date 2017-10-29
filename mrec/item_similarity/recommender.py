@@ -10,8 +10,8 @@ import numpy as np
 from operator import itemgetter
 from scipy.sparse import csr_matrix, coo_matrix
 
-from ..sparse import fast_sparse_matrix
-from ..base_recommender import BaseRecommender
+from mrec.sparse import fast_sparse_matrix
+from mrec.base_recommender import BaseRecommender
 
 class ItemSimilarityRecommender(BaseRecommender):
     """

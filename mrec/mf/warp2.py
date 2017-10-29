@@ -1,7 +1,7 @@
 import numpy as np
 
-from warp import WARPMFRecommender
-from model.warp2 import WARP2
+from mrec.mf.warp import WARPMFRecommender
+from mrec.mf.model.warp2 import WARP2
 
 class WARP2MFRecommender(WARPMFRecommender):
     """

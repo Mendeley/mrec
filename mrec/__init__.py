@@ -6,8 +6,8 @@ try:
 except ImportError:
     import pickle
 
-from sparse import fast_sparse_matrix, loadtxt, loadz, savez
-from base_recommender import BaseRecommender
+from mrec.sparse import fast_sparse_matrix, loadtxt, loadz, savez
+from mrec.base_recommender import BaseRecommender
 
 __version__ = '0.3.1'
 

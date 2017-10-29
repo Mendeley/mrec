@@ -3,8 +3,8 @@ import random
 
 from mrec.evaluation import metrics
 
-from recommender import MatrixFactorizationRecommender
-from model.warp import WARP
+from mrec.mf.recommender import MatrixFactorizationRecommender
+from mrec.mf.model.warp import WARP
 
 class WARPMFRecommender(MatrixFactorizationRecommender):
     """

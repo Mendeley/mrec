@@ -46,7 +46,7 @@ def main():
     from optparse import OptionParser
 
     from mrec.evaluation.preprocessing import TSVParser, SplitCreator
-    from filename_conventions import get_sortedfile, get_splitfile
+    from mrec.examples.filename_conventions import get_sortedfile, get_splitfile
 
     logging.basicConfig(level=logging.INFO,format='[%(asctime)s] %(levelname)s: %(message)s')
 

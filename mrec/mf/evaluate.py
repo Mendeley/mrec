@@ -8,7 +8,7 @@ if __name__ == '__main__':
     except ImportError:
         from sklearn.grid_search import IterGrid as ParameterGrid
     from optparse import OptionParser
-    from warp import WARPMFRecommender
+    from mrec.mf.warp import WARPMFRecommender
 
     from mrec.evaluation.metrics import *
 

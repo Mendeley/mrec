@@ -10,7 +10,7 @@ separate similarity matrix for each input dataset: this makes it
 easy to generate data for cross-validated evaluation.
 """
 
-from filename_conventions import *
+from mrec.examples.filename_conventions import *
 
 def main():
 

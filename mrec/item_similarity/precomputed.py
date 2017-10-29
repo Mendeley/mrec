@@ -2,7 +2,7 @@
 Make recommendations from a precomputed item similarity matrix.
 """
 
-from recommender import ItemSimilarityRecommender
+from mrec.item_similarity.recommender import ItemSimilarityRecommender
 
 class PrecomputedItemSimilarityRecommender(ItemSimilarityRecommender):
     """

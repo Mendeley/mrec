@@ -9,7 +9,7 @@ except ImportError:
     import pickle
 import numpy as np
 
-from base_recommender import BaseRecommender
+from mrec.base_recommender import BaseRecommender
 
 class RerankingRecommender(BaseRecommender):
     """

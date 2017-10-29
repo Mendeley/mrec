@@ -1,6 +1,5 @@
 import numpy as np
 import random
-from itertools import izip
 
 from mrec.evaluation import metrics
 
@@ -280,7 +279,7 @@ class WARP(object):
 
         r = decomposition.reconstruct(rows)
         prec = 0
-        for u,ru in izip(rows,r):
+        for u,ru in zip(rows,r):
             predicted = ru.argsort()[::-1][:k]
             if have_validation_set:
                 actual = validation[u]

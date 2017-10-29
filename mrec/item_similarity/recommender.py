@@ -7,7 +7,6 @@ try:
 except ImportError:
     import pickle
 import numpy as np
-from itertools import izip
 from operator import itemgetter
 from scipy.sparse import csr_matrix, coo_matrix
 
@@ -307,9 +306,9 @@ class ItemSimilarityRecommender(BaseRecommender):
                print ux,'..',
             ru = r[ux,:]
             if return_scores:
-                recs[ux] = [(i,v) for v,i in sorted(izip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
+                recs[ux] = [(i,v) for v,i in sorted(zip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
             else:
-                recs[ux] = [i for v,i in sorted(izip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
+                recs[ux] = [i for v,i in sorted(zip(ru.data,ru.indices),reverse=True) if v > 0][:max_items]
         if show_progress:
             print
         return recs

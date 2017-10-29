@@ -1,4 +1,3 @@
-from itertools import izip
 import numpy as np
 from scipy.sparse import coo_matrix, csr_matrix
 from scipy.io import mmread, mmwrite
@@ -89,12 +88,12 @@ def save_sparse_matrix(data,fmt,filepath):
     if fmt == 'tsv':
         m = data.tocoo()
         with open(filepath,'w') as out:
-            for u,i,v in izip(m.row,m.col,m.data):
+            for u,i,v in zip(m.row,m.col,m.data):
                 print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,v)
     elif fmt == 'csv':
         m = data.tocoo()
         with open(filepath,'w') as out:
-            for u,i,v in izip(m.row,m.col,m.data):
+            for u,i,v in zip(m.row,m.col,m.data):
                 print >>out,'{0},{1},{2}'.format(u+1,i+1,v)
     elif fmt == 'mm':
         mmwrite(filepath,data)

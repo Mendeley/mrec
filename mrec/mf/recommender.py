@@ -8,7 +8,6 @@ try:
 except ImportError:
     import pickle
 import numpy as np
-from itertools import izip
 from scipy.sparse import csr_matrix
 
 from mrec.base_recommender import BaseRecommender

@@ -39,7 +39,7 @@ class ItemSimilarityRecommender(BaseRecommender):
         data = []
         row = []
         col = []
-        for j in xrange(num_items):
+        for j in range(num_items):
             w = self.compute_similarities(dataset,j)
             for k,v in enumerate(w):
                 if v != 0:
@@ -299,8 +299,8 @@ class ItemSimilarityRecommender(BaseRecommender):
             else just a list of idxs.
         """
         r = self._zero_known_item_scores(r,dataset[user_start:user_end,:])
-        recs = [[] for u in xrange(user_start,user_end)]
-        for u in xrange(user_start,user_end):
+        recs = [[] for u in range(user_start,user_end)]
+        for u in range(user_start,user_end):
             ux = u - user_start
             if show_progress and ux%1000 == 0:
                 print(ux,'..',)

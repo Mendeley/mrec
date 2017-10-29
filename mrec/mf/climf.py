@@ -41,7 +41,7 @@ class CLiMFRecommender(MatrixFactorizationRecommender):
         self.V = 0.01*np.random.random_sample((data.shape[1],self.d))
         # TODO: create a validation set
 
-        for iter in xrange(self.max_iters):
+        for iter in range(self.max_iters):
             print('iteration {0}:'.format(iter+1))
             print('objective = {0:.4f}'.format(self.objective(data)))
             self.update(data)
@@ -77,7 +77,7 @@ class CLiMFRecommender(MatrixFactorizationRecommender):
           current value of F(U,V)
         """
         F = -0.5*self.lbda*(np.sum(self.U*self.U)+np.sum(self.V*self.V))
-        for i in xrange(len(self.U)):
+        for i in range(len(self.U)):
             f = self.precompute_f(data,i)
             for j in f:
                 F += log(g(f[j]))
@@ -96,7 +96,7 @@ class CLiMFRecommender(MatrixFactorizationRecommender):
           lbda : regularization constant lambda
           gamma: learning rate
         """
-        for i in xrange(len(self.U)):
+        for i in range(len(self.U)):
             dU = -self.lbda*self.U[i]
             f = self.precompute_f(data,i)
             for j in f:

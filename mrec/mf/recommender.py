@@ -209,7 +209,7 @@ class MatrixFactorizationRecommender(BaseRecommender):
             Each entry is a list of (idx,score) pairs if return_scores is True,
             else just a list of idxs.
         """
-        r = self.predict_ratings(xrange(user_start,user_end),item_features=item_features)
+        r = self.predict_ratings(range(user_start,user_end),item_features=item_features)
         return self._get_recommendations_from_predictions(r,dataset,user_start,user_end,max_items,return_scores)
 
     def _get_recommendations_from_predictions(self,
@@ -247,8 +247,8 @@ class MatrixFactorizationRecommender(BaseRecommender):
             else just a list of idxs.
         """
         r = np.array(self._zero_known_item_scores(r,dataset[user_start:user_end,:]))
-        recs = [[] for u in xrange(user_start,user_end)]
-        for u in xrange(user_start,user_end):
+        recs = [[] for u in range(user_start,user_end)]
+        for u in range(user_start,user_end):
             ux = u - user_start
             if show_progress and ux%1000 == 0:
                 print(ux,'..',)

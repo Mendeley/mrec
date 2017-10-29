@@ -190,7 +190,7 @@ class BaseRecommender(object):
         this for most recommenders.
         """
         recs = []
-        for u in xrange(self.num_users):
+        for u in range(self.num_users):
             if show_progress and u%1000 == 0:
                 print(u,'..',)
             recs.append(self.recommend_items(dataset,u,max_items,return_scores))
@@ -234,7 +234,7 @@ class BaseRecommender(object):
         This provides a default implementation, you will be able to optimize
         this for most recommenders.
         """
-        return [self.recommend_items(dataset,u,max_items,return_scores) for u in xrange(user_start,user_end)]
+        return [self.recommend_items(dataset,u,max_items,return_scores) for u in range(user_start,user_end)]
 
     def _zero_known_item_scores(self,r,train):
         """
@@ -264,7 +264,7 @@ class BaseRecommender(object):
         # - we can't just use row,col = train.nonzero() as this eliminates
         #   u,i for which train[u,i] has been explicitly set to zero
         row = np.zeros(col.shape)
-        for u in xrange(train.shape[0]):
+        for u in range(train.shape[0]):
             start,end = train.indptr[u],train.indptr[u+1]
             if end > start:
                 row[start:end] = u

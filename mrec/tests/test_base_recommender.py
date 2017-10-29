@@ -62,8 +62,8 @@ def test_zero_known_item_scores():
     r = BaseRecommender()
     safe = r._zero_known_item_scores(predictions,train)
     num_users,num_items = predictions.shape
-    for u in xrange(num_users):
-        for i in xrange(num_items):
+    for u in range(num_users):
+        for i in range(num_items):
             if i in train[u].indices:
                 assert_less_equal(safe[u,i],0)
             else:

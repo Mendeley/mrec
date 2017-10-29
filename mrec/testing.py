@@ -4,7 +4,7 @@ from scipy.sparse import coo_matrix
 from sklearn.utils.testing import assert_array_equal
 
 def get_random_coo_matrix(rows=3,cols=10,nnz=20):
-    row_col = random.sample(xrange(rows*cols),nnz)  # ensure <row,col> are unique
+    row_col = random.sample(range(rows*cols),nnz)  # ensure <row,col> are unique
     row = [i // cols for i in row_col]
     col = [i % cols for i in row_col]
     data = np.random.randint(0,nnz*5,nnz)

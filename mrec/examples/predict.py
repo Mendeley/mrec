@@ -107,7 +107,7 @@ def create_tasks(modelfile,
                  evaluator):
     users_per_task,num_users = estimate_users_per_task(mb_per_task,input_format,trainfile,modelfile)
     tasks = []
-    for start in xrange(0,num_users,users_per_task):
+    for start in range(0,num_users,users_per_task):
         end = min(num_users,start+users_per_task)
         generate = (start,end) not in done
         tasks.append((modelfile,input_format,trainfile,test_input_format,testfile,item_feature_format,featurefile,outdir,start,end,evaluator,generate))

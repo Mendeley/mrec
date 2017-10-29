@@ -42,7 +42,7 @@ class WRMFRunner(object):
         num_users,num_items = data.shape
         del data
 
-        for it in xrange(model.num_iters):
+        for it in range(model.num_iters):
             logging.info('iteration {0}'.format(it))
             tasks = self.create_tasks(num_users,num_engines,model,input_format,trainfile,workdir,'U',get_user_indices,get_item_factor_files,init_item_factors)
             self.run_tasks(view,tasks)
@@ -66,7 +66,7 @@ class WRMFRunner(object):
     def create_tasks(self,num_factors,num_engines,model,input_format,trainfile,workdir,factor_type,get_indices,get_fixed_factor_files,init_fixed_factors):
         factors_per_engine = int(math.ceil(float(num_factors)/num_engines))
         tasks = []
-        for start in xrange(0,num_factors,factors_per_engine):
+        for start in range(0,num_factors,factors_per_engine):
             end = min(num_factors,start+factors_per_engine)
             fixed_factor_files = get_fixed_factor_files(workdir)
             tasks.append((model,input_format,trainfile,factor_type,get_indices,init_fixed_factors,fixed_factor_files,start,end,workdir))
@@ -95,7 +95,7 @@ def compute_factors(task):
 
     HH = H.T.dot(H)
     W = np.zeros(((end-start),model.d))
-    for j in xrange(start,end):
+    for j in range(start,end):
         indices = get_indices(data,j)
         if indices.size:
             W[j-start,:] = model.update(indices,H,HH)

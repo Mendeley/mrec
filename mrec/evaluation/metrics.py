@@ -57,7 +57,7 @@ def run_evaluation(models,retrain,get_split,num_runs,evaluation_func):
     A number of suitable functions are already available in the module.
     """
     metrics = [defaultdict(list) for m in models]
-    for _ in xrange(num_runs):
+    for _ in range(num_runs):
         train,users,test = get_split()
         for i,model in enumerate(models):
             retrain(model,train)

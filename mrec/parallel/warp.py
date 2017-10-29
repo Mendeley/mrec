@@ -87,7 +87,7 @@ class WARPMFRunner(object):
                      num_engines,
                      done):
         tasks = []
-        for ix in xrange(num_engines):
+        for ix in range(num_engines):
             if ix not in done:
                 outfile = self.get_modelfile(ix,outdir)
                 tasks.append((model,input_format,trainfile,feature_format,featurefile,outfile,ix,num_engines))

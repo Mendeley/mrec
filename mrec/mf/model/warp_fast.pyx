@@ -121,7 +121,7 @@ cdef sample_violating_negative_example(np.ndarray[np.float_t,ndim=2] U,
     num_items = V.shape[0]
 
     r = U[u].dot(V[i])
-    for N in xrange(1,max_trials):
+    for N in range(1,max_trials):
         # find j!=i s.t. data[u,j] < data[u,i]
         j = sample_negative_example(num_items,vals,indices,begin,end,ix)
         if r - U[u].dot(V[j]) < 1:
@@ -166,7 +166,7 @@ cdef sample_negative_example(num_items,
         # sample item uniformly with replacement
         j = rand() % num_items
         found = 0
-        for jx in xrange(begin,end):
+        for jx in range(begin,end):
             if indices[jx] == j:
                 found = 1
                 break
@@ -242,7 +242,7 @@ def apply_updates(np.ndarray[np.float_t,ndim=2] F,
     assert(rows.shape[0] == deltas.shape[0])
 
     num = rows.shape[0]
-    for i in xrange(num):
+    for i in range(num):
         row = rows[i]
         delta = deltas[i]
         F[row] += gamma*delta
@@ -379,7 +379,7 @@ cdef sample_violating_negative_example2(np.ndarray[np.float_t,ndim=2] U,
 
     XW = sparse_sdot(xbuf,W,X,i,is_sparse)
     r = U[u].dot(V[i] + XW)
-    for N in xrange(1,max_trials):
+    for N in range(1,max_trials):
         # find j!=i s.t. data[u,j] < data[u,i]
         j = sample_negative_example(num_items,vals,indices,begin,end,ix)
         XW = sparse_sdot(xbuf,W,X,j,is_sparse)
@@ -399,10 +399,10 @@ cdef sparse_sdot(np.ndarray[np.float_t,ndim=1] xbuf,
 
     if is_sparse:
         # TODO: surely there's something built in to do this...
-        for ix in xrange(X.indptr[i],X.indptr[i+1]):
+        for ix in range(X.indptr[i],X.indptr[i+1]):
             xbuf[X.indices[ix]] = X.data[ix]
         XW = xbuf.dot(W)
-        for ix in xrange(X.indptr[i],X.indptr[i+1]):
+        for ix in range(X.indptr[i],X.indptr[i+1]):
             xbuf[X.indices[ix]] = 0
     else:
         XW = X[i].dot(W)

@@ -189,7 +189,7 @@ class WARP(object):
     def _fit(self,decomposition,updates,train,validation):
         precs = []
         tot_trials = 0
-        for it in xrange(self.max_iters):
+        for it in range(self.max_iters):
             if it % self.validation_iters == 0:
                 print('tot_trials',tot_trials)
                 tot_trials = 0
@@ -210,13 +210,13 @@ class WARP(object):
         """
         assert(num_cols>1)
         self.warp_loss = np.ones(num_cols)
-        for i in xrange(1,num_cols):
+        for i in range(1,num_cols):
             self.warp_loss[i] = self.warp_loss[i-1]+1.0/(i+1)
 
     def compute_updates(self,train,decomposition,updates):
         updates.clear()
         tot_trials = 0
-        for ix in xrange(self.batch_size):
+        for ix in range(self.batch_size):
             u,i,j,N,trials = self.sample(train,decomposition)
             tot_trials += trials
             L = self.estimate_warp_loss(train,u,N)

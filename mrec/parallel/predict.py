@@ -33,7 +33,7 @@ def run(task):
             recs = model.range_recommend_items(dataset,start,end,max_items=20,return_scores=True,item_features=item_features)
         else:
             recs = model.range_recommend_items(dataset,start,end,max_items=20,return_scores=True)
-        for u,items in zip(xrange(start,end),recs):
+        for u,items in zip(range(start,end),recs):
             for i,w in items:
                 print('{0}\t{1}\t{2}'.format(u+1,i+1,w), file=out)  # write as 1-indexed
         out.close()

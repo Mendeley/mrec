@@ -79,7 +79,7 @@ class ItemSimilarityRunner(object):
             num_engines = 1
         items_per_engine = int(math.ceil(float(num_items)/num_engines))
         tasks = []
-        for start in xrange(0,num_items,items_per_engine):
+        for start in range(0,num_items,items_per_engine):
             end = min(num_items,start+items_per_engine)
             if (start,end) not in done:
                 tasks.append((model,input_format,trainfile,outdir,start,end,max_similar_items))
@@ -107,7 +107,7 @@ def process(task):
     # write sims directly to file as we compute them
     outfile = os.path.join(outdir,'sims.{0}-{1}.tsv'.format(start,end))
     out = open(outfile,'w')
-    for j in xrange(start,end):
+    for j in range(start,end):
         w = model.get_similar_items(j,max_similar_items=max_similar_items,dataset=dataset)
         for k,v in w:
             print('{0}\t{1}\t{2}'.format(j+1,k+1,v), file=out)  # write as 1-indexed

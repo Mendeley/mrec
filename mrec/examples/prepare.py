@@ -81,7 +81,7 @@ def main():
                             sample_before_thresholding=opts.sample_before_thresholding)
     processor = Processor(splitter,parser,opts.min_items_per_user)
 
-    for i in xrange(opts.num_splits):
+    for i in range(opts.num_splits):
         trainfile = get_splitfile(opts.dataset,opts.outdir,'train',i)
         testfile = get_splitfile(opts.dataset,opts.outdir,'test',i)
 

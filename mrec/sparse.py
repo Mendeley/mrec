@@ -192,14 +192,14 @@ class fast_sparse_matrix(object):
             max_nnz = int(max_density)
         else:
             max_nnz = int(max_density*self.shape[0])
-        for j in xrange(self.shape[1]):
+        for j in range(self.shape[1]):
             col = self.fast_get_col(j)
             excess = col.nnz - max_nnz
             if excess > 0:
                 if remove_lowest:
                     zero_entries = np.argsort(col.data)[:excess]
                 else:
-                    zero_entries = random.sample(xrange(col.nnz),excess)
+                    zero_entries = random.sample(range(col.nnz),excess)
                 col.data[zero_entries] = 0
                 self.fast_update_col(j,col.data)
 

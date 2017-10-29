@@ -42,21 +42,21 @@ def test_fast_get_col():
     X = get_random_coo_matrix().tocsc()
     m = fast_sparse_matrix(X)
     rows,cols = X.shape
-    for j in xrange(cols):
+    for j in range(cols):
         assert_array_equal(m.fast_get_col(j).toarray(),X[:,j].toarray())
 
 def test_fast_update_col():
     X = get_random_coo_matrix().tocsc()
     m = fast_sparse_matrix(X)
     cols = X.shape[1]
-    for j in xrange(cols):
+    for j in range(cols):
         vals = m.fast_get_col(j).data
         if (vals==0).all():
             continue
         vals[vals!=0] += 1
         m.fast_update_col(j,vals)
         expected = X[:,j].toarray()
-        for i in xrange(expected.shape[0]):
+        for i in range(expected.shape[0]):
             if expected[i] != 0:
                 expected[i] += 1
         assert_array_equal(m.fast_get_col(j).toarray(),expected)

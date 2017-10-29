@@ -53,16 +53,16 @@ class ItemPopularityRecommender(BaseRecommender):
             d = dataset.tocsc()
         if self.method == 'count':
             # count the total number of ratings for each item
-            popularity = [(d[:,i].nnz,i) for i in xrange(d.shape[1])]
+            popularity = [(d[:,i].nnz,i) for i in range(d.shape[1])]
         elif self.method == 'sum':
             # find the sum of the ratings for each item
-            popularity = [(d[:,i].sum(),i) for i in xrange(d.shape[1])]
+            popularity = [(d[:,i].sum(),i) for i in range(d.shape[1])]
         elif self.method == 'avg':
             # find the mean rating for each item
-            popularity = [(d[:,i].mean(),i) for i in xrange(d.shape[1])]
+            popularity = [(d[:,i].mean(),i) for i in range(d.shape[1])]
         elif self.method == 'thresh':
             # count the number of ratings above thresh for each item
-            popularity = [(sum(d[:,i].data>self.thresh),i) for i in xrange(d.shape[1])]
+            popularity = [(sum(d[:,i].data>self.thresh),i) for i in range(d.shape[1])]
         popularity.sort(reverse=True)
         self.pop_items = [(i,c) for (c,i) in popularity]
 

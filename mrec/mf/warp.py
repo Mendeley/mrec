@@ -86,7 +86,7 @@ class WARPMFRecommender(MatrixFactorizationRecommender):
         print(max_iters,'max_iters')
 
         validation = dict()
-        for u in xrange(num_validation_users):
+        for u in range(num_validation_users):
             positive = np.where(train[u].data > 0)[0]
             hidden = random.sample(positive,positive.shape[0]/2)
             if hidden:

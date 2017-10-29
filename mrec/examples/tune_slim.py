@@ -39,7 +39,7 @@ def estimate_sparsity(task):
     return args,avg_nnz,too_few_sims,avg_neg
 
 def pow_range(small,big):
-    return [10**v for v in xrange(int(log10(small)),int(log10(big))+1)]
+    return [10**v for v in range(int(log10(small)),int(log10(big))+1)]
 
 def main():
     parser = OptionParser()
@@ -68,7 +68,7 @@ def main():
     params = {'l1_reg':pow_range(opts.l1_min,opts.l1_max),
               'l2_reg':pow_range(opts.l2_min,opts.l2_max)}
     num_items = dataset.shape[1]
-    sample_items = random.sample(xrange(num_items),opts.num_samples)
+    sample_items = random.sample(range(num_items),opts.num_samples)
 
     logging.info('preparing tasks for a grid search of these values:')
     logging.info(params)

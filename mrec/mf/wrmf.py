@@ -61,11 +61,11 @@ class WRMFRecommender(MatrixFactorizationRecommender):
 
         self.U = self.init_factors(num_users,False)  # don't need values, will compute them
         self.V = self.init_factors(num_items)
-        for it in xrange(self.num_iters):
+        for it in range(self.num_iters):
             print('iteration',it)
             # fit user factors
             VV = self.V.T.dot(self.V)
-            for u in xrange(num_users):
+            for u in range(num_users):
                 # get (positive i.e. non-zero scored) items for user
                 indices = train.X[u].nonzero()[1]
                 if indices.size:
@@ -74,7 +74,7 @@ class WRMFRecommender(MatrixFactorizationRecommender):
                     self.U[u,:] = np.zeros(self.d)
             # fit item factors
             UU = self.U.T.dot(self.U)
-            for i in xrange(num_items):
+            for i in range(num_items):
                 indices = train.fast_get_col(i).nonzero()[0]
                 if indices.size:
                     self.V[i,:] = self.update(indices,self.U,UU)

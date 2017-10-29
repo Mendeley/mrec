@@ -31,7 +31,7 @@ class ItemSimilarityRunner(object):
         logging.info('creating tasks...')
         tasks = self.create_tasks(model,input_format,trainfile,simsdir,num_items,num_engines,max_sims,done)
 
-        if num_engines > 0:
+        if num_engines > 0 and len(tasks) > 0:
             logging.info('running %d tasks in parallel across ipython'
                          ' engines...', len(tasks))
             async_job = view.map_async(process,tasks,retries=2)

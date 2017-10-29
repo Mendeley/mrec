@@ -9,6 +9,7 @@ mrec recommender systems library
 
 Introduction
 ------------
+This fork is Python 3 only.
 `mrec` is a Python package developed at `Mendeley <http://www.mendeley.com>`_ to support recommender systems development and evaluation.  The package currently focuses on item similarity and other methods that work well on implicit feedback, and on experimental evaluation.
 
 Why another package when there are already some really good software projects implementing recommender systems?

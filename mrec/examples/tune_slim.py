@@ -12,7 +12,7 @@ try:
     from sklearn.grid_search import ParameterGrid
 except ImportError:
     from sklearn.grid_search import IterGrid as ParameterGrid
-from IPython.parallel import Client
+from ipyparallel import Client
 
 from mrec import load_fast_sparse_matrix
 

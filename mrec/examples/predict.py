@@ -164,7 +164,7 @@ def main():
 
     import os
     from optparse import OptionParser
-    from IPython.parallel import Client
+    from ipyparallel import Client
 
     from mrec.evaluation.metrics import compute_main_metrics, compute_hit_rate
     from mrec.evaluation import Evaluator

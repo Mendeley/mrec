@@ -19,7 +19,7 @@ def main():
     import glob
     import subprocess
     from optparse import OptionParser
-    from IPython.parallel import Client
+    from ipyparallel import Client
 
     from mrec import load_fast_sparse_matrix, save_recommender
     from mrec.item_similarity.slim import SLIM

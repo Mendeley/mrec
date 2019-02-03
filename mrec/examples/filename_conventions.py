@@ -10,42 +10,52 @@ File naming conventions:
 
 import os
 
+
 def get_testfile(trainfile):
     filename = os.path.basename(trainfile)
-    return os.path.join(os.path.dirname(trainfile),filename.replace('train','test'))
+    return os.path.join(os.path.dirname(trainfile), filename.replace('train', 'test'))
 
-def get_simsdir(trainfile,outdir):
+
+def get_simsdir(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}-sims'.format(filename))
+    return os.path.join(outdir, '{0}-sims'.format(filename))
 
-def get_recsdir(trainfile,outdir):
+
+def get_recsdir(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}-recs'.format(filename))
+    return os.path.join(outdir, '{0}-recs'.format(filename))
 
-def get_modelsdir(trainfile,outdir):
+
+def get_modelsdir(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}-models'.format(filename))
+    return os.path.join(outdir, '{0}-models'.format(filename))
 
-def get_factorsdir(trainfile,outdir):
+
+def get_factorsdir(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}-factors'.format(filename))
+    return os.path.join(outdir, '{0}-factors'.format(filename))
 
-def get_simsfile(trainfile,outdir):
+
+def get_simsfile(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}.sims.tsv'.format(filename))
+    return os.path.join(outdir, '{0}.sims.tsv'.format(filename))
 
-def get_recsfile(trainfile,outdir):
+
+def get_recsfile(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}.recs.tsv'.format(filename))
+    return os.path.join(outdir, '{0}.recs.tsv'.format(filename))
 
-def get_modelfile(trainfile,outdir):
+
+def get_modelfile(trainfile, outdir):
     filename = os.path.basename(trainfile)
-    return os.path.join(outdir,'{0}.model.npz'.format(filename))
+    return os.path.join(outdir, '{0}.model.npz'.format(filename))
 
-def get_sortedfile(infile,outdir):
+
+def get_sortedfile(infile, outdir):
     filename = os.path.basename(infile)
-    return os.path.join(outdir,'{0}.sorted'.format(filename))
+    return os.path.join(outdir, '{0}.sorted'.format(filename))
 
-def get_splitfile(infile,outdir,split_type,i):
+
+def get_splitfile(infile, outdir, split_type, i):
     filename = os.path.basename(infile)
-    return os.path.join(outdir,'{0}.{1}.{2}'.format(filename,split_type,i))
+    return os.path.join(outdir, '{0}.{1}.{2}'.format(filename, split_type, i))

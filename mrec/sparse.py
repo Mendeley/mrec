@@ -3,11 +3,13 @@ Sparse data structures and convenience methods to load sparse matrices from file
 """
 
 import random
-import numpy as np
-from scipy.sparse import csr_matrix, coo_matrix
-from scipy.io import mmread
 
-def loadtxt(filepath,comments='#',delimiter=None,skiprows=0,usecols=None,index_offset=1):
+import numpy as np
+from scipy.io import mmread
+from scipy.sparse import csr_matrix, coo_matrix
+
+
+def loadtxt(filepath, comments='#', delimiter=None, skiprows=0, usecols=None, index_offset=1):
     """
     Load a scipy sparse matrix from simply formatted data such as TSV, handles
     similar input to numpy.loadtxt().
@@ -36,16 +38,17 @@ def loadtxt(filepath,comments='#',delimiter=None,skiprows=0,usecols=None,index_o
     mat : scipy.sparse.csr_matrix
         The sparse matrix.
     """
-    d = np.loadtxt(filepath,comments=comments,delimiter=delimiter,skiprows=skiprows,usecols=usecols)
+    d = np.loadtxt(filepath, comments=comments, delimiter=delimiter, skiprows=skiprows, usecols=usecols)
     if d.shape[1] < 3:
         raise ValueError('invalid number of columns in input')
-    row = d[:,0]-index_offset
-    col = d[:,1]-index_offset
-    data = d[:,2]
-    shape = (max(row)+1,max(col)+1)
-    return csr_matrix((data,(row,col)),shape=shape)
+    row = d[:, 0] - index_offset
+    col = d[:, 1] - index_offset
+    data = d[:, 2]
+    shape = (max(row) + 1, max(col) + 1)
+    return csr_matrix((data, (row, col)), shape=shape)
 
-def savez(d,file):
+
+def savez(d, file):
     """
     Save a sparse matrix to file in numpy binary format.
 
@@ -58,7 +61,8 @@ def savez(d,file):
         where the matrix will be saved. If file is a string, the ``.npz``
         extension will be appended to the file name if it is not already there.
     """
-    np.savez(file,row=d.row,col=d.col,data=d.data,shape=d.shape)
+    np.savez(file, row=d.row, col=d.col, data=d.data, shape=d.shape)
+
 
 def loadz(file):
     """
@@ -75,7 +79,8 @@ def loadz(file):
         The sparse matrix.
     """
     y = np.load(file)
-    return coo_matrix((y['data'],(y['row'],y['col'])),shape=y['shape'])
+    return coo_matrix((y['data'], (y['row'], y['col'])), shape=y['shape'])
+
 
 class fast_sparse_matrix(object):
     """
@@ -95,7 +100,8 @@ class fast_sparse_matrix(object):
     >>> col = fsm.fast_get_col(2)      # get a column quickly
     >>> row = fsm.X[1]                 # get a row as usual
     """
-    def __init__(self,X,col_view=None):
+
+    def __init__(self, X, col_view=None):
         """
         Create a fast_sparse_matrix from a csr_matrix X. Note
         that X is not copied and its values will be modified by
@@ -126,7 +132,7 @@ class fast_sparse_matrix(object):
         """
         return self.X.shape
 
-    def fast_get_col(self,j):
+    def fast_get_col(self, j):
         """
         Return column j of the underlying matrix.
 
@@ -140,11 +146,11 @@ class fast_sparse_matrix(object):
         col : scipy.sparse.csc_matrix
             Copy of column j of the matrix.
         """
-        col = self.col_view[:,j].copy()
+        col = self.col_view[:, j].copy()
         col.data = self.X.data[col.data]
         return col
 
-    def fast_update_col(self,j,vals):
+    def fast_update_col(self, j, vals):
         """
         Update values of existing non-zeros in column
         of the underlying matrix.
@@ -159,10 +165,10 @@ class fast_sparse_matrix(object):
             only change the value of existing non-zero entries
             of column j, it cannot add new ones.
         """
-        dataptr = self.col_view[:,j].data
+        dataptr = self.col_view[:, j].data
         self.X.data[dataptr] = vals
 
-    def ensure_sparse_cols(self,max_density,remove_lowest=True):
+    def ensure_sparse_cols(self, max_density, remove_lowest=True):
         """
         Ensure that no column of the matrix excess the specified
         density, setting excess entries to zero where necessary.
@@ -191,19 +197,19 @@ class fast_sparse_matrix(object):
         if max_density >= 1:
             max_nnz = int(max_density)
         else:
-            max_nnz = int(max_density*self.shape[0])
-        for j in xrange(self.shape[1]):
+            max_nnz = int(max_density * self.shape[0])
+        for j in range(self.shape[1]):
             col = self.fast_get_col(j)
             excess = col.nnz - max_nnz
             if excess > 0:
                 if remove_lowest:
                     zero_entries = np.argsort(col.data)[:excess]
                 else:
-                    zero_entries = random.sample(xrange(col.nnz),excess)
+                    zero_entries = random.sample(range(col.nnz), excess)
                 col.data[zero_entries] = 0
-                self.fast_update_col(j,col.data)
+                self.fast_update_col(j, col.data)
 
-    def save(self,filepath):
+    def save(self, filepath):
         """
         Save to file as arrays in numpy binary format.
 
@@ -214,8 +220,8 @@ class fast_sparse_matrix(object):
         """
         d = self.X.tocoo(copy=False)
         v = self.col_view.tocoo(copy=False)
-        np.savez(filepath,row=d.row,col=d.col,data=d.data,shape=d.shape,
-                 v_row=v.row,v_col=v.col,v_data=v.data,v_shape=v.shape)
+        np.savez(filepath, row=d.row, col=d.col, data=d.data, shape=d.shape,
+                 v_row=v.row, v_col=v.col, v_data=v.data, v_shape=v.shape)
 
     @staticmethod
     def load(filepath):
@@ -227,13 +233,13 @@ class fast_sparse_matrix(object):
         filepath : str
             The filepath to load.
         """
-        y = np.load(filepath,mmap_mode='r')
-        X = coo_matrix((y['data'],(y['row'],y['col'])),shape=y['shape'])
-        col_view = coo_matrix((y['v_data'],(y['v_row'],y['v_col'])),shape=y['v_shape'])
-        return fast_sparse_matrix(X,col_view.tocsc())
+        y = np.load(filepath, mmap_mode='r')
+        X = coo_matrix((y['data'], (y['row'], y['col'])), shape=y['shape'])
+        col_view = coo_matrix((y['v_data'], (y['v_row'], y['v_col'])), shape=y['v_shape'])
+        return fast_sparse_matrix(X, col_view.tocsc())
 
     @staticmethod
-    def loadtxt(filepath,comments='#',delimiter=None,skiprows=0,usecols=None,index_offset=1):
+    def loadtxt(filepath, comments='#', delimiter=None, skiprows=0, usecols=None, index_offset=1):
         """
         Create a fast_sparse_matrix from simply formatted data such as TSV, handles
         similar input to numpy.loadtxt().
@@ -262,7 +268,7 @@ class fast_sparse_matrix(object):
         mat : mrec.sparse.fast_sparse_matrix
             A fast_sparse_matrix holding the data in the file.
         """
-        X = loadtxt(filepath,comments=comments,delimiter=delimiter,skiprows=skiprows,usecols=usecols)
+        X = loadtxt(filepath, comments=comments, delimiter=delimiter, skiprows=skiprows, usecols=usecols)
         return fast_sparse_matrix(X)
 
     @staticmethod
@@ -282,4 +288,3 @@ class fast_sparse_matrix(object):
         """
         X = mmread(filepath)
         return fast_sparse_matrix(X)
-

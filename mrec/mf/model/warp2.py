@@ -1,24 +1,25 @@
 import numpy as np
 import scipy
-import random
-
-from warp import WARPBatchUpdate, WARPDecomposition, WARP
 from warp_fast import warp2_sample
+
+from mrec.mf.model.warp import WARPBatchUpdate, WARPDecomposition, WARP
+
 
 class WARP2BatchUpdate(WARPBatchUpdate):
     """Collection of arrays to hold a batch of sgd updates."""
 
-    def __init__(self,batch_size,num_features,d):
-        WARPBatchUpdate.__init__(self,batch_size,d)
-        self.dW = np.zeros((num_features,d))
+    def __init__(self, batch_size, num_features, d):
+        WARPBatchUpdate.__init__(self, batch_size, d)
+        self.dW = np.zeros((num_features, d))
 
     def clear(self):
         self.dW[:] = 0
 
-    def set_update(self,ix,update):
-        u,v_pos,v_neg,dU,dV_pos,dV_neg,dW = update
-        WARPBatchUpdate.set_update(self,ix,(u,v_pos,v_neg,dU,dV_pos,dV_neg))
+    def set_update(self, ix, update):
+        u, v_pos, v_neg, dU, dV_pos, dV_neg, dW = update
+        WARPBatchUpdate.set_update(self, ix, (u, v_pos, v_neg, dU, dV_pos, dV_neg))
         self.dW += dW
+
 
 class WARP2Decomposition(WARPDecomposition):
     """
@@ -36,14 +37,14 @@ class WARP2Decomposition(WARPDecomposition):
         The embedding dimension.
     """
 
-    def __init__(self,num_rows,num_cols,X,d):
-        WARPDecomposition.__init__(self,num_rows,num_cols,d)
+    def __init__(self, num_rows, num_cols, X, d):
+        WARPDecomposition.__init__(self, num_rows, num_cols, d)
         # W holds latent factors for each item feature
-        self.W = d**-0.5*np.random.random_sample((X.shape[1],d))
+        self.W = d ** -0.5 * np.random.random_sample((X.shape[1], d))
         self.X = X
-        self.is_sparse = isinstance(X,scipy.sparse.csr_matrix)
+        self.is_sparse = isinstance(X, scipy.sparse.csr_matrix)
 
-    def compute_gradient_step(self,u,i,j,L):
+    def compute_gradient_step(self, u, i, j, L):
         """
         Compute a gradient step from results of sampling.
 
@@ -76,32 +77,33 @@ class WARP2Decomposition(WARPDecomposition):
         dW : numpy.ndarray
             Gradient step for W.
         """
-        dU = L*(self.V[i]-self.V[j])
-        dV_pos = L*self.U[u]
-        dV_neg = -L*self.U[u]
-        dx = self.X[i]-self.X[j]
+        dU = L * (self.V[i] - self.V[j])
+        dV_pos = L * self.U[u]
+        dV_neg = -L * self.U[u]
+        dx = self.X[i] - self.X[j]
         if not self.is_sparse:
             dx = np.atleast_2d(dx)
-        dW = L*dx.T.dot(np.atleast_2d(self.U[u]))
-        return u,i,j,dU,dV_pos,dV_neg,dW
+        dW = L * dx.T.dot(np.atleast_2d(self.U[u]))
+        return u, i, j, dU, dV_pos, dV_neg, dW
 
-    def apply_updates(self,updates,gamma,C):
-        WARPDecomposition.apply_updates(self,updates,gamma,C)
-        self.apply_matrix_update(self.W,updates.dW,gamma,C)
+    def apply_updates(self, updates, gamma, C):
+        WARPDecomposition.apply_updates(self, updates, gamma, C)
+        self.apply_matrix_update(self.W, updates.dW, gamma, C)
 
-    def apply_matrix_update(self,W,dW,gamma,C):
-        W += gamma*dW
+    def apply_matrix_update(self, W, dW, gamma, C):
+        W += gamma * dW
         # ensure that ||W_k|| < C for all k
-        p = np.sum(np.abs(W)**2,axis=-1)**0.5/C
-        p[p<1] = 1
-        W /= p[:,np.newaxis]
+        p = np.sum(np.abs(W) ** 2, axis=-1) ** 0.5 / C
+        p[p < 1] = 1
+        W /= p[:, np.newaxis]
 
-    def reconstruct(self,rows):
+    def reconstruct(self, rows):
         if rows is None:
             U = self.U
         else:
-            U = np.asfortranarray(self.U[rows,:])
+            U = np.asfortranarray(self.U[rows, :])
         return U.dot(self.V.T + self.X.dot(self.W).T)
+
 
 class WARP2(WARP):
     """
@@ -138,7 +140,7 @@ class WARP2(WARP):
         Item feature factors.
     """
 
-    def fit(self,train,X,validation=None):
+    def fit(self, train, X, validation=None):
         """
         Learn embedding from training set. A suitable dot product of the
         factors reconstructs the training matrix approximately, minimizing
@@ -162,12 +164,12 @@ class WARP2(WARP):
         self : object
             This model itself.
         """
-        num_rows,num_cols = train.shape
-        decomposition = WARP2Decomposition(num_rows,num_cols,X,self.d)
-        updates = WARP2BatchUpdate(self.batch_size,X.shape[1],self.d)
+        num_rows, num_cols = train.shape
+        decomposition = WARP2Decomposition(num_rows, num_cols, X, self.d)
+        updates = WARP2BatchUpdate(self.batch_size, X.shape[1], self.d)
         self.precompute_warp_loss(num_cols)
 
-        self._fit(decomposition,updates,train,validation)
+        self._fit(decomposition, updates, train, validation)
 
         self.U_ = decomposition.U
         self.V_ = decomposition.V
@@ -175,7 +177,7 @@ class WARP2(WARP):
 
         return self
 
-    def sample(self,train,decomposition):
+    def sample(self, train, decomposition):
         # delegate to cython implementation
         return warp2_sample(decomposition.U,
                             decomposition.V,
@@ -186,4 +188,3 @@ class WARP2(WARP):
                             train.indptr,
                             self.positive_thresh,
                             self.max_trials)
-

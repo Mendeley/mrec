@@ -1,18 +1,12 @@
-from itertools import izip
-import numpy as np
-from scipy.sparse import coo_matrix, csr_matrix
 from scipy.io import mmread, mmwrite
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
 
-from sparse import fast_sparse_matrix, loadtxt, loadz, savez
-from base_recommender import BaseRecommender
+from mrec.base_recommender import BaseRecommender
+from mrec.sparse import fast_sparse_matrix, loadtxt, loadz, savez
 
 __version__ = '0.3.1'
 
-def load_fast_sparse_matrix(input_format,filepath):
+
+def load_fast_sparse_matrix(input_format, filepath):
     """
     Load a fast_sparse_matrix from an input file of the specified format,
     by delegating to the appropriate static method.
@@ -31,14 +25,15 @@ def load_fast_sparse_matrix(input_format,filepath):
     if input_format == 'tsv':
         return fast_sparse_matrix.loadtxt(filepath)
     elif input_format == 'csv':
-        return fast_sparse_matrix.loadtxt(filepath,delimiter=',')
+        return fast_sparse_matrix.loadtxt(filepath, delimiter=',')
     elif input_format == 'mm':
         return fast_sparse_matrix.loadmm(filepath)
     elif input_format == 'fsm':
         return fast_sparse_matrix.load(filepath)
     raise ValueError('unknown input format: {0}'.format(input_format))
 
-def load_sparse_matrix(input_format,filepath):
+
+def load_sparse_matrix(input_format, filepath):
     """
     Load a scipy.sparse.csr_matrix from an input file of the specified format.
 
@@ -57,7 +52,7 @@ def load_sparse_matrix(input_format,filepath):
     if input_format == 'tsv':
         return loadtxt(filepath)
     elif input_format == 'csv':
-        return loadtxt(filepath,delimiter=',')
+        return loadtxt(filepath, delimiter=',')
     elif input_format == 'mm':
         return mmread(filepath).tocsr()
     elif input_format == 'npz':
@@ -66,7 +61,8 @@ def load_sparse_matrix(input_format,filepath):
         return fast_sparse_matrix.load(filepath).X
     raise ValueError('unknown input format: {0}'.format(input_format))
 
-def save_sparse_matrix(data,fmt,filepath):
+
+def save_sparse_matrix(data, fmt, filepath):
     """
     Save a scipy sparse matrix in the specified format. Row and column
     indices will be converted to 1-indexed if you specify a plain text
@@ -88,24 +84,25 @@ def save_sparse_matrix(data,fmt,filepath):
     """
     if fmt == 'tsv':
         m = data.tocoo()
-        with open(filepath,'w') as out:
-            for u,i,v in izip(m.row,m.col,m.data):
-                print >>out,'{0}\t{1}\t{2}'.format(u+1,i+1,v)
+        with open(filepath, 'w') as out:
+            for u, i, v in zip(m.row, m.col, m.data):
+                print('{0}\t{1}\t{2}'.format(u + 1, i + 1, v), file=out)
     elif fmt == 'csv':
         m = data.tocoo()
-        with open(filepath,'w') as out:
-            for u,i,v in izip(m.row,m.col,m.data):
-                print >>out,'{0},{1},{2}'.format(u+1,i+1,v)
+        with open(filepath, 'w') as out:
+            for u, i, v in zip(m.row, m.col, m.data):
+                print('{0},{1},{2}'.format(u + 1, i + 1, v), file=out)
     elif fmt == 'mm':
-        mmwrite(filepath,data)
+        mmwrite(filepath, data)
     elif fmt == 'npz':
-        savez(data.tocoo(),filepath)
+        savez(data.tocoo(), filepath)
     elif fmt == 'fsm':
         fast_sparse_matrix(data).save(filepath)
     else:
         raise ValueError('unknown output format: {0}'.format(fmt))
 
-def save_recommender(model,filepath):
+
+def save_recommender(model, filepath):
     """
     Save a recommender model to file.
 
@@ -118,6 +115,7 @@ def save_recommender(model,filepath):
     """
     model.save(filepath)
 
+
 def load_recommender(filepath):
     """
     Load a recommender model from file after it has been saved by
@@ -129,6 +127,7 @@ def load_recommender(filepath):
         The filepath to read from.
     """
     return BaseRecommender.load(filepath)
+
 
 def read_recommender_description(filepath):
     """

@@ -11,18 +11,18 @@ class Evaluator(object):
         The number of recommendations needed to compute the evaluation function.
     """
 
-    def __init__(self,compute_metrics,max_items):
+    def __init__(self, compute_metrics, max_items):
         self.compute_metrics = compute_metrics
         self.max_items = max_items
 
-    def _add_metrics(self,predicted,actual):
-        metrics = self.compute_metrics(predicted,actual)
+    def _add_metrics(self, predicted, actual):
+        metrics = self.compute_metrics(predicted, actual)
         if metrics:
-            for m,val in metrics.iteritems():
+            for m, val in metrics.items():
                 self.cum_metrics[m] += val
             self.count += 1
 
-    def process(self,testdata,recsfile,start,end,offset=1):
+    def process(self, testdata, recsfile, start, end, offset=1):
         """
         Parameters
         ----------
@@ -54,19 +54,19 @@ class Evaluator(object):
         last_user = start
         recs = []
         for line in open(recsfile):
-            user,item,score = line.strip().split('\t')
-            user = int(user)-1  # convert to 0-indxed
-            item = int(item)-1
+            user, item, score = line.strip().split('\t')
+            user = int(user) - 1  # convert to 0-indxed
+            item = int(item) - 1
             if user >= end:
                 break
             if user < start:
                 continue
             if user != last_user:
-                self._add_metrics(recs,testdata[last_user,:].indices.tolist())
+                self._add_metrics(recs, testdata[last_user, :].indices.tolist())
                 last_user = user
                 recs = []
             if len(recs) < self.max_items:
                 recs.append(item)
-        self._add_metrics(recs,testdata[last_user,:].indices.tolist())
+        self._add_metrics(recs, testdata[last_user, :].indices.tolist())
 
-        return self.cum_metrics,self.count
+        return self.cum_metrics, self.count

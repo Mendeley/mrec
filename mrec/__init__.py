@@ -1,4 +1,3 @@
-from itertools import izip
 import numpy as np
 from scipy.sparse import coo_matrix, csr_matrix
 from scipy.io import mmread, mmwrite
